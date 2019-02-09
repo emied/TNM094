@@ -1,0 +1,46 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.dc-data-count .filter-count {
+    color: #3fb8af;
+    font-weight: bold;
+}
+
+.dc-data-count .total-count {
+    color: #3fb8af;
+    font-weight: bold;
+}
+
+.slider {
+	max-width: 400px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.noUi-handle-lower .noUi-tooltip
+{
+	bottom: -130%;
+}
+
+.noUi-handle-upper .noUi-tooltip
+{
+	bottom: 120%;
+}
+
+.noUi-connect
+{
+	background: #3fb8af;
+}
+
+button {
+	background: #8ad2d3;
+	font: 700 11px/30px Arial;
+	text-transform: uppercase;
+	padding: 0 15px;
+	border-radius: 4px;
+	color: #fff;
+	cursor: pointer;
+	margin: 15px 5px 0 0;
+}
