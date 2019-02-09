@@ -38,4 +38,9 @@ function drawChart(data)
 		.group(cross_filter.groupAll());
 
 	dc.renderAll();
+
+	// Super ugly solution but prevents this from showing before chart is loaded.
+	document.getElementById('t1').innerHTML = " bike rides out of ";
+	document.getElementById('t2').innerHTML = " selected. | ";
+	document.getElementById('t3').innerHTML = " Reset All";
 }

@@ -28,11 +28,10 @@ router.get('/get_range', function(req, res, next) {
 		delimiter: ',',
 		dynamicTyping: true,
 		step: function(row, parser) {
-
 			var date = date_format_parser('2018-' + row.data[0].start_time);
 
 			i++;
-			if(!(i % decimate) && date > start)
+			if(!(i % decimate) && date >= start)
 			{
 				if(date >= end)
 				{
