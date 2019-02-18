@@ -4,6 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var fs = require('fs');
+var d3 = require('d3');
+
+// Load csv data into js object when server starts
+exports.bike_data = d3.csvParse(fs.readFileSync('data/fordgobike_all.csv', 'utf8'));
+
 var indexRouter = require('./routes/index');
 var data_apiRouter = require('./routes/data_api');
 
@@ -35,6 +41,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+
+  console.log(err);
   res.render('error');
 });
 
