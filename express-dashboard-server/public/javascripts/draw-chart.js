@@ -5,7 +5,7 @@ draw-chart.js
 Prototype client code used for testing visualization
 of data returned by the server.
 
-Draws a simple bar chart that visualizes the daily 
+Draws a simple bar chart that visualizes the daily
 data point distribution over the time interval.
 
 ***************************************************/
@@ -50,8 +50,12 @@ function drawChart(data) {
 
 	dc.renderAll();
 
+
+
 	// Super ugly solution but prevents this from showing before chart is loaded.
 	document.getElementById('t1').innerHTML = " bike rides out of ";
 	document.getElementById('t2').innerHTML = " selected. | ";
 	document.getElementById('t3').innerHTML = " Reset All";
+
+
 }

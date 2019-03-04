@@ -25,6 +25,8 @@ function drawPie(data)
 
   var genderGroup = genderDimension.group().reduceCount();
 
+
+
   pie_chart
 		.width(700)
 		.height(300)
@@ -33,10 +35,10 @@ function drawPie(data)
 
 
 
-  count_chart
-		.dimension(cross_filter)
-		.group(cross_filter.groupAll());
+
 
    dc.renderAll();
+
+
 
 }
