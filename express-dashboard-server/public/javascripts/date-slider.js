@@ -24,7 +24,7 @@ noUiSlider.create(date_slider, {
     margin: 24 * 60 * 60 * 1000, 	// minimum of 1 day interval
     connect: [false, true, false],
 
-    tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }}, 
+    tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }},
 		{ to: function(v) { return formatDate(new Date(+v)); }} ],
 
     start: [timestamp('2018-04-01'), timestamp('2018-09-01')]
@@ -46,7 +46,7 @@ set_date_button.addEventListener('click', function () {
 	var t0 = performance.now();
 
 	// Request data from server
-	var requestURL = '/data_api/get_range?start=' + start + "&end=" + end + "&decimate=" + decimate.toString(); 
+	var requestURL = '/data_api/get_range?start=' + start + "&end=" + end + "&decimate=" + decimate.toString();
 	var request = new XMLHttpRequest();
 	request.open('GET', requestURL);
 	request.responseType = 'json';
@@ -60,5 +60,6 @@ set_date_button.addEventListener('click', function () {
   		data_load_text.innerHTML = "Status: Data loaded in " + (t1-t0).toFixed(0) + " ms.";
 
   		drawChart(data);
+			drawPie(data);
 	}
 });
