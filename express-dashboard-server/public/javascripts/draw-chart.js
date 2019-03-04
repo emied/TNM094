@@ -1,5 +1,16 @@
-function drawChart(data)
-{
+/***************************************************
+
+draw-chart.js
+
+Prototype client code used for testing visualization
+of data returned by the server.
+
+Draws a simple bar chart that visualizes the daily 
+data point distribution over the time interval.
+
+***************************************************/
+
+function drawChart(data) {
 	var date_format_parser = d3.timeParse(d3.timeFormat('%Y-%m-%d %H:%M:%S'));
 
 	var date_bar_chart = dc.barChart('#date-bar-chart');
@@ -9,9 +20,9 @@ function drawChart(data)
 
 	var day_dimension = cross_filter.dimension(function(d) {
 		var date = date_format_parser('2018-' + d.start_time);
-    	date.setHours(0, 0, 0, 0);
-    	return date;
-    });
+		date.setHours(0, 0, 0, 0);
+		return date;
+	});
 	day_group = day_dimension.group().reduceCount();
 
 	var start = date_format_parser('2018-' + day_dimension.bottom(1)[0].start_time);
@@ -29,10 +40,10 @@ function drawChart(data)
 		.dimension(day_dimension)
 		.group(day_group)
 		.colorAccessor(function(d) {
-  			return d.key;
+			return d.key;
 		})
-		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af","#0088cc"]));
-	
+		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+
 	count_chart
 		.dimension(cross_filter)
 		.group(cross_filter.groupAll());
