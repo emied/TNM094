@@ -2,7 +2,7 @@
 
 api.js
 
-Handles all routes for API calls, i.e. when a URL with the pattern http://localhost:3000/api is requested.
+Handles all routes for API calls, i.e. when an URL with the pattern http://localhost:3000/api is requested.
 
 The API mostly uses the GET request method, which means that the query string is appended to the URL.
 For example, if you want to request data with the following properties:

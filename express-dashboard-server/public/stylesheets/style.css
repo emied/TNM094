@@ -1,16 +1,16 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 .dc-data-count .filter-count {
-    color: #3fb8af;
-    font-weight: bold;
+	color: #3fb8af;
+	font-weight: bold;
 }
 
 .dc-data-count .total-count {
-    color: #3fb8af;
-    font-weight: bold;
+	color: #3fb8af;
+	font-weight: bold;
 }
 
 .slider {

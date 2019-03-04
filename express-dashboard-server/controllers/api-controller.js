@@ -57,7 +57,7 @@ exports.data_range = function(req, res) {
 	var date_format_parser = d3.timeParse(d3.timeFormat('%Y-%m-%d %H:%M:%S'));
 
 	// Get the requested parameters from the query (req.query)
-	var dataset = req.query.dataset;
+	var dataset = req.query.dataset; // string name of dataset
 	var start = date_format_parser(req.query.start);
 	var end = date_format_parser(req.query.end);
 	var decimate = +req.query.decimate;
