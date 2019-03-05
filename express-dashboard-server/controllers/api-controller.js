@@ -68,7 +68,7 @@ exports.data_range = function(req, res) {
 	var result = [];
 	for (var i = 0; i < data.length; i += decimate) 
 	{
-		var date = date_format_parser('2018-' + data[i].start_time);
+		var date = date_format_parser(data[i].start_time);
 		if (date >= start) 
 		{
 			if (date >= end) 

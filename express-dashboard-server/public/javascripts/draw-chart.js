@@ -20,14 +20,14 @@ function drawChart(data) {
 	var cross_filter = crossfilter(data);
 
 	var day_dimension = cross_filter.dimension(function(d) {
-		var date = date_format_parser('2018-' + d.start_time);
+		var date = date_format_parser(d.start_time);
 		date.setHours(0, 0, 0, 0);
 		return date;
 	});
 	day_group = day_dimension.group().reduceCount();
 
-	var start = date_format_parser('2018-' + day_dimension.bottom(1)[0].start_time);
-	var end = date_format_parser('2018-' + day_dimension.top(1)[0].start_time);
+	var start = date_format_parser(day_dimension.bottom(1)[0].start_time);
+	var end = date_format_parser(day_dimension.top(1)[0].start_time);
 
 	date_bar_chart
 		.width(750)
