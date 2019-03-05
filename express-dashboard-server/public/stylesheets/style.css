@@ -19,6 +19,15 @@ body {
 	margin-bottom: 40px;
 }
 
+#box-test {
+  width: 300px;
+  height: 300px;
+  padding: 50px;
+  position: absolute;
+  margin: -100px 0px 0px 850px;
+  cursor: pointer;
+}
+
 .noUi-handle-lower .noUi-tooltip
 {
 	bottom: -130%;
