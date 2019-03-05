@@ -80,7 +80,7 @@ function drawChart(data) {
 
 	dc.renderAll();
 
-	//Call dragElement  
+	//Call dragElement
 	dragElement(document.getElementById("pie-chart"));
 
 	function dragElement(elmnt) {
