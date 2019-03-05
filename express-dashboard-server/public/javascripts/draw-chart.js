@@ -15,6 +15,7 @@ function drawChart(data) {
 
 	var date_bar_chart = dc.barChart('#date-bar-chart');
 	var count_chart = dc.dataCount("#count-chart");
+	var pie_chart = dc.pieChart('#pie-chart');
 
 	var cross_filter = crossfilter(data);
 
@@ -44,12 +45,38 @@ function drawChart(data) {
 		})
 		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
+		//hehe ugly solution
+		var genderDimension = cross_filter.dimension(function(data) {
+			if (data.gender == 1) {
+				test = "Male";
+			}
+			else if (data.gender == 2) {
+				test = "Female";
+			}
+			else
+				test = "Other"
+
+			return test;
+		});
+
+		var genderGroup = genderDimension.group().reduceCount();
+
+		pie_chart
+			.width(700)
+			.height(300)
+			.dimension(genderDimension)
+			.group(genderGroup)
+			.on('renderlet', function(chart) {
+				chart.selectAll('rect').on('click', function(d) {
+					console.log('click!', d);
+				});
+			});
+
 	count_chart
 		.dimension(cross_filter)
 		.group(cross_filter.groupAll());
 
 	dc.renderAll();
-
 
 
 	// Super ugly solution but prevents this from showing before chart is loaded.

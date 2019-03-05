@@ -93,7 +93,7 @@ set_date_button.addEventListener('click', function() {
     data_load_text.innerHTML = "Status: Data loaded in " + (t1 - t0).toFixed(0) + " ms.";
 
 
-  		drawChart(data);
-			drawPie(data);
+			drawChart(data);
+
 	}
 });
