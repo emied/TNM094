@@ -2,7 +2,7 @@
 
 api-controller.js
 
-Does all request processing for API calls. This involves checking if 
+Does all request processing for API calls. This involves checking if
 the request query is valid and then creating and sending the response.
 
 Check exports.data_range for commented example.
@@ -16,7 +16,7 @@ var datasets = require('../data/datasets');
 
 const { check, validationResult } = require('express-validator/check');
 
-/***********************************************  
+/***********************************************
 Validates HTTP requests for different API calls.
 ***********************************************/
 exports.validate = function(method) {
@@ -33,21 +33,21 @@ exports.validate = function(method) {
 	}
 };
 
-/************************************  
+/************************************
 Displays list of available API calls
 ************************************/
 exports.list = function(req, res) {
 	res.send('NOT IMPLEMENTED: API list');
 };
 
-/*************************************** 
-Returns range of decimated historic data 
+/***************************************
+Returns range of decimated historic data
 ***************************************/
 exports.data_range = function(req, res) {
 
 	// Check if request is valid, respond with error if not.
 	const errors = validationResult(req);
-	if (!errors.isEmpty()) 
+	if (!errors.isEmpty())
 	{
 		// Send error status code 400 and the array of errors as response if the request was invalid.
 		// (The function will terminate here because a response is sent and this can only be done once)
@@ -57,7 +57,7 @@ exports.data_range = function(req, res) {
 	var date_format_parser = d3.timeParse(d3.timeFormat('%Y-%m-%d %H:%M:%S'));
 
 	// Get the requested parameters from the query (req.query)
-	var dataset = req.query.dataset;
+	var dataset = req.query.dataset; // string name of dataset
 	var start = date_format_parser(req.query.start);
 	var end = date_format_parser(req.query.end);
 	var decimate = +req.query.decimate;
@@ -66,16 +66,16 @@ exports.data_range = function(req, res) {
 
 	// Accumulate all data entries that satisfies the request and store in result.
 	var result = [];
-	for (var i = 0; i < data.length; i += decimate) 
+	for (var i = 0; i < data.length; i += decimate)
 	{
 		var date = date_format_parser('2018-' + data[i].start_time);
-		if (date >= start) 
+		if (date >= start)
 		{
-			if (date >= end) 
+			if (date >= end)
 			{
 				break;
-			} 
-			else 
+			}
+			else
 			{
 				result.push(data[i]);
 			}

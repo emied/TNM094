@@ -2,7 +2,7 @@
 
 api.js
 
-Handles all routes for API calls, i.e. when a URL with the pattern http://localhost:3000/api is requested.
+Handles all routes for API calls, i.e. when an URL with the pattern http://localhost:3000/api is requested.
 
 The API mostly uses the GET request method, which means that the query string is appended to the URL.
 For example, if you want to request data with the following properties:
@@ -12,7 +12,7 @@ start=2018-04-01 00:00:00
 end=2018-09-01 23:59:59
 decimate=256
 
-Then make the following GET request: 
+Then make the following GET request:
 http://localhost:3000/api/data_range?dataset=bike&start=2018-04-01+00:00:00&end=2018-09-01+23:59:59&decimate=256
 
 (by for example opening the URL in a browser or calling it via javascript)
@@ -30,7 +30,7 @@ var api_controller = require('../controllers/api-controller');
 
 /*************************************************************************************
 Defines what should happen when http://localhost:3000/api is requested with method GET.
-Displays a list of all available API calls. 
+Displays a list of all available API calls.
 *************************************************************************************/
 router.get('/', api_controller.list);
 
