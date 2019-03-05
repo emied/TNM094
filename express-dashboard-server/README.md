@@ -5,7 +5,7 @@ npm install
 ```
 in this folder. 
 
-Download [fordgobike_all.csv](https://drive.google.com/open?id=1azVN-Vi_Hpgn2_jRt0pHnzXK7Nc5PhQe) and put it in the *data* folder.
+Download [fordgobike_all.csv](https://drive.google.com/open?id=1azVN-Vi_Hpgn2_jRt0pHnzXK7Nc5PhQe) and put it in the *data/source* folder.
 
 To automatically restart the server when changes are made, install *nodemon* using:
 ``` 

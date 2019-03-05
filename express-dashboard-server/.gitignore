@@ -60,8 +60,8 @@ typings/
 # next.js build output
 .next
 
-# exclude content from data folder
-data/*
+# exclude content from data/source folder
+data/source/*
 
-# keep gitkeep to still preserve the data folder
-!data/.gitkeep 
+# keep gitkeep to still preserve the data/source folder
+!data/source/.gitkeep 

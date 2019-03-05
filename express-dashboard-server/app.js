@@ -1,17 +1,19 @@
+/****************************************************************************************
+app.js
+
+Entry point of the application. (kind of, technically bin/www is)
+Sets upp express and defines middleware etc. that the application will use (app.use(...))
+
+****************************************************************************************/
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var fs = require('fs');
-var d3 = require('d3');
-
-// Load csv data into js object when server starts
-exports.bike_data = d3.csvParse(fs.readFileSync('data/fordgobike_all.csv', 'utf8'));
-
 var indexRouter = require('./routes/index');
-var data_apiRouter = require('./routes/data_api');
+var apiRouter = require('./routes/api');
 
 var app = express();
 
@@ -26,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/data_api', data_apiRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
