@@ -80,6 +80,9 @@ function drawChart(data) {
 
 	dc.renderAll();
 
+/*********
+	FLYTTA PIECHART FUNKTION - KANSKE ONÖDIG ----
+
 	//Call dragElement
 	dragElement(document.getElementById("pie-chart"));
 
@@ -126,6 +129,7 @@ function drawChart(data) {
   }
 }
 
+*********************************/
 
 	// Super ugly solution but prevents this from showing before chart is loaded.
 	document.getElementById('t1').innerHTML = " bike rides out of ";
