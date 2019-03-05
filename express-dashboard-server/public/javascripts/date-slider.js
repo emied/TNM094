@@ -5,10 +5,10 @@ date-slider.js
 Prototype client code used for testing API requests.
 
 Takes a time interval from a slider and then requests
-data for that time interval. The data is then passed 
+data for that time interval. The data is then passed
 to draw-chart.js for visualization
 
-nouislider is used for the slider: 
+nouislider is used for the slider:
 https://refreshless.com/nouislider/
 
 ***************************************************/
@@ -39,7 +39,7 @@ noUiSlider.create(date_slider, {
 	margin: 24 * 60 * 60 * 1000, // minimum of 1 day interval
 	connect: [false, true, false],
 
-	tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }}, 
+	tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }},
 		{ to: function(v) { return formatDate(new Date(+v)); } }],
 
 	start: [timestamp('2018-04-01'), timestamp('2018-09-01')]
@@ -72,13 +72,13 @@ set_date_button.addEventListener('click', function() {
 	request.onload = function() {
 
 		// Check and display errors. There's probably a better way but this is just for testing.
-		if (request.status != 200) 
+		if (request.status != 200)
 		{
 			data_load_text.innerHTML = "Status: Error " + request.status.toString() + " " + request.statusText + ".";
-			if (request.response.hasOwnProperty('errors')) 
+			if (request.response.hasOwnProperty('errors'))
 			{
 				data_load_text.innerHTML += " ";
-				for (var i = 0; i < request.response.errors.length; i++) 
+				for (var i = 0; i < request.response.errors.length; i++)
 				{
 					data_load_text.innerHTML += "[" + request.response.errors[i].msg + "] ";
 				}
