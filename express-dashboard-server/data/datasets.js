@@ -28,7 +28,7 @@ var fs = require('fs');
 
 var datasets = {};
 
-datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_all.csv', 'utf8'));
+datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 
 /*************************************
 New datasets will be added like
@@ -48,5 +48,7 @@ This along with getting the names
 of all values/signals in the datasets
 will be needed for API requests.
 *************************************/
+
+console.log('Data Loaded!');
 
 module.exports = datasets;
