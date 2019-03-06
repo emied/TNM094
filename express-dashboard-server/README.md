@@ -5,7 +5,7 @@ npm install
 ```
 in this folder. 
 
-Download [bike_data.zip](https://drive.google.com/open?id=1jbFELcc1uSpDjsoRgh6fr_px7Fo668NT) and unzip it in the *data/source* folder.
+Download [bike_data.zip](https://drive.google.com/open?id=1jbFELcc1uSpDjsoRgh6fr_px7Fo668NT) and unzip it in the *data/source* folder. [Data explanation]((../blob/master/express-dashboard-server/data/README.md)).
 
 To automatically restart the server when changes are made, install *nodemon* using:
 ``` 
@@ -18,6 +18,8 @@ nodemon start
 in this folder.
 
 The server will then be available at: http://localhost:3000/
+
+---
 
 To get debug messages in the console, start the server by running:  
   

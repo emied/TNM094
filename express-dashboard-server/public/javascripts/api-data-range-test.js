@@ -7,7 +7,6 @@ Test code for making requests to the data_range API
 
 ****************************************************/
 
-
 var query_button = document.getElementById('api-query');
 var individual_button = document.getElementById('api-individual');
 var result_div = document.getElementById('result');
