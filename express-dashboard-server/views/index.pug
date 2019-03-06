@@ -16,6 +16,7 @@ block content
 		#date-slider
 		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
 
+
 	#chart-section(style='width: 750px; height: 200px; margin: 100px -20px 0px; position: relative')
 		#count-chart.dc-data-count(style='float: left; margin: 0px 20px 0px; position: absolute;')
 			span.filter-count
@@ -24,9 +25,17 @@ block content
 			span#t2
 			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
 
-		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute;')
+		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute; top: 300px')
 
-		#pie-chart.dc-data-count(style='width: 600px; height: 300px; margin: 20px 650px 0px; position: relative;')
+		.info-boxes
+			#info-box-1
+			#info-box-2
+			#info-box-3
+			#info-box-4
+
+		#box-test
+			#pie-chart(style='float: right; width: 200px; height: 200px; position: absolute; top: 300px')
 
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
+	script(src='javascripts/info-boxes.js')

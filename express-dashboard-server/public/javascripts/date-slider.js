@@ -98,5 +98,7 @@ set_date_button.addEventListener('click', function() {
 		}
 
 		drawChart(data);
+		infoBox(data);
+
 	}
 });
