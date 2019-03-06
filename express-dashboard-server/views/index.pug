@@ -11,11 +11,19 @@
 extends layout
 
 block content
+
+	include topmenu.pug
+	include sidemenu.pug
+
+
 	h1= title
 	p#data-load
 	.slider
+
 		#date-slider
 		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
+
+
 
 	#chart-section(style='width: 750px; height: 200px; margin: 100px -20px 0px; position: relative')
 		#count-chart.dc-data-count(style='float: left; margin: 0px 20px 0px; position: absolute;')
@@ -25,11 +33,10 @@ block content
 			span#t2
 			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
 
+
 		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute;')
 
 		#pie-chart.dc-data-count(style='width: 600px; height: 300px; margin: 20px 650px 0px; position: relative;')
 
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
-
-	include menu
