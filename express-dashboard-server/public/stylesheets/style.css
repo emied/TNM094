@@ -22,7 +22,7 @@ body {
 .info-boxes {
   width: 900px;
   height: 250px;
-
+  padding: 0 0 0 35%;
   position: absolute;
 
 }

@@ -12,10 +12,6 @@ extends layout
 block content
 	h1= title
 	p#data-load
-	.info-boxes
-		#info-box-1
-		#info-box-2
-		#info-box-3
 	.slider
 		#date-slider
 		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
@@ -31,8 +27,14 @@ block content
 
 		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute;')
 
+		.info-boxes
+			#info-box-1
+			#info-box-2
+			#info-box-3
+
 		#box-test
 			#pie-chart(style='float: right; width: 200px; height: 200px; position: absolute;')
 
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
+	script(src='javascripts/info-boxes.js')
