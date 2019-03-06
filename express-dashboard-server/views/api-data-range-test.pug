@@ -1,0 +1,38 @@
+//-
+	api-data-range-test.pug
+
+	Simple page to error check the data_range API call.
+
+extends layout
+
+block content
+	h1= "API test: data_range"
+	h4= "Try to break this page!"
+
+	div(style=style='width: 550px; height: 500px; margin: 0px 0px 0px; float: left')
+		div(style=style='width: 550px; height: 150px; margin: 0px 0px 0px')
+			h5= "Query input"
+			p query:
+			input#query(type='text', size='100', value='dataset=bike&start=2018-04-01+08:00:00&end=2018-08-01+08:00:00&decimate=256', style="width: 550px;")
+			br
+			button#api-query(style='margin: 0px 0px 0px;') Request Data
+			br
+			br
+
+		div(style='width: 550px; height: 350px; margin: 0px 0px 0px')
+			h5= "Individual input"
+			p dataset:
+			input#dataset(type='text', size='20', value='bike')
+			p start:
+			input#start(type='text', size='20', value='2018-04-01 08:00:00')
+			p end:
+			input#end(type='text', size='20', value='2018-08-01 08:00:00')
+			p decimate:
+			input#decimate(type='text', size='20', value='256')
+			br
+			button#api-individual(style='margin: 0px 0px 0px;') Request Data
+
+	div(style='width: 500px; height: 500px; margin: 65px 50px 0px; float: left; border:1px solid black; background: #eeeeee; border-radius: 50px')
+		p#result(style='width: 450px; height: 450px; margin: 25px 25px 0px; font-size: 16px')
+
+	script(src='../../javascripts/api-data-range-test.js')

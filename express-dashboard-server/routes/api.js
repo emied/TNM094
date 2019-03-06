@@ -18,8 +18,11 @@ http://localhost:3000/api/data_range?dataset=bike&start=2018-04-01+00:00:00&end=
 (by for example opening the URL in a browser or calling it via javascript)
 The server will then respond with the specified data in JSON.
 
-This file only specifies the different routes and then forwards the requests to functions in api-controller.js.
+The API could respond with empty JSON data if the request is valid but no data satisfies it. For example
+if bike rides for a specific time period is requested, but no bike rides happened in that time period. 
+The client needs to check if the response data is empty and then act accordingly.
 
+This file only specifies the different routes and then forwards the requests to functions in api-controller.js.
 
 **********************************************************************************************************************/
 
@@ -39,5 +42,14 @@ Defines what should happen when http://localhost:3000/api/data_range is requeste
 Returns decimated historic data depending on parameters in query string.
 ************************************************************************************************/
 router.get('/data_range', api_controller.validate('data_range'), api_controller.data_range);
+
+
+/************************************************************************************************
+Defines what should happen when http://localhost:3000/api/test is requested with method GET.
+Displays test page for API.
+************************************************************************************************/
+router.get('/data_range/test', function(req, res, next) {
+	res.render('api-data-range-test');
+});
 
 module.exports = router;

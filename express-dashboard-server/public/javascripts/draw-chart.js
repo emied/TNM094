@@ -11,7 +11,6 @@ data point distribution over the time interval.
 ***************************************************/
 
 function drawChart(data) {
-	var date_format_parser = d3.timeParse(d3.timeFormat('%Y-%m-%d %H:%M:%S'));
 
 	var date_bar_chart = dc.barChart('#date-bar-chart');
 	var count_chart = dc.dataCount("#count-chart");
@@ -20,14 +19,14 @@ function drawChart(data) {
 	var cross_filter = crossfilter(data);
 
 	var day_dimension = cross_filter.dimension(function(d) {
-		var date = date_format_parser(d.start_time);
+		var date = new Date(d.start_time);
 		date.setHours(0, 0, 0, 0);
 		return date;
 	});
 	day_group = day_dimension.group().reduceCount();
 
-	var start = date_format_parser(day_dimension.bottom(1)[0].start_time);
-	var end = date_format_parser(day_dimension.top(1)[0].start_time);
+	var start = new Date(day_dimension.bottom(1)[0].start_time);
+	var end = new Date(day_dimension.top(1)[0].start_time);
 
 	date_bar_chart
 		.width(750)
@@ -45,32 +44,32 @@ function drawChart(data) {
 		})
 		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
-		//hehe ugly solution
-		var genderDimension = cross_filter.dimension(function(data) {
-			if (data.gender == 1) {
-				test = "Male";
-			}
-			else if (data.gender == 2) {
-				test = "Female";
-			}
-			else
-				test = "Other"
+	//hehe ugly solution
+	var genderDimension = cross_filter.dimension(function(data) {
+		if (data.gender == 1) {
+			test = "Male";
+		}
+		else if (data.gender == 2) {
+			test = "Female";
+		}
+		else
+			test = "Other"
 
-			return test;
-		});
+		return test;
+	});
 
-		var genderGroup = genderDimension.group().reduceCount();
+	var genderGroup = genderDimension.group().reduceCount();
 
-		pie_chart
-			.width(300)
-			.height(300)
-			.dimension(genderDimension)
-			.group(genderGroup)
-			.on('renderlet', function(chart) {
-				chart.selectAll('rect').on('click', function(d) {
-					console.log('click!', d);
-				});
+	pie_chart
+		.width(700)
+		.height(300)
+		.dimension(genderDimension)
+		.group(genderGroup)
+		.on('renderlet', function(chart) {
+			chart.selectAll('rect').on('click', function(d) {
+				console.log('click!', d);
 			});
+		});
 
 
 
@@ -135,5 +134,4 @@ function drawChart(data) {
 	document.getElementById('t1').innerHTML = " bike rides out of ";
 	document.getElementById('t2').innerHTML = " selected. | ";
 	document.getElementById('t3').innerHTML = " Reset All";
-
 }

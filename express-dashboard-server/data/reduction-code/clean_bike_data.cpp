@@ -1,4 +1,3 @@
-#include "csv.h" // https://github.com/ben-strasser/fast-cpp-csv-parser
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -6,6 +5,9 @@
 #include <iomanip>
 #include <map>
 #include <set>
+
+// csv.h is a header-only library from: https://github.com/ben-strasser/fast-cpp-csv-parser
+#include "csv.h" 
 
 #define M_PI 3.141592653589793238462643383279502884
 #define EARTH_RADIUS 6371000
@@ -32,7 +34,6 @@ int main()
 	tot_file << "start_time,speed,age,gender,start_lat,start_lon,end_lat,end_lon,duration,bike_id,start_id,end_id,user_type,distance\n";
 
 	std::map<int, std::string> id_station;
-	std::set<std::string> customer_types;
 
 	int samp = 0;
 	for (int i = 0; i < 12; i++)
@@ -71,7 +72,6 @@ int main()
 				start_station_longitude = std::stod(start_station_longitude_s);
 				end_station_latitude = std::stod(end_station_latitude_s);
 				end_station_longitude = std::stod(end_station_longitude_s);
-
 
 				double deltaLat = deg2rad(end_station_latitude - start_station_latitude);
 				double deltaLon = deg2rad(end_station_longitude - start_station_longitude);
@@ -131,18 +131,14 @@ int main()
 						gender = 3;
 					}
 
-					int user_type_id = 99999;
-
 					if (user_type == "Subscriber")
 					{
 						user_type_id = 1;
 					}
-					else if(user_type == "Customer")
+					else // user_type == "Customer"
 					{
 						user_type_id = 2;
 					}
-
-					// "start_time,speed,age,gender,start_lat,start_lon,end_lat,end_lon,duration,bike_id,start_id,end_id,user_type,distance\n";
 
 					tot_file << start_time << ",";
 					tot_file << FIXED_FLOAT((dist / duration_sec) * MPS_TO_KMH) << ",";
@@ -169,9 +165,6 @@ int main()
 		}
 	}
 
-	std::cout << id_station.size() << std::endl;
-	std::cout << customer_types.size();
-
 	tot_file.close();
 
 	std::ofstream station_id_names;
@@ -185,7 +178,6 @@ int main()
 	}
 
 	station_id_names.close();
-
 
 	return 0;
 }
