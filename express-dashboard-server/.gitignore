@@ -66,5 +66,5 @@ data/source/*
 # keep gitkeep to still preserve the data/source folder
 !data/source/.gitkeep
 
-#remove DS_store
+# ignore DS_store
 .DS_store
