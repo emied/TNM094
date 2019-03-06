@@ -18,14 +18,16 @@ body {
 	margin-top: 40px;
 	margin-bottom: 40px;
 }
-
+/*div runt infoboxes*/
 .info-boxes {
   width: 1200px;
   height: 200px;
 
   position: relative;
+	top: 50px;
 
 }
+
 
 #info-box-1 {
   width: 250px;
@@ -65,15 +67,26 @@ body {
   float: left;
 }
 
+/*style font inside infoboxes, */
 h5{
-	font-family: sans-serif;
-	background-color: yellow;
+	font-family: 'Nunito Sans', sans-serif;
+	color: white;
+	font-size: 25px;
+	text-align: center;
+
 }
 
+/*style font inside infoboxes, */
 h4{
-	font-size: 25px;
-	background-color: pink;
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+	color: white;
+	text-align: center;
+
+
 }
+
+
 
 #box-test {
   width: 300px;
