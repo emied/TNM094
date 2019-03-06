@@ -1,3 +1,13 @@
+/****************************************************
+
+api-data-range-test.js
+
+Test code for making requests to the data_range API
+ and printing the results.
+
+****************************************************/
+
+
 var query_button = document.getElementById('api-query');
 var individual_button = document.getElementById('api-individual');
 var result_div = document.getElementById('result');
