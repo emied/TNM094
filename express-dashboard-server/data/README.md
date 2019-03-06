@@ -9,7 +9,7 @@ Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/o
 | Value		   | Unit      | Example Value | Explanation | 
 |	:--------: | :-------: | :-----: | ----------- |
 | start_time | date      | 2018-09-27 16:31:26 | The start time of the bike trip. Formatted as *YYYY-MM-DD hh:mm:ss* |
-| speed			 | km/h      | 13.54 | Average speed of the whole trip in km/h. Calculated from the manhattan distance between the start and end station divided by bike trip duration. The real distance could be much longer depending on bike route, which makes this more of a 'leisurely:ness' measure. |
+| speed			 | km/h      | 13.54 | Average speed of the whole trip in km/h. Calculated from the manhattan distance between the start and end station divided by trip duration. The real distance could be much longer depending on bike route, which makes this more of a 'leisurely:ness' measure. |
 | age        | years     | 32 | Integer age of bike rider. |
 | gender     | -         | 2 | Gender of bike rider. Encoded to integers to reduce data: 1 = Male, 2 = Female, 3 = Other |
 | start_lat  | degrees   | 37.330165 | Latitude of start station. Formatted as real number degrees. |
