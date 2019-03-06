@@ -7,12 +7,19 @@
 	No index/home page will be needed since index will redirect to one of the dashboards.
 
 
+
 extends layout
 
 block content
+
+	include topmenu.pug
+	include sidemenu.pug
+
+
 	h1= title
 	p#data-load
 	.slider
+
 		#date-slider
 		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
 
