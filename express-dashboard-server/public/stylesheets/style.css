@@ -21,34 +21,37 @@ body {
 
 .info-boxes {
   width: 900px;
-  height: 250px;
+  height: 200px;
 
-  position: absolute;
+  position: relative;
 
 }
 
 #info-box-1 {
   width: 250px;
   height: 150px;
-  background-color: pink;
-  margin: 10px 10px 10px 10px;
+  background-color: #2ac8bc;
+  margin: 15px 15px 15px 15px;
   float: left;
+	border-radius: 5px;
 
 }
 
 #info-box-2 {
   width: 250px;
   height: 150px;
-  background-color: green;
-  margin: 10px 10px 10px 10px;
+  background-color: #2ac862;
+  margin: 15px 15px 15px 15px;
   float: left;
+	border-radius: 5px;
 }
 
 #info-box-3 {
   width: 250px;
   height: 150px;
-  background-color: blue;
-  margin: 10px 10px 10px 10px;
+  background-color: #0cb1e6;
+  margin: 15px 15px 15px 15px;
+	border-radius: 5px;
   float: left;
 }
 
