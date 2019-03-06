@@ -23,7 +23,7 @@ function infoBox(data) {
 
 
 
-	document.getElementById('info-box-1').innerHTML = "Total distance: " + Math.round(distSum)/1000 + " km";
+	document.getElementById('info-box-1').innerHTML = "<h5>" + Math.round(distSum)/1000 + " km" + "</h5><h4>" + "<br>" + "Total distance" + "</h4>" ;
 
 
 }
