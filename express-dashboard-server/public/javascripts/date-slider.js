@@ -89,8 +89,13 @@ set_date_button.addEventListener('click', function() {
 		var data = request.response;
 
 		var t1 = performance.now();
-
 		data_load_text.innerHTML = "Status: Data loaded in " + (t1 - t0).toFixed(0) + " ms.";
+
+		if(data.length == 0)
+		{
+			data_load_text.innerHTML += " No data satisfies the request."
+			return;
+		}
 
 		drawChart(data);
 	}

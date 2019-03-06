@@ -11,10 +11,11 @@ req = Request, res = Response
 
 **********************************************************************/
 
-var d3 = require('d3');
 var datasets = require('../data/datasets');
 
 const { check, validationResult } = require('express-validator/check');
+
+var debug_range = require('debug')('dashboard:api:data_range');
 
 /***********************************************  
 Validates HTTP requests for different API calls.
@@ -24,10 +25,36 @@ exports.validate = function(method) {
 		case 'data_range':
 			{
 				return [
-					check('dataset', "dataset doesn't exist").exists(),
-					check('start', "start doesen't exist").exists(),
-					check('end', "end doesen't exist").exists(),
-					check('decimate', "decimate doesen't exist").exists()
+					check('dataset')
+						.exists()
+						.withMessage('dataset parameter is required.')
+						.isAlpha()
+						.withMessage('dataset needs to be an alphabetical string.')
+						.custom( dataset => { return datasets.hasOwnProperty(dataset) ? dataset : Promise.reject(); })
+						.withMessage("Requested dataset doesen't exist on server."),
+
+					check('start')
+						.exists()
+						.withMessage('start parameter is required.')
+						.isISO8601({strict: true})
+						.withMessage("Invalid start date formatting, or start date can't exist (e.g. 52:th of may).")
+						.toDate(),
+
+					check('end')
+						.exists()
+						.withMessage('end parameter is required.')
+						.isISO8601({strict: true})
+						.withMessage("Invalid end date formatting, or end date can't exist (e.g. 42:th of january).")
+						.custom( (end, { req }) => { return new Date(req.query.start) < new Date(end) ? end : Promise.reject(); })
+						.withMessage("Start date needs to happen before end date.")
+						.toDate(),
+
+					check('decimate')
+						.exists()
+						.withMessage('decimate parameter is required.')
+						.isInt({ min: 1 })
+						.withMessage('decimate needs to be a positive integer.')
+						.toInt()
 				]
 			}
 	}
@@ -37,41 +64,39 @@ exports.validate = function(method) {
 Displays list of available API calls
 ************************************/
 exports.list = function(req, res) {
-	res.send('NOT IMPLEMENTED: API list');
+	res.send('Implement API list');
 };
 
 /*************************************** 
 Returns range of decimated historic data 
 ***************************************/
 exports.data_range = function(req, res) {
+	debug_range( req.query );
 
 	// Check if request is valid, respond with error if not.
+	// Uses the exports.validate function from above to determine this.
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) 
 	{
 		// Send error status code 400 and the array of errors as response if the request was invalid.
-		// (The function will terminate here because a response is sent and this can only be done once)
 		res.status(400).json({ errors: errors.array() });
+		return;
 	}
 
-	var date_format_parser = d3.timeParse(d3.timeFormat('%Y-%m-%d %H:%M:%S'));
-
-	// Get the requested parameters from the query (req.query)
-	var dataset = req.query.dataset; // string name of dataset
-	var start = date_format_parser(req.query.start);
-	var end = date_format_parser(req.query.end);
-	var decimate = +req.query.decimate;
+	// Get the requested parameters from the query
+	var { dataset, start, end, decimate } = req.query;
 
 	var data = datasets[dataset]; // Use requested dataset
 
 	// Accumulate all data entries that satisfies the request and store in result.
+	// Will only work for data sorted by start_time in ascending order, check data/datasets.js.
 	var result = [];
 	for (var i = 0; i < data.length; i += decimate) 
 	{
-		var date = date_format_parser(data[i].start_time);
+		var date = new Date(data[i].start_time);
 		if (date >= start) 
 		{
-			if (date >= end) 
+			if (date > end) 
 			{
 				break;
 			} 
@@ -82,4 +107,6 @@ exports.data_range = function(req, res) {
 		}
 	}
 	res.json(result); // Send the accumulated data as response in JSON.
+
+	debug_range(result.length + ' entries sent');
 };

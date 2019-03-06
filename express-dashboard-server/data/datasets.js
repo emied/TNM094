@@ -25,6 +25,9 @@ happen.
 
 var d3 = require('d3');
 var fs = require('fs');
+var debug = require('debug')('dashboard:datasets');
+
+debug('Loading datasets')
 
 var datasets = {};
 
@@ -49,6 +52,6 @@ of all values/signals in the datasets
 will be needed for API requests.
 *************************************/
 
-console.log('Data Loaded!');
+debug('Loaded datasets: ' + Object.keys(datasets));
 
 module.exports = datasets;
