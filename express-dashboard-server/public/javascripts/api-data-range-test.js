@@ -3,7 +3,7 @@
 api-data-range-test.js
 
 Test code for making requests to the data_range API
- and printing the results.
+and printing the results.
 
 ****************************************************/
 
