@@ -146,8 +146,16 @@ button {
 }
 
 #menu-btn {
-  transition: margin-left .5s;
+  transition: color 0.3s, margin-left .5s;
   margin-left: 10px;
+  float: left; 
+  color: #e1e1e1;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+#menu-btn:hover {
+  color: #ffffff;
 }
 
 @media screen and (max-height: 450px) {
