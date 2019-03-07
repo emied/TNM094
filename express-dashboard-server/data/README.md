@@ -1,8 +1,8 @@
 # Data Specifications
 Specifications/explanations of all datasets.
 ## 'bike' dataset
-Electronic bike data from [fordgobike](https://www.fordgobike.com/system-data).  
-Our dataset uses data from 2018 and has been modified with [reduction-code/clean_bike_data.cpp](reduction-code/clean_bike_data.cpp).
+Electronic bike data from [fordgobike](https://www.fordgobike.com/system-data).<br/>
+Our dataset uses data from 2018 and has been modified with [reduction-code/clean_bike_data.cpp](reduction-code/clean_bike_data.cpp).<br/>
 Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/open?id=1jbFELcc1uSpDjsoRgh6fr_px7Fo668NT). Unzip to *data/source* directory.  
 ### fordgobike_complete_all.csv
 
@@ -21,7 +21,7 @@ Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/o
 | start_id   | -         | 28 | Unique integer ID of start station. Name of each station with a specific ID is located in *station_id_names.csv*. |
 | end_id     | -         | 92 | Unique integer ID of end station. Name of each station with a specific ID is located in *station_id_names.csv*. |
 | user_type  | -         | 1 | User type. Encoded to integers to reduce data: 1 = Subscriber, 2 = Customer |
-| distance   | meters    | 1872.75 | Manhattan distance between start and end station in meters. Calculated from the start and end station latitude and longitude, see [reduction-code/clean_bike_data.cpp L76-80](https://github.com/emied/TNM094/blob/2ac9288110bd753e4490cabc71e01c9254fcb0a1/express-dashboard-server/data/reduction-code/clean_bike_data.cpp#L76-L80). |
+| distance   | meters    | 1872.75 | Manhattan distance between start and end station in meters. Calculated from the start and end station latitude and longitude, see [reduction-code/clean_bike_data.cpp L76-80](reduction-code/clean_bike_data.cpp#L76-L80). |
 
 ### station_id_names.csv
 

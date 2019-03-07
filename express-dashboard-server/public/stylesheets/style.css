@@ -15,17 +15,16 @@ body {
 
 .slider {
 	max-width: 400px;
-	margin-top: 40px;
+	margin-top: 60px;
 	margin-bottom: 40px;
 }
 
-/*div runt infoboxes*/
+/* div containing info boxes */
 .info-boxes {
   width: 1200px;
-  height: 200px;
+  height: 150px;
 
   position: relative;
-	top: 50px;
 }
 
 #info-box-1 {
@@ -35,7 +34,6 @@ body {
   margin: 15px 15px 15px 15px;
   float: left;
 	border-radius: 5px;
-
 }
 
 #info-box-2 {
@@ -55,6 +53,7 @@ body {
 	border-radius: 5px;
   float: left;
 }
+
 #info-box-4 {
   width: 250px;
   height: 150px;
@@ -80,6 +79,7 @@ h4.info-box-text {
 	text-align: center;
 }
 
+/*
 #box-test {
   width: 300px;
   height: 300px;
@@ -88,6 +88,7 @@ h4.info-box-text {
   margin: -100px 0px 0px 850px;
   cursor: pointer;
 }
+*/
 
 .noUi-handle-lower .noUi-tooltip
 {
@@ -115,25 +116,24 @@ button {
 	margin: 15px 5px 0 0;
 }
 
-
-/*Sidomeny */
+/* Sidemenu */
 
 .sidenav {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   left: 0;
-  background-color: #111;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
-	opacity: 0.8;
+  padding-top: 90px;
+	background: rgba(0, 0, 0, 0.9); /* Only set opacity for bg, not text */
+  white-space: nowrap;
 }
 
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 32px 32px;
   text-decoration: none;
   font-size: 30px;
   color: #818181;
@@ -145,13 +145,9 @@ button {
   color: #f1f1f1;
 }
 
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 30px;
-  margin-left: 50px;
-	margin-top: -5px;
+#menu-btn {
+  transition: margin-left .5s;
+  margin-left: 10px;
 }
 
 @media screen and (max-height: 450px) {
@@ -159,8 +155,7 @@ button {
   .sidenav a {font-size: 18px;}
 }
 
-
-/*Toppmeny */
+/* Topmenu */
 
 .topnav {
   overflow: hidden;

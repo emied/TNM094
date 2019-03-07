@@ -17,7 +17,7 @@ function infoBox(data) {
 
   // Gave the text a class to only style these elements and swapped the order.
   // Also changed velocity to speed (velocity has a direction)
-  document.getElementById('info-box-1').innerHTML = "<h4 class='info-box-text'><br>Total Distance</h4>" ;
+  document.getElementById('info-box-1').innerHTML = "<h4 class='info-box-text'><br>Total Distance</h4>";
   document.getElementById('info-box-1').innerHTML += "<h5 class='info-box-text'>" + Math.round(distSum)/1000 + " km</h5>";
 
   document.getElementById('info-box-2').innerHTML = "<h4 class='info-box-text'><br>Average Speed</h4>";

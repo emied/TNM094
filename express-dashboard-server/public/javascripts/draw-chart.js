@@ -61,8 +61,8 @@ function drawChart(data) {
 	var genderGroup = genderDimension.group().reduceCount();
 
 	pie_chart
-		.width(700)
-		.height(300)
+		.width(250)
+		.height(250)
 		.dimension(genderDimension)
 		.group(genderGroup)
 		.on('renderlet', function(chart) {

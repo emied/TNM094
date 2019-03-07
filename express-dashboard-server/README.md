@@ -21,8 +21,8 @@ The server will then be available at: http://localhost:3000/
 
 ---
 
-To get debug messages in the console, start the server by running:  
-  
+To get debug messages in the console, start the server by running:<br/>
+<br/>
 Windows:
 ``` 
 SET DEBUG=dashboard:* & nodemon start

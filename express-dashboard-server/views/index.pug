@@ -6,8 +6,6 @@
 	Should be replaced with templates describing dashboards.
 	No index/home page will be needed since index will redirect to one of the dashboards.
 
-
-
 extends layout
 
 block content
@@ -15,24 +13,16 @@ block content
 	include topmenu.pug
 	include sidemenu.pug
 
+	#count-chart.dc-data-count(style="padding-left: 50px; padding-top: 25px; float: left")
 
-	h1= title
-	p#data-load
-	.slider
-
-		#date-slider
-		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
-
-
-	#chart-section(style='width: 750px; height: 200px; margin: 100px -20px 0px; position: relative')
-		#count-chart.dc-data-count(style='float: left; margin: 0px 20px 0px; position: absolute;')
+		div
 			span.filter-count
 			span#t1
 			span.total-count
 			span#t2
 			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
-
-		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute; top: 300px')
+			span  | 
+			span#data-load
 
 		.info-boxes
 			#info-box-1
@@ -40,9 +30,16 @@ block content
 			#info-box-3
 			#info-box-4
 
-		#box-test
-			#pie-chart(style='float: right; width: 200px; height: 200px; position: absolute; top: 300px')
-
+		.slider
+			#date-slider
+			button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
+	
+		#chart-section(style='width: 1000px; height: 250px; margin: 80px 0px 0px; position: relative')
+	
+			#date-bar-chart(style='width: 750px; height: 150px; position: relative; top: 100px')
+	
+			#pie-chart(style='width: 250px; height: 250px; position: relative')
+		
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
 	script(src='javascripts/info-boxes.js')

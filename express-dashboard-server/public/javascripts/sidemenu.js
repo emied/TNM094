@@ -1,9 +1,7 @@
-function openNav() {
+var open = true;
 
-document.getElementById("mySidenav").style.width = "250px";
-
-}
-
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
+function toggleNav() {
+  document.getElementById("Sidenav").style.width = open * 250 + "px";
+  document.getElementById("menu-btn").style.marginLeft = 10 + open*250 + "px";
+  open = !open;
 }
