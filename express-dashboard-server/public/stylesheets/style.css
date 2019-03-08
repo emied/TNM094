@@ -45,6 +45,11 @@ body {
   background: #d1d1d1;
 }
 
+/* Remove Y-axis from chart */
+#date-bar-chart g.axis.y {
+  display: none;
+}
+
 #set-date {
   background: #818181;
   font: 700 11px/30px Arial;

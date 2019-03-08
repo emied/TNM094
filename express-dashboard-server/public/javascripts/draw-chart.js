@@ -11,10 +11,11 @@ data point distribution over the time interval.
 ***************************************************/
 
 function drawChart(data) {
-
+	
 	var date_bar_chart = dc.barChart('#date-bar-chart');
-	var count_chart = dc.dataCount("#count-chart");
+	var bike_id_chart = dc.rowChart('#bike-id-chart');
 	var pie_chart = dc.pieChart('#pie-chart');
+	var count_chart = dc.dataCount("#count-chart");
 
 	var cross_filter = crossfilter(data);
 
@@ -23,17 +24,56 @@ function drawChart(data) {
 		date.setHours(0, 0, 0, 0);
 		return date;
 	});
-	day_group = day_dimension.group().reduceCount();
+	var day_group = day_dimension.group().reduceCount();
+
+	var bike_id_dimension = cross_filter.dimension(function(d) {
+		return d.bike_id;
+	});
+
+	var bike_id_group = bike_id_dimension.group().reduce(
+    function(p, v) {
+      p.sum_distance += +v.distance;
+      return p;
+    },
+
+    function(p, v) {
+      p.sum_distance -= +v.distance;
+      return p;
+    },
+
+    function() {
+      return {
+        sum_distance: 0.0
+      };
+    }
+  );
+
+	//hehe ugly solution
+	var genderDimension = cross_filter.dimension(function(d) {
+		var test;
+		if (d.gender == 1) {
+			test = "Male";
+		}
+		else if (d.gender == 2) {
+			test = "Female";
+		}
+		else
+			test = "Other"
+
+		return test;
+	});
+	var genderGroup = genderDimension.group().reduceCount();
 
 	var start = new Date(day_dimension.bottom(1)[0].start_time);
 	var end = new Date(day_dimension.top(1)[0].start_time);
 
 	date_bar_chart
-		.width(750)
+		.width(1100)
 		.height(150)
 		.x(d3.scaleTime().domain([start, end]))
 		.round(d3.timeDay.round)
 		.xUnits(d3.timeDays)
+  	.margins({left: 10, top: 10, right: 10, bottom: 30}) // Compensate for removed y-axis
 		.yAxisLabel("")
 		.elasticY(true)
 		.elasticX(false)
@@ -44,21 +84,30 @@ function drawChart(data) {
 		})
 		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
-	//hehe ugly solution
-	var genderDimension = cross_filter.dimension(function(data) {
-		if (data.gender == 1) {
-			test = "Male";
-		}
-		else if (data.gender == 2) {
-			test = "Female";
-		}
-		else
-			test = "Other"
-
-		return test;
-	});
-
-	var genderGroup = genderDimension.group().reduceCount();
+	bike_id_chart
+		.width(400)
+		.height(250)
+		.group(bike_id_group)
+		.dimension(bike_id_dimension)
+		// Not possible to remove x-axis for this chart via css for whatever reason.
+		// This works but it's ugly
+		.margins({left: 30, top: 10, right: 50, bottom: -1}) 
+		.ordering(function(d) {
+      return -d.value.sum_distance;
+    })
+		.valueAccessor(function(d) {
+      return d.value.sum_distance;
+    })
+		.rowsCap(5)
+		.othersGrouper(false)
+		.label(function(d) {
+      return 'Bike ID: ' + d.key + ", Distance: " + Math.round(d.value.sum_distance/1000.0) + " km";
+    })
+		.title(function(d) {
+		  return null;
+		})
+		.elasticX(true)
+		.xAxis().ticks(3);
 
 	pie_chart
 		.width(250)
@@ -70,8 +119,6 @@ function drawChart(data) {
 				console.log('click!', d);
 			});
 		});
-
-
 
 	count_chart
 		.dimension(cross_filter)
