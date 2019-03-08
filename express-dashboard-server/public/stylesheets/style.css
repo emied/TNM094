@@ -50,6 +50,10 @@ body {
   display: none;
 }
 
+#coordinate-scatter g.axis {
+  display: none;
+}
+
 #set-date {
   background: #818181;
   font: 700 11px/30px Arial;

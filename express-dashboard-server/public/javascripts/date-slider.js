@@ -42,7 +42,7 @@ noUiSlider.create(date_slider, {
 	tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }},
 		{ to: function(v) { return formatDate(new Date(+v)); } }],
 
-	start: [timestamp('2018-04-01'), timestamp('2018-09-01')]
+	start: [timestamp('2018-01-01'), timestamp('2018-12-31')]
 });
 
 var set_date_button = document.getElementById('set-date');

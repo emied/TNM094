@@ -28,7 +28,17 @@ function remove_empty_bins(source_group) {
 }
 
 function drawChart(data) {
+	/**************************************************************
+	This scatter plot is basically a map but without geology lines.
+	It should be possible to use a geological map so this is just a
+	placeholder until we figure that out.
+
+	Blue dots = low activity
+	Green dots = medium activity
+	Orange dots = high activity
+	***************************************************************/
 	var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
+
 	var date_bar_chart = dc.barChart('#date-bar-chart');
 	var bike_id_chart = dc.rowChart('#bike-id-chart');
 	var pie_chart = dc.pieChart('#pie-chart');
@@ -66,22 +76,21 @@ function drawChart(data) {
   );
 
 	var start_coordinate_dimension = cross_filter.dimension(function(d) {
-		/*
-			bottom left: 37.6772094,-122.5738362
-			top right: 37.9070985,-122.2201624
-		*/
+
 		var lat = parseFloat(d.start_lat);
 		var lon = parseFloat(d.start_lon);
 
+		/*******************************
+		There's more points in San Jose, but limiting to these coords 
+		(San Francisco and East Bay) makes the map points less dense.
+		********************************/
 		if(lat < 37.6772094 || lat > 37.9070985 || lon > -122.2201624 || lon < -122.5738362)
 		{
 			return null;
 		}
 
-		/* max/min lat can be computed with:
-			 Math.max.apply(Math, data.map(function(o) { return parseFloat(o.start_lat); })); */
 		const max_lat = 37.88022244590679;
-		const min_lat = 37.312854042932614;
+		const min_lat = 37.330165;
 
 		var mid_lat = min_lat + (max_lat-min_lat)/2.0;
 
@@ -91,6 +100,7 @@ function drawChart(data) {
 		return [x, y];
 	});
 	var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
+
 	non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
 
 	//hehe ugly solution
@@ -112,6 +122,14 @@ function drawChart(data) {
 	var start = new Date(day_dimension.bottom(1)[0].start_time);
 	var end = new Date(day_dimension.top(1)[0].start_time);
 
+	var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+	var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+	var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
+
+	max_coord_count = Math.pow(max_coord_count, 1/8);
+	min_coord_count = Math.pow(min_coord_count, 1/8);
+	mid_coord_count = Math.pow(mid_coord_count, 1/8);
+
 	coordinate_scatter
 		.width(400)
 		.height(400)
@@ -119,29 +137,33 @@ function drawChart(data) {
 		.group(non_empty_start_coordinate_group)
 
 		.colorAccessor(function(d) {
-		   return d.value;
+			return Math.pow(d.value, 1/8);
 		})
 
-		.symbolSize(4)
+		.colors(d3.scaleTime().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
+
+		.symbolSize(7)
+
+		.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
 
 		.x(d3.scaleLinear().domain([4195000, 4210000]))
 		.y(d3.scaleLinear().domain([-10790000, -10765000]))
 
 		.elasticY(true)
 		.elasticX(true)
-		.yAxisPadding(1000)
-		.xAxisPadding(1000)
+		.yAxisPadding(2000)
+		.xAxisPadding(2000)
 
 		.renderHorizontalGridLines(true)
 		.renderVerticalGridLines(true)
 
 		.renderLabel(true)
 		.label(function(p) {
-		  return null;
+		  return p.value;
 		});
 
 	date_bar_chart
-		.width(1100)
+		.width(700)
 		.height(150)
 		.x(d3.scaleTime().domain([start, end]))
 		.round(d3.timeDay.round)
@@ -254,4 +276,6 @@ function drawChart(data) {
 	document.getElementById('t1').innerHTML = " bike rides out of ";
 	document.getElementById('t2').innerHTML = " selected. | ";
 	document.getElementById('t3').innerHTML = " Reset All";
+
+	document.getElementById("coordinate-scatter").style.border = "1px solid black";
 }
