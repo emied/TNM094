@@ -10,8 +10,25 @@ data point distribution over the time interval.
 
 ***************************************************/
 
+const EARTH_RADIUS = 6371000;
+
+function deg2rad(deg)
+{
+	return deg * Math.PI / 180.0;
+}
+
+function remove_empty_bins(source_group) {
+  return {
+    all: function() {
+      return source_group.all().filter(function(d) {
+        return d.value.count != 0;
+      });
+    }
+  };
+}
+
 function drawChart(data) {
-	
+	var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
 	var date_bar_chart = dc.barChart('#date-bar-chart');
 	var bike_id_chart = dc.rowChart('#bike-id-chart');
 	var pie_chart = dc.pieChart('#pie-chart');
@@ -48,6 +65,34 @@ function drawChart(data) {
     }
   );
 
+	var start_coordinate_dimension = cross_filter.dimension(function(d) {
+		/*
+			bottom left: 37.6772094,-122.5738362
+			top right: 37.9070985,-122.2201624
+		*/
+		var lat = parseFloat(d.start_lat);
+		var lon = parseFloat(d.start_lon);
+
+		if(lat < 37.6772094 || lat > 37.9070985 || lon > -122.2201624 || lon < -122.5738362)
+		{
+			return null;
+		}
+
+		/* max/min lat can be computed with:
+			 Math.max.apply(Math, data.map(function(o) { return parseFloat(o.start_lat); })); */
+		const max_lat = 37.88022244590679;
+		const min_lat = 37.312854042932614;
+
+		var mid_lat = min_lat + (max_lat-min_lat)/2.0;
+
+		x = EARTH_RADIUS * deg2rad(lon) * Math.cos(deg2rad(mid_lat));
+		y = EARTH_RADIUS * deg2rad(lat);
+
+		return [x, y];
+	});
+	var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
+	non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
+
 	//hehe ugly solution
 	var genderDimension = cross_filter.dimension(function(d) {
 		var test;
@@ -66,6 +111,34 @@ function drawChart(data) {
 
 	var start = new Date(day_dimension.bottom(1)[0].start_time);
 	var end = new Date(day_dimension.top(1)[0].start_time);
+
+	coordinate_scatter
+		.width(400)
+		.height(400)
+		.dimension(start_coordinate_dimension)
+		.group(non_empty_start_coordinate_group)
+
+		.colorAccessor(function(d) {
+		   return d.value;
+		})
+
+		.symbolSize(4)
+
+		.x(d3.scaleLinear().domain([4195000, 4210000]))
+		.y(d3.scaleLinear().domain([-10790000, -10765000]))
+
+		.elasticY(true)
+		.elasticX(true)
+		.yAxisPadding(1000)
+		.xAxisPadding(1000)
+
+		.renderHorizontalGridLines(true)
+		.renderVerticalGridLines(true)
+
+		.renderLabel(true)
+		.label(function(p) {
+		  return null;
+		});
 
 	date_bar_chart
 		.width(1100)
