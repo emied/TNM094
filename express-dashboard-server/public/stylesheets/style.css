@@ -15,8 +15,56 @@ body {
 
 .slider {
 	max-width: 400px;
-	margin-top: 60px;
-	margin-bottom: 40px;
+  margin-left: 45px;
+  margin-right: 45px;
+  margin-top: 20px;
+	/*margin-top: 60px;*/
+	/*margin-bottom: 40px;*/
+}
+
+.noUi-handle-lower .noUi-tooltip
+{
+  bottom: -130%;
+  background: #d1d1d1;
+}
+
+.noUi-handle-upper .noUi-tooltip
+{
+  bottom: 120%;
+  background: #d1d1d1;
+}
+
+.noUi-connect
+{
+  /*background: #3fb8af;*/
+  background: #818181;
+}
+
+.noUi-target
+{
+  background: #d1d1d1;
+}
+
+#set-date {
+  background: #818181;
+  font: 700 11px/30px Arial;
+  text-transform: uppercase;
+  padding: 0 15px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin: 15px 5px 0 0;
+}
+
+button {
+  background: #8ad2d3;
+  font: 700 11px/30px Arial;
+  text-transform: uppercase;
+  padding: 0 15px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin: 15px 5px 0 0;
 }
 
 /* div containing info boxes */
@@ -90,32 +138,6 @@ h4.info-box-text {
 }
 */
 
-.noUi-handle-lower .noUi-tooltip
-{
-	bottom: -130%;
-}
-
-.noUi-handle-upper .noUi-tooltip
-{
-	bottom: 120%;
-}
-
-.noUi-connect
-{
-	background: #3fb8af;
-}
-
-button {
-	background: #8ad2d3;
-	font: 700 11px/30px Arial;
-	text-transform: uppercase;
-	padding: 0 15px;
-	border-radius: 4px;
-	color: #fff;
-	cursor: pointer;
-	margin: 15px 5px 0 0;
-}
-
 /* Sidemenu */
 
 .sidenav {
@@ -152,6 +174,7 @@ button {
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
+  padding: 6px 0px;
 }
 
 #menu-btn:hover {

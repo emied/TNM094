@@ -48,7 +48,7 @@ noUiSlider.create(date_slider, {
 var set_date_button = document.getElementById('set-date');
 
 set_date_button.addEventListener('click', function() {
-
+	
 	var dataset = 'bike'; // should be set depending on dashboard/options
 	var start = formatDate(new Date(+date_slider.noUiSlider.get()[0]));
 	var end = formatDate(new Date(+date_slider.noUiSlider.get()[1]));
