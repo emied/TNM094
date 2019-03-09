@@ -3,7 +3,11 @@ Specifications/explanations of all datasets.
 ## 'bike' dataset
 Electronic bike data from [fordgobike](https://www.fordgobike.com/system-data).<br/>
 Our dataset uses data from 2018 and has been modified with [reduction-code/clean_bike_data.cpp](reduction-code/clean_bike_data.cpp).<br/>
-Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/open?id=1jbFELcc1uSpDjsoRgh6fr_px7Fo668NT). Unzip to *data/source* directory.  
+<br/>
+We also use zip code geojson data from [DataSF](https://datasf.org/opendata/).<br/>
+Zip codes for each station was extracted with [reduction-code/add-station-zip-codes](reduction-code/add-station-bike-data.cpp)<br/>
+
+Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/open?id=125cEqpvCVlzPbjgcyUOiryEa14pA0326). Unzip to *data/source* directory.  
 ### fordgobike_complete_all.csv
 
 | Value		   | Unit      | Example Value | Explanation | 
@@ -29,3 +33,7 @@ This file is used to get the station name/lat/lon from corresponding station ID 
 | name  | San Francisco City Hall (Polk St at Grove St) | Name of station. |
 | lat  | degrees   | 37.330165 | Latitude of station. Formatted as real number degrees. |
 | lon  | degrees   | -121.885831 | Longitude of station. Formatted as real number degrees. |
+
+### bike_stations.csv
+
+TODO

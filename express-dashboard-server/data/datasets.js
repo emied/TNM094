@@ -33,6 +33,13 @@ var datasets = {};
 
 datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 
+/*
+This could be called here:
+require('../data/reduction-code/addStationZipCodes').addStationZipCodes();
+
+But better to only do this once when files change
+*/
+
 /*************************************
 New datasets will be added like
 datasets['solar'] = ...
