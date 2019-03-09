@@ -31,9 +31,9 @@ int main()
 	std::ofstream tot_file;
 	tot_file.open("fordgobike_complete_all.csv");
 
-	tot_file << "start_time,speed,age,gender,start_lat,start_lon,end_lat,end_lon,duration,bike_id,start_id,end_id,user_type,distance\n";
+	tot_file << "start_time,speed,age,gender,duration,bike_id,start_id,end_id,user_type,distance\n";
 
-	std::map<int, std::string> id_station;
+	std::map<int, std::vector<std::string>> id_station;
 
 	int samp = 0;
 	for (int i = 0; i < 12; i++)
@@ -104,8 +104,11 @@ int main()
 					continue;
 				}
 
-				id_station.insert(std::make_pair(start_id, start_station_name));
-				id_station.insert(std::make_pair(end_id, end_station_name));
+				std::vector<std::string> start_station_vec{ start_station_name, start_station_latitude_s, start_station_longitude_s };
+				std::vector<std::string> end_station_vec{ end_station_name, end_station_latitude_s, end_station_longitude_s };
+
+				id_station.insert(std::make_pair(start_id, start_station_vec));
+				id_station.insert(std::make_pair(end_id, end_station_vec));
 
 				remove_quotes(user_type);
 				
@@ -131,6 +134,7 @@ int main()
 						gender = 3;
 					}
 
+					int user_type_id;
 					if (user_type == "Subscriber")
 					{
 						user_type_id = 1;
@@ -144,10 +148,6 @@ int main()
 					tot_file << FIXED_FLOAT((dist / duration_sec) * MPS_TO_KMH) << ",";
 					tot_file << age << ",";
 					tot_file << gender << ",";
-					tot_file << start_station_latitude_s << ",";
-					tot_file << start_station_longitude_s << ",";
-					tot_file << end_station_latitude_s << ",";
-					tot_file << end_station_longitude_s << ",";
 					tot_file << duration_sec << ",";
 					tot_file << bike_id << ",";
 					tot_file << start_id << ",";
@@ -170,11 +170,11 @@ int main()
 	std::ofstream station_id_names;
 	station_id_names.open("station_id_names.csv");
 
-	station_id_names << "id,name" << std::endl;
+	station_id_names << "id,name,lat,lon" << std::endl;
 
 	for (auto const& x : id_station)
 	{
-		station_id_names << x.first << "," << x.second << std::endl;
+		station_id_names << x.first << "," << x.second[0] << "," << x.second[1] << "," << x.second[2] << std::endl;
 	}
 
 	station_id_names.close();

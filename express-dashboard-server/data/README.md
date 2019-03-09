@@ -12,10 +12,6 @@ Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/o
 | speed			 | km/h      | 13.54 | Average speed of the whole trip in km/h. Calculated from the manhattan distance between the start and end station divided by trip duration. The real distance could be much longer depending on bike route, which makes this more of a 'leisurely:ness' measure. |
 | age        | years     | 32 | Integer age of bike rider. |
 | gender     | -         | 2 | Gender of bike rider. Encoded to integers to reduce data: 1 = Male, 2 = Female, 3 = Other |
-| start_lat  | degrees   | 37.330165 | Latitude of start station. Formatted as real number degrees. |
-| start_lon  | degrees   | -121.885831 | Longitude of start station. Formatted as real number degrees. |
-| end_lat    | degrees   | 37.333798 | Latitude of end station. Formatted as real number degrees. |
-| end_lon    | degrees   | -121.886943 | Longitude of end station. Formatted as real number degrees. |
 | duration   | seconds   | 849 | Duration of bike trip in seconds. |
 | bike_id    | -         | 2473 | Unique integer ID of a specific bike. |
 | start_id   | -         | 28 | Unique integer ID of start station. Name of each station with a specific ID is located in *station_id_names.csv*. |
@@ -25,9 +21,11 @@ Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/o
 
 ### station_id_names.csv
 
-This file is used to get the station name from corresponding station ID in *fordgobike_complete_all.csv*
+This file is used to get the station name/lat/lon from corresponding station ID in *fordgobike_complete_all.csv*
 
 | Value | Example Value | Explanation  |
 | :---: | :----: | ------------ |
 | id    | 42 | Unique integer ID of a specific station. |
 | name  | San Francisco City Hall (Polk St at Grove St) | Name of station. |
+| lat  | degrees   | 37.330165 | Latitude of station. Formatted as real number degrees. |
+| lon  | degrees   | -121.885831 | Longitude of station. Formatted as real number degrees. |
