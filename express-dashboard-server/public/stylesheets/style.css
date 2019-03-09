@@ -1,5 +1,5 @@
 body {
-	padding: 50px;
+	padding: 0px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -15,24 +15,74 @@ body {
 
 .slider {
 	max-width: 400px;
-	margin-top: 40px;
-	margin-bottom: 40px;
+  margin-left: 45px;
+  margin-right: 45px;
+  margin-top: 20px;
+	/*margin-top: 60px;*/
+	/*margin-bottom: 40px;*/
 }
 
-hr{
-	width: 1100px;
-	color: black;
+.noUi-handle-lower .noUi-tooltip
+{
+  bottom: -130%;
+  background: #d1d1d1;
 }
-/*div runt infoboxes*/
+
+.noUi-handle-upper .noUi-tooltip
+{
+  bottom: 120%;
+  background: #d1d1d1;
+}
+
+.noUi-connect
+{
+  /*background: #3fb8af;*/
+  background: #818181;
+}
+
+.noUi-target
+{
+  background: #d1d1d1;
+}
+
+/* Remove Y-axis from chart */
+#date-bar-chart g.axis.y {
+  display: none;
+}
+
+#coordinate-scatter g.axis {
+  display: none;
+}
+
+#set-date {
+  background: #818181;
+  font: 700 11px/30px Arial;
+  text-transform: uppercase;
+  padding: 0 15px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin: 15px 5px 0 0;
+}
+
+button {
+  background: #8ad2d3;
+  font: 700 11px/30px Arial;
+  text-transform: uppercase;
+  padding: 0 15px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin: 15px 5px 0 0;
+}
+
+/* div containing info boxes */
 .info-boxes {
   width: 1200px;
-  height: 200px;
+  height: 150px;
+
   position: relative;
-	top: 50px;
-	border-width: thin;
-
 }
-
 
 #info-box-1 {
   width: 250px;
@@ -41,10 +91,7 @@ hr{
   margin: 15px 15px 15px 15px;
   float: left;
 	border-radius: 5px;
-
 }
-
-
 
 #info-box-2 {
   width: 250px;
@@ -63,6 +110,7 @@ hr{
 	border-radius: 5px;
   float: left;
 }
+
 #info-box-4 {
   width: 250px;
   height: 150px;
@@ -73,26 +121,22 @@ hr{
 }
 
 /*style font inside infoboxes, */
-h5{
+h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	color: white;
 	font-size: 25px;
 	text-align: center;
-
 }
 
 /*style font inside infoboxes, */
-h4{
+h4.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
 	color: white;
 	text-align: center;
-
-
 }
 
-
-
+/*
 #box-test {
   width: 300px;
   height: 300px;
@@ -101,29 +145,78 @@ h4{
   margin: -100px 0px 0px 850px;
   cursor: pointer;
 }
+*/
 
-.noUi-handle-lower .noUi-tooltip
-{
-	bottom: -130%;
+/* Sidemenu */
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 90px;
+	background: rgba(0, 0, 0, 0.9); /* Only set opacity for bg, not text */
+  white-space: nowrap;
 }
 
-.noUi-handle-upper .noUi-tooltip
-{
-	bottom: 120%;
+.sidenav a {
+  padding: 8px 8px 32px 32px;
+  text-decoration: none;
+  font-size: 30px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
 }
 
-.noUi-connect
-{
-	background: #3fb8af;
+.sidenav a:hover {
+  color: #f1f1f1;
 }
 
-button {
-	background: #8ad2d3;
-	font: 700 11px/30px Arial;
-	text-transform: uppercase;
-	padding: 0 15px;
-	border-radius: 4px;
-	color: #fff;
-	cursor: pointer;
-	margin: 15px 5px 0 0;
+#menu-btn {
+  transition: color 0.3s, margin-left .5s;
+  margin-left: 10px;
+  float: left;
+  color: #e1e1e1;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+#menu-btn:hover {
+  color: #ffffff;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+/* Topmenu */
+
+.topnav {
+  overflow: hidden;
+  background-color: #2abac8;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #27abb8;
+  color: white;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
 }

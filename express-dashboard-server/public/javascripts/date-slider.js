@@ -42,7 +42,7 @@ noUiSlider.create(date_slider, {
 	tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }},
 		{ to: function(v) { return formatDate(new Date(+v)); } }],
 
-	start: [timestamp('2018-04-01'), timestamp('2018-09-01')]
+	start: [timestamp('2018-01-01'), timestamp('2018-12-31')]
 });
 
 var set_date_button = document.getElementById('set-date');
@@ -52,7 +52,7 @@ set_date_button.addEventListener('click', function() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
 	var start = formatDate(new Date(+date_slider.noUiSlider.get()[0]));
 	var end = formatDate(new Date(+date_slider.noUiSlider.get()[1]));
-	var decimate = 256; // decimate value should be set depending on device
+	var decimate = 64; // decimate value should be set depending on device
 
 	data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
 	data_load_text.innerHTML += "% reduced data between " + start + " and " + end + " from server...";

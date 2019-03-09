@@ -7,18 +7,19 @@ function infoBox(data) {
     distSum += +d.distance;
   });
 
-  var avgVel = 0;
+  var avgSpeed = 0;
   var counter = 0;
   data.forEach(function(d) {
-    avgVel += +d.speed;
+    avgSpeed += +d.speed;
     ++counter
   });
-  avgVel = (avgVel/counter).toFixed(2);
+  avgSpeed = (avgSpeed/counter).toFixed(2);
 
+  // Gave the text a class to only style these elements and swapped the order.
+  // Also changed velocity to speed (velocity has a direction)
+  document.getElementById('info-box-1').innerHTML = "<h4 class='info-box-text'><br>Total Distance</h4>";
+  document.getElementById('info-box-1').innerHTML += "<h5 class='info-box-text'>" + Math.round(distSum)/1000 + " km</h5>";
 
-
-	document.getElementById('info-box-1').innerHTML = "<h5>" + Math.round(distSum)/1000 + " km" + "</h5><h4>" + "<br>" + "Total Distance" + "</h4>" ;
-
-  document.getElementById('info-box-2').innerHTML = "<h5>" + avgVel + " km/h" + "</h5><h4>" + "<br>" + "Average Velocity" + "</h4>" ;
-
+  document.getElementById('info-box-2').innerHTML = "<h4 class='info-box-text'><br>Average Speed</h4>";
+  document.getElementById('info-box-2').innerHTML += "<h5 class='info-box-text'>" + avgSpeed + " km/h</h5>";
 }

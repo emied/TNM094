@@ -10,11 +10,39 @@ data point distribution over the time interval.
 
 ***************************************************/
 
+const EARTH_RADIUS = 6371000;
+
+function deg2rad(deg)
+{
+	return deg * Math.PI / 180.0;
+}
+
+function remove_empty_bins(source_group) {
+  return {
+    all: function() {
+      return source_group.all().filter(function(d) {
+        return d.value.count != 0;
+      });
+    }
+  };
+}
+
 function drawChart(data) {
+	/**************************************************************
+	This scatter plot is basically a map but without geology lines.
+	It should be possible to use a geological map so this is just a
+	placeholder until we figure that out.
+
+	Blue dots = low activity
+	Green dots = medium activity
+	Orange dots = high activity
+	***************************************************************/
+	var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
 
 	var date_bar_chart = dc.barChart('#date-bar-chart');
-	var count_chart = dc.dataCount("#count-chart");
+	var bike_id_chart = dc.rowChart('#bike-id-chart');
 	var pie_chart = dc.pieChart('#pie-chart');
+	var count_chart = dc.dataCount("#count-chart");
 
 	var cross_filter = crossfilter(data);
 
@@ -23,17 +51,124 @@ function drawChart(data) {
 		date.setHours(0, 0, 0, 0);
 		return date;
 	});
-	day_group = day_dimension.group().reduceCount();
+	var day_group = day_dimension.group().reduceCount();
+
+	var bike_id_dimension = cross_filter.dimension(function(d) {
+		return d.bike_id;
+	});
+
+	var bike_id_group = bike_id_dimension.group().reduce(
+    function(p, v) {
+      p.sum_distance += +v.distance;
+      return p;
+    },
+
+    function(p, v) {
+      p.sum_distance -= +v.distance;
+      return p;
+    },
+
+    function() {
+      return {
+        sum_distance: 0.0
+      };
+    }
+  );
+
+	var start_coordinate_dimension = cross_filter.dimension(function(d) {
+
+		var lat = parseFloat(d.start_lat);
+		var lon = parseFloat(d.start_lon);
+
+		/*******************************
+		There's more points in San Jose, but limiting to these coords 
+		(San Francisco and East Bay) makes the map points less dense.
+		********************************/
+		if(lat < 37.6772094 || lat > 37.9070985 || lon > -122.2201624 || lon < -122.5738362)
+		{
+			return null;
+		}
+
+		const max_lat = 37.88022244590679;
+		const min_lat = 37.330165;
+
+		var mid_lat = min_lat + (max_lat-min_lat)/2.0;
+
+		x = EARTH_RADIUS * deg2rad(lon) * Math.cos(deg2rad(mid_lat));
+		y = EARTH_RADIUS * deg2rad(lat);
+
+		return [x, y];
+	});
+	var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
+
+	non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
+
+	//hehe ugly solution
+	var genderDimension = cross_filter.dimension(function(d) {
+		var test;
+		if (d.gender == 1) {
+			test = "Male";
+		}
+		else if (d.gender == 2) {
+			test = "Female";
+		}
+		else
+			test = "Other"
+
+		return test;
+	});
+	var genderGroup = genderDimension.group().reduceCount();
 
 	var start = new Date(day_dimension.bottom(1)[0].start_time);
 	var end = new Date(day_dimension.top(1)[0].start_time);
 
+	var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+	var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+	var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
+
+	max_coord_count = Math.pow(max_coord_count, 1/8);
+	min_coord_count = Math.pow(min_coord_count, 1/8);
+	mid_coord_count = Math.pow(mid_coord_count, 1/8);
+
+	coordinate_scatter
+		.width(400)
+		.height(400)
+		.dimension(start_coordinate_dimension)
+		.group(non_empty_start_coordinate_group)
+
+		.colorAccessor(function(d) {
+			return Math.pow(d.value, 1/8);
+		})
+
+		.colors(d3.scaleTime().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
+
+		.symbolSize(7)
+
+		.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
+
+		.x(d3.scaleLinear().domain([4195000, 4210000]))
+		.y(d3.scaleLinear().domain([-10790000, -10765000]))
+
+		.elasticY(true)
+		.elasticX(true)
+		.yAxisPadding(2000)
+		.xAxisPadding(2000)
+
+		.renderHorizontalGridLines(true)
+		.renderVerticalGridLines(true)
+
+		.renderLabel(true)
+		.label(function(p) {
+		  return p.value;
+		});
+
 	date_bar_chart
-		.width(750)
+		.width(700)
 		.height(150)
 		.x(d3.scaleTime().domain([start, end]))
 		.round(d3.timeDay.round)
 		.xUnits(d3.timeDays)
+  	.margins({left: 10, top: 10, right: 10, bottom: 30}) // Compensate for removed y-axis
 		.yAxisLabel("")
 		.elasticY(true)
 		.elasticX(false)
@@ -44,25 +179,34 @@ function drawChart(data) {
 		})
 		.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
-	//hehe ugly solution
-	var genderDimension = cross_filter.dimension(function(data) {
-		if (data.gender == 1) {
-			test = "Male";
-		}
-		else if (data.gender == 2) {
-			test = "Female";
-		}
-		else
-			test = "Other"
-
-		return test;
-	});
-
-	var genderGroup = genderDimension.group().reduceCount();
+	bike_id_chart
+		.width(400)
+		.height(250)
+		.group(bike_id_group)
+		.dimension(bike_id_dimension)
+		// Not possible to remove x-axis for this chart via css for whatever reason.
+		// This works but it's ugly
+		.margins({left: 30, top: 10, right: 50, bottom: -1}) 
+		.ordering(function(d) {
+      return -d.value.sum_distance;
+    })
+		.valueAccessor(function(d) {
+      return d.value.sum_distance;
+    })
+		.rowsCap(5)
+		.othersGrouper(false)
+		.label(function(d) {
+      return 'Bike ID: ' + d.key + ", Distance: " + Math.round(d.value.sum_distance/1000.0) + " km";
+    })
+		.title(function(d) {
+		  return null;
+		})
+		.elasticX(true)
+		.xAxis().ticks(3);
 
 	pie_chart
-		.width(700)
-		.height(300)
+		.width(250)
+		.height(250)
 		.dimension(genderDimension)
 		.group(genderGroup)
 		.on('renderlet', function(chart) {
@@ -70,8 +214,6 @@ function drawChart(data) {
 				console.log('click!', d);
 			});
 		});
-
-
 
 	count_chart
 		.dimension(cross_filter)
@@ -134,4 +276,6 @@ function drawChart(data) {
 	document.getElementById('t1').innerHTML = " bike rides out of ";
 	document.getElementById('t2').innerHTML = " selected. | ";
 	document.getElementById('t3').innerHTML = " Reset All";
+
+	document.getElementById("coordinate-scatter").style.border = "1px solid black";
 }

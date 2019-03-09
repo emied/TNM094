@@ -6,26 +6,23 @@
 	Should be replaced with templates describing dashboards.
 	No index/home page will be needed since index will redirect to one of the dashboards.
 
-
 extends layout
 
 block content
-	h1= title
-	p#data-load
-	.slider
-		#date-slider
-		button#set-date(style='float: right; margin: 40px 0px 0px;') Request Data
 
+	include topmenu.pug
+	include sidemenu.pug
 
-	#chart-section(style='width: 750px; height: 200px; margin: 100px -20px 0px; position: relative')
-		#count-chart.dc-data-count(style='float: left; margin: 0px 20px 0px; position: absolute;')
+	#count-chart.dc-data-count(style="padding-left: 50px; padding-top: 0px; float: left")
+
+		div
 			span.filter-count
 			span#t1
 			span.total-count
 			span#t2
 			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
-
-		#date-bar-chart(style='width: 750px; height: 150px; bottom: 0; position: absolute; top: 300px')
+			span  | 
+			span#data-load
 
 		hr
 		.info-boxes
@@ -33,11 +30,17 @@ block content
 			#info-box-2
 			#info-box-3
 			#info-box-4
-
-
-		#box-test
-			#pie-chart(style='float: right; width: 200px; height: 200px; position: absolute; top: 300px')
-
+	
+		#chart-section(style='width: 1100px; height: 400px')
+				#coordinate-scatter(style='width: 400px; height: 400px')
+				#date-bar-chart(style='width: 700px; height: 150px')
+				#pie-chart(style='width: 250px; height: 250px;margin-left: 25px')
+				#bike-id-chart(style='width: 400px; height: 250px;margin-left: 25px')
+		
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
 	script(src='javascripts/info-boxes.js')
+
+	//- Temporary solution to load data when page loads. Simulates a data request click.
+	script.
+		document.getElementById('set-date').click();
