@@ -43,7 +43,6 @@ Returns decimated historic data depending on parameters in query string.
 ************************************************************************************************/
 router.get('/data_range', api_controller.validate('data_range'), api_controller.data_range);
 
-
 /************************************************************************************************
 Defines what should happen when http://localhost:3000/api/test is requested with method GET.
 Displays test page for API.
@@ -51,5 +50,11 @@ Displays test page for API.
 router.get('/data_range/test', function(req, res, next) {
 	res.render('api-data-range-test');
 });
+
+/************************************************************************************************
+Defines what should happen when http://localhost:3000/api/get_file is requested with method GET.
+Returns specified data file depending on parameters in query string.
+************************************************************************************************/
+router.get('/get_file', api_controller.get_file);
 
 module.exports = router;

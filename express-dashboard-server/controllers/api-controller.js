@@ -110,3 +110,11 @@ exports.data_range = function(req, res) {
 
 	debug_range(result.length + ' entries sent');
 };
+
+/*************************************** 
+Returns specified data file. 
+Really unsafe, implement validation. 
+***************************************/
+exports.get_file = function(req, res) {
+	res.download('data/source/' + req.query.name);
+}
