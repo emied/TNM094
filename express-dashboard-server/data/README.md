@@ -23,6 +23,10 @@ Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/o
 | user_type  | -         | 1 | User type. Encoded to integers to reduce data: 1 = Subscriber, 2 = Customer |
 | distance   | meters    | 1872.75 | Manhattan distance between start and end station in meters. Calculated from the start and end station latitude and longitude, see [reduction-code/clean_bike_data.cpp L76-80](reduction-code/clean_bike_data.cpp#L76-L80). |
 
+### bike_stations.csv
+
+TODO
+
 ### station_id_names.csv
 
 This file is used to get the station name/lat/lon from corresponding station ID in *fordgobike_complete_all.csv*
@@ -33,7 +37,3 @@ This file is used to get the station name/lat/lon from corresponding station ID 
 | name  | San Francisco City Hall (Polk St at Grove St) | Name of station. |
 | lat  | degrees   | 37.330165 | Latitude of station. Formatted as real number degrees. |
 | lon  | degrees   | -121.885831 | Longitude of station. Formatted as real number degrees. |
-
-### bike_stations.csv
-
-TODO

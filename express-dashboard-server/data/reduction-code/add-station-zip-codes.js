@@ -26,6 +26,5 @@ exports.addStationZipCodes = function() {
 			}
 		});
 	});
-	console.log('done');
 	fs.writeFileSync('data/source/bike_stations.csv', d3.csvFormat(stations), 'utf8');
 }
