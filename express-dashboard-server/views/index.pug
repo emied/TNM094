@@ -31,11 +31,13 @@ block content
 			#info-box-4
 	
 		#chart-section(style='width: 1100px; height: 400px')
-				#coordinate-scatter(style='width: 400px; height: 400px;border')
+				#map-chart(style='width: 400px; height: 400px')
 				#date-bar-chart(style='width: 700px; height: 150px')
 				#pie-chart(style='width: 250px; height: 250px;margin-left: 25px')
 				#bike-id-chart(style='width: 400px; height: 250px;margin-left: 25px')
-				#map-chart(style='width: 400px; height: 400px')
+
+				//- Should be possible to overlay this over the map
+				#coordinate-scatter(style='width: 400px; height: 400px')
 		
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
