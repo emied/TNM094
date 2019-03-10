@@ -190,6 +190,24 @@ h4.info-box-text {
   color: #ffffff;
 }
 
+#toggle-dots {
+  transition: color 0.3s;
+  float: left; 
+  color: #e1e1e1;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+#toggle-dots:hover {
+  color: #ffffff;
+}
+
+.station-dots {
+  transition: opacity 0.5s;
+  opacity: 1.0;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}

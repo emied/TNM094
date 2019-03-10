@@ -54,14 +54,73 @@ function drawChart(data) {
 
 		  	if(station)
 				{
-					// data[i].lat = parseFloat(station.lat);
-					// data[i].lon = parseFloat(station.lon);
+					//data[i].lat = parseFloat(station.lat);
+					//data[i].lon = parseFloat(station.lon);
 					data[i].zip = station.zip;
 				}
 				else
 				{
 		    	data.splice(i, 1);
 				}
+			}
+
+			/********************************************** 
+			Function that draws circles at station coordinates
+			on the map chart.
+
+			Based on https://stackoverflow.com/a/35476690 
+			**********************************************/
+			var projection; // this gets set later.
+			function drawStationDots(_chart, selection) 
+			{
+
+				// No need to redraw when filter changes because dots 
+				// don't depend on filters yet.
+				if(!d3.select(".station-dots").empty())
+				{
+					return;
+					//if(d3.select(".station-dots").style("display") == "none") { return; }
+					
+				}
+
+				var svg = _chart.svg();
+				svg.selectAll("g.station_dots").remove();
+
+				var group = svg.selectAll("g.station_dots");
+
+				if (group.empty()) {
+					group = svg.append("g").classed("station_dots", true);
+				}
+
+				var additional_nodes = group.selectAll("circle").data(bike_stations, function(x) { return x.id; });
+
+				/* 
+				This function should probably filter the dots depending on selection, 
+				but it has to relate to the original dimension and not coordinates.
+				Not sure how to implement this yet so for now the dots are not filtered.
+
+				_chart.dimension().top(Infinity).map(function(d) {
+					//d.location = projection([d.long, d.lat]);
+					//d.location = projection([-122.40490436553954, 37.78637526861584]);
+					d.id = d.start_id;
+					return d;
+				});
+				*/
+
+				additional_nodes.enter()
+					.append("circle")
+						.attr("x", 0)
+						.attr("y", 0)
+						.attr("r", 3)
+						.attr("class", "station-dots")
+						.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+						.style("opacity", 0.0)
+        		.style("fill", "white")
+        		.style("stroke", "black")
+        		.style("stroke-width", "0.1%")
+						.transition().style("opacity", 1.0).duration(500);
+
+				additional_nodes.exit().remove();
 			}
 
 			var cross_filter = crossfilter(data);
@@ -161,8 +220,8 @@ function drawChart(data) {
 			***************************************************************/
 			var map_chart = dc.geoChoroplethChart("#map-chart");
 
-			var width = 400;
-			var height = 400;
+			var width = 415;
+			var height = 415;
 			
 			var zip_dimension = cross_filter.dimension(function(d) {
 				return d.zip;
@@ -172,7 +231,7 @@ function drawChart(data) {
 			var center = d3.geoCentroid(map_data)
 			var scale  = 100;
 			var offset = [width/2, height/2];
-			var projection = d3.geoMercator().scale(scale).center(center).translate(offset);
+			projection = d3.geoMercator().scale(scale).center(center).translate(offset);
 			
 			var path = d3.geoPath().projection(projection);
 
@@ -207,9 +266,13 @@ function drawChart(data) {
 				.width(width)
 				.height(height)
 				.colors(d3.scaleLinear().domain([0, mid_zip, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
+				//.colors(d3.scaleLinear().domain([0, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', '#0cb1e6']))
 
 				// This value is weird
 				.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; })
+
+				/* Comment out this line to remve dots. */
+				.on("renderlet", drawStationDots)
 
 				.projection(projection)
 				.overlayGeoJson(map_data["features"], "zip_code", function (d) {
