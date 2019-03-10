@@ -14,6 +14,7 @@ https://refreshless.com/nouislider/
 ***************************************************/
 
 var date_slider = document.getElementById('date-slider');
+var decimate_slider = document.getElementById('decimate-slider');
 var data_load_text = document.getElementById('data-load');
 data_load_text.innerHTML = "Status: Waiting for request.";
 
@@ -45,6 +46,19 @@ noUiSlider.create(date_slider, {
 	start: [timestamp('2018-01-01'), timestamp('2018-12-31')]
 });
 
+noUiSlider.create(decimate_slider, {
+	range: {
+		min: 1,
+		max: 256
+	},
+
+	step: 1,
+
+	tooltips: [{ to: function(v) { return Math.round(v); }}],
+
+	start: 64
+});
+
 var set_date_button = document.getElementById('set-date');
 
 set_date_button.addEventListener('click', function() {
@@ -52,7 +66,7 @@ set_date_button.addEventListener('click', function() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
 	var start = formatDate(new Date(+date_slider.noUiSlider.get()[0]));
 	var end = formatDate(new Date(+date_slider.noUiSlider.get()[1]));
-	var decimate = 64; // decimate value should be set depending on device
+	var decimate = Math.round(decimate_slider.noUiSlider.get()); // decimate value should be set depending on device
 
 	data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
 	data_load_text.innerHTML += "% reduced data between " + start + " and " + end + " from server...";

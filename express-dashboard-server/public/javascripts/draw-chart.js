@@ -76,7 +76,7 @@ function drawChart(data) {
 
 				// No need to redraw when filter changes because dots 
 				// don't depend on filters yet.
-				if(!d3.select(".station-dots").empty())
+				if(!d3.select("g.station_dots").empty())
 				{
 					return;
 					//if(d3.select(".station-dots").style("display") == "none") { return; }
@@ -95,30 +95,30 @@ function drawChart(data) {
 				var additional_nodes = group.selectAll("circle").data(bike_stations, function(x) { return x.id; });
 
 				/* 
-				This function should probably filter the dots depending on selection, 
-				but it has to relate to the original dimension and not coordinates.
+				This function should probably filter the dots depending on current selection/filter, 
+				but it has to relate to the original bike dimension and not station coordinates.
 				Not sure how to implement this yet so for now the dots are not filtered.
-
+			
+				var i = 0;
 				_chart.dimension().top(Infinity).map(function(d) {
-					//d.location = projection([d.long, d.lat]);
-					//d.location = projection([-122.40490436553954, 37.78637526861584]);
-					d.id = d.start_id;
+					i++;
+					console.log(d.zip);
 					return d;
 				});
+				console.log(i) // equal to the number of selected/filtered records.
 				*/
 
 				additional_nodes.enter()
 					.append("circle")
-						.attr("x", 0)
-						.attr("y", 0)
-						.attr("r", 3)
-						.attr("class", "station-dots")
-						.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
-						.style("opacity", 0.0)
-        		.style("fill", "white")
-        		.style("stroke", "black")
-        		.style("stroke-width", "0.1%")
-						.transition().style("opacity", 1.0).duration(500);
+					.attr("x", 0)
+					.attr("y", 0)
+					.attr("r", 3)
+					.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+					.style("opacity", 0.0)
+					.style("fill", "white")
+					.style("stroke", "black")
+					.style("stroke-width", "0.1%")
+					.transition().style("opacity", 1.0).duration(500);
 
 				additional_nodes.exit().remove();
 			}

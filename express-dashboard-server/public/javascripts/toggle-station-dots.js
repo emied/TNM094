@@ -8,13 +8,6 @@ it doesen't work when you fade in. There's probably a solution.
 var show_dots = true;
 function toggleStationDots()
 {
-	if(show_dots)
-	{
-		d3.selectAll(".station-dots").style("opacity", 0.0);
-	}
-	else
-	{
-		d3.selectAll(".station-dots").style("opacity", 1.0);
-	}
 	show_dots = !show_dots;
+	d3.selectAll("g.station_dots").style("opacity", +show_dots);
 }

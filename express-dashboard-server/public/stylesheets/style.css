@@ -203,7 +203,7 @@ h4.info-box-text {
   color: #ffffff;
 }
 
-.station-dots {
+g.station_dots {
   transition: opacity 0.5s;
   opacity: 1.0;
 }
