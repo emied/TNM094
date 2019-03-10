@@ -35,7 +35,7 @@ function drawChart(data) {
 		d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
 
 			// Filter out stations that we haven't assigned ZIP codes to yet
-			bike_stations = station_data.filter(station => { return station.zip != ""; });
+			bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
 			/********************************************************** 
 			 For each bike ride, find the ZIP code of its start station
@@ -47,22 +47,26 @@ function drawChart(data) {
 			 between bandwidth and processing (less data needs to be sent
 			 but more processing needs to be done on that data). There
 			 might me a better solution.
+
+			 Update: 
+			 This gives a 600% performance improvement compared to
+			 the old method (at decimate=8). 
+
+			 Now bike_stations.get(station id).zip (for example) is used 
+			 to get specific data of a station. The bike data has
+			 station id's for start and end stations.
+
 			**********************************************************/
-			for(var i = data.length - 1; i >= 0; i--) {
 
-		  	var station = bike_stations.find(station => { return station.id == data[i].start_id });
+			var bike_stations = new Map();
 
-		  	if(station)
-				{
-					//data[i].lat = parseFloat(station.lat);
-					//data[i].lon = parseFloat(station.lon);
-					data[i].zip = station.zip;
-				}
-				else
-				{
-		    	data.splice(i, 1);
-				}
-			}
+			bike_stations_zip.forEach(station => {
+				var obj = {lat: station.lat, lon: station.lon, zip: station.zip, name: station.name};
+				bike_stations.set(station.id, obj);
+			})
+
+			// Filter out bike ride entries that starts in a station w/o ZIP code
+			data = data.filter(d => { return bike_stations.get(d.start_id)});
 
 			/********************************************** 
 			Function that draws circles at station coordinates
@@ -92,7 +96,7 @@ function drawChart(data) {
 					group = svg.append("g").classed("station_dots", true);
 				}
 
-				var additional_nodes = group.selectAll("circle").data(bike_stations, function(x) { return x.id; });
+				var additional_nodes = group.selectAll("circle").data(bike_stations_zip, function(x) { return x.id; });
 
 				/* 
 				This function should probably filter the dots depending on current selection/filter, 
@@ -222,9 +226,9 @@ function drawChart(data) {
 
 			var width = 415;
 			var height = 415;
-			
+
 			var zip_dimension = cross_filter.dimension(function(d) {
-				return d.zip;
+				return bike_stations.get(d.start_id).zip;
 			});
 			var zip_group = zip_dimension.group().reduceCount();
 			
