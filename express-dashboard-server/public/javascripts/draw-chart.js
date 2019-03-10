@@ -8,6 +8,8 @@ of data returned by the server.
 Draws a simple bar chart that visualizes the daily
 data point distribution over the time interval.
 
++ more
+
 ***************************************************/
 
 const EARTH_RADIUS = 6371000;
@@ -28,25 +30,26 @@ function remove_empty_bins(source_group) {
 }
 
 function drawChart(data) {
+	var t5 = performance.now();
 	d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
 		d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
 
-			// Filter out stations that we haven't assigned zip codes to yet
+			// Filter out stations that we haven't assigned ZIP codes to yet
 			bike_stations = station_data.filter(station => { return station.zip != ""; });
 
 			/********************************************************** 
-			 For each bike ride, find the zip code of its start station
+			 For each bike ride, find the ZIP code of its start station
 			 and remove data entry if none can be found.
-			 Since we only use geo data with zip codes from SF currently,
+			 Since we only use geo data with ZIP codes from SF currently,
 			 every bike ride outside SF will be removed (Bay Area, San Jose)
 
-			 This is pretty processing intensive. It's basically a tradeof 
+			 This is pretty processing intensive. It's basically a tradeoff 
 			 between bandwidth and processing (less data needs to be sent
 			 but more processing needs to be done on that data). There
 			 might me a better solution.
 			**********************************************************/
 			for(var i = data.length - 1; i >= 0; i--) {
-				
+
 		  	var station = bike_stations.find(station => { return station.id == data[i].start_id });
 
 		  	if(station)
@@ -62,35 +65,14 @@ function drawChart(data) {
 			}
 
 			var cross_filter = crossfilter(data);
-
-
-			/**************************************************************
-			Map choropleth chart over zip code regions in SF. 
 		
-			Gray = no bike rides (because there's no stations in region)
-			Blue = medium activity
-			Green = high activity
-			***************************************************************/
-			var map_chart = dc.geoChoroplethChart("#map-chart");
-		
-			/**************************************************************
-			This scatter plot is basically a map but without geology lines.
-			Should be possible to overlay the map.
-		
-			Blue dots = low activity
-			Green dots = medium activity
-			Orange dots = high activity
-			***************************************************************/
-			var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
-		
-			var date_bar_chart = dc.barChart('#date-bar-chart');
-			var bike_id_chart = dc.rowChart('#bike-id-chart');
-			var pie_chart = dc.pieChart('#pie-chart');
 			var count_chart = dc.dataCount("#count-chart");
 
 			/**********************************
 				Date bar chart
 			***********************************/
+			var date_bar_chart = dc.barChart('#date-bar-chart');
+
 			var day_dimension = cross_filter.dimension(function(d) {
 				var date = new Date(d.start_time);
 				date.setHours(0, 0, 0, 0);
@@ -104,31 +86,26 @@ function drawChart(data) {
 			/**********************************
 				Bike id row chart
 			***********************************/
+			var bike_id_chart = dc.rowChart('#bike-id-chart');
+
 			var bike_id_dimension = cross_filter.dimension(function(d) {
 				return d.bike_id;
 			});
 		
-			var bike_id_group = bike_id_dimension.group().reduce(
-			  function(p, v) {
-			    p.sum_distance += +v.distance;
-			    return p;
-			  },
-		
-			  function(p, v) {
-			    p.sum_distance -= +v.distance;
-			    return p;
-			  },
-		
-			  function() {
-			    return {
-			      sum_distance: 0.0
-			    };
-			  }
-			);
+			var bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
 
-			/**********************************
-				Station coordinate scatter chart
-			***********************************/
+			/***************************************************************
+			Station coordinate scatter chart
+
+			This scatter plot is basically a map but without geology lines.
+			Should be possible to overlay the map.
+		
+			Blue dots = low activity
+			Green dots = medium activity
+			Orange dots = high activity
+			***************************************************************/
+			var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
+
 			var start_coordinate_dimension = cross_filter.dimension(function(d) {
 				const max_lat = 37.88022244590679;
 				const min_lat = 37.330165;
@@ -155,6 +132,8 @@ function drawChart(data) {
 			/*************
 				Pie chart
 			*************/
+			var pie_chart = dc.pieChart('#pie-chart');
+
 			//hehe ugly solution
 			var genderDimension = cross_filter.dimension(function(d) {
 				var test;
@@ -171,9 +150,17 @@ function drawChart(data) {
 			});
 			var genderGroup = genderDimension.group().reduceCount();
 
-			/*******************
-				Map Chart
-			*******************/
+			/**************************************************************
+			Map choropleth chart over ZIP code regions in SF. 
+
+			Color corresponds to the amount of bike rides that start in the region.
+		
+			Gray = no bike rides (probably because there's no stations in region)
+			Blue = medium activity
+			Green = high activity
+			***************************************************************/
+			var map_chart = dc.geoChoroplethChart("#map-chart");
+
 			var width = 400;
 			var height = 400;
 			
@@ -229,7 +216,7 @@ function drawChart(data) {
 					return d.properties.zip_code;
 				})
 				.title(function (p) {
-					return "Zip code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
+					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
 		
 			coordinate_scatter
@@ -291,17 +278,11 @@ function drawChart(data) {
 				// Not possible to remove x-axis for this chart via css for whatever reason.
 				// This works but it's ugly
 				.margins({left: 30, top: 10, right: 50, bottom: -1}) 
-				.ordering(function(d) {
-			    return -d.value.sum_distance;
-			  })
-				.valueAccessor(function(d) {
-			    return d.value.sum_distance;
-			  })
 				.rowsCap(5)
 				.othersGrouper(false)
 				.label(function(d) {
-			    return 'Bike ID: ' + d.key + ", Distance: " + Math.round(d.value.sum_distance/1000.0) + " km";
-			  })
+					return 'Bike ID: ' + d.key + ", Distance: " + Math.round(d.value/1000.0) + " km";
+				})
 				.title(function(d) {
 				  return null;
 				})
@@ -373,6 +354,122 @@ function drawChart(data) {
 			}
 		
 			*********************************/
+
+			/******************
+			Average speed display
+			******************/
+			var avg_speed_display = dc.numberDisplay("#info-box-1");
+
+			var avg_speed_group = cross_filter.groupAll().reduce(
+				function (p, v) {
+					++p.count;
+					p.sum_speed += +v.speed;
+
+					return p;
+				},
+				function (p, v) {
+					--p.count;
+					p.sum_speed -= +v.speed;
+
+					return p;
+				},
+				function () { 
+					return {
+						count: 0,
+						sum_speed: 0.0
+					}; 
+				}
+			);
+
+			avg_speed_display
+				.formatNumber(d3.format(".2f"))
+				.valueAccessor(d => { return d.count ? (d.sum_speed / (d.count)) : 0 })
+				.html({some: "<h4 class='info-box-text'><br>Average Speed</h4><h5 class='info-box-text'>%number km/h</h5>"})
+				.group(avg_speed_group);
+
+			/******************
+			Total distance display
+			******************/
+			var tot_dist_display = dc.numberDisplay("#info-box-2");
+
+			var tot_dist_group = cross_filter.groupAll().reduceSum( d => { return d.distance; });
+
+			tot_dist_display
+				.formatNumber(d3.format(".2f"))
+				.valueAccessor(d => { return d/1000.0 })
+				.html({some: "<h4 class='info-box-text'><br>Total Distance</h4><h5 class='info-box-text'>%number km</h5>"})
+				.group(tot_dist_group);
+
+			/******************
+			Unique bikes display
+			******************/
+			var unique_bikes_display = dc.numberDisplay("#info-box-3");
+
+			var unique_bikes_group = cross_filter.groupAll().reduce(
+				function(p, v)
+				{ 
+					const count = p.bikes.get(v.bike_id) ||  0;
+					p.bikes.set(v.bike_id, count + 1);
+					return p;
+				},
+
+				function(p,v) 
+				{ 
+					const count = p.bikes.get(v.bike_id);
+					if (count === 1) 
+					{
+						p.bikes.delete(v.bike_id);
+					} 
+					else 
+					{
+						p.bikes.set(v.bike_id, count - 1);
+					}
+					return p;
+				},
+
+				function() 
+				{ 
+					return { bikes: new Map() };
+				}
+			);
+
+			unique_bikes_display
+				.formatNumber(d3.format(".0f"))
+				.html({some: "<h4 class='info-box-text'><br>Unique Bikes Used</h4><h5 class='info-box-text'>%number</h5>"})
+				.group(unique_bikes_group)
+				.valueAccessor( d => { return d.bikes.size } );
+
+			/******************
+			Average duration display
+			******************/
+			var avg_duration_display = dc.numberDisplay("#info-box-4");
+
+			var avg_duration_group = cross_filter.groupAll().reduce(
+				function (p, v) {
+					++p.count;
+					p.sum_duration += +v.duration;
+
+					return p;
+				},
+				function (p, v) {
+					--p.count;
+					p.sum_duration -= +v.duration;
+
+					return p;
+				},
+				function () { 
+					return {
+						count: 0,
+						sum_duration: 0.0
+					}; 
+				}
+			);
+
+			avg_duration_display
+				.formatNumber(d3.format(".2f"))
+				.valueAccessor(d => { return d.count ? (d.sum_duration / (d.count)) : 0 })
+				.html({some: "<h4 class='info-box-text'><br>Average Trip Duration</h4><h5 class='info-box-text'>%number sec</h5>"})
+				.group(avg_duration_group);
 			
 			dc.renderAll();
 
@@ -383,6 +480,9 @@ function drawChart(data) {
 		
 			document.getElementById("coordinate-scatter").style.border = "1px solid black";
 			document.getElementById("map-chart").style.border = "1px solid black";
+
+			var t6 = performance.now();
+			data_load_text.innerHTML += " Indexed and drawn in " + (t6-t5).toFixed(0) + " ms.";
 		});
 	});
 }
