@@ -30,7 +30,7 @@ function remove_empty_bins(source_group) {
 }
 
 function drawChart(data) {
-	var t5 = performance.now();
+	var t1 = performance.now();
 	d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
 		d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
 
@@ -54,8 +54,8 @@ function drawChart(data) {
 
 		  	if(station)
 				{
-					data[i].lat = parseFloat(station.lat);
-					data[i].lon = parseFloat(station.lon);
+					// data[i].lat = parseFloat(station.lat);
+					// data[i].lon = parseFloat(station.lon);
 					data[i].zip = station.zip;
 				}
 				else
@@ -104,30 +104,30 @@ function drawChart(data) {
 			Green dots = medium activity
 			Orange dots = high activity
 			***************************************************************/
-			var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
+			// var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
 
-			var start_coordinate_dimension = cross_filter.dimension(function(d) {
-				const max_lat = 37.88022244590679;
-				const min_lat = 37.330165;
+			// var start_coordinate_dimension = cross_filter.dimension(function(d) {
+			// 	const max_lat = 37.88022244590679;
+			// 	const min_lat = 37.330165;
 		
-				var mid_lat = min_lat + (max_lat-min_lat)/2.0;
+			// 	var mid_lat = min_lat + (max_lat-min_lat)/2.0;
 		
-				x = EARTH_RADIUS * deg2rad(d.lon) * Math.cos(deg2rad(mid_lat));
-				y = EARTH_RADIUS * deg2rad(d.lat);
+			// 	x = EARTH_RADIUS * deg2rad(d.lon) * Math.cos(deg2rad(mid_lat));
+			// 	y = EARTH_RADIUS * deg2rad(d.lat);
 		
-				return [x, y];
-			});
-			var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
+			// 	return [x, y];
+			// });
+			// var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
 		
-			non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
+			// non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
 
-			var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
+			// var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+			// var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
+			// var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
 		
-			max_coord_count = Math.pow(max_coord_count, 1/8);
-			min_coord_count = Math.pow(min_coord_count, 1/8);
-			mid_coord_count = Math.pow(mid_coord_count, 1/8);
+			// max_coord_count = Math.pow(max_coord_count, 1/8);
+			// min_coord_count = Math.pow(min_coord_count, 1/8);
+			// mid_coord_count = Math.pow(mid_coord_count, 1/8);
 			
 			/*************
 				Pie chart
@@ -219,39 +219,39 @@ function drawChart(data) {
 					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
 		
-			coordinate_scatter
-				.width(400)
-				.height(400)
-				.dimension(start_coordinate_dimension)
-				.group(non_empty_start_coordinate_group)
+			// coordinate_scatter
+			// 	.width(400)
+			// 	.height(400)
+			// 	.dimension(start_coordinate_dimension)
+			// 	.group(non_empty_start_coordinate_group)
 		
-				.colorAccessor(function(d) {
-					return Math.pow(d.value, 1/8);
-				})
+			// 	.colorAccessor(function(d) {
+			// 		return Math.pow(d.value, 1/8);
+			// 	})
 		
-				.colors(d3.scaleLinear().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
+			// 	.colors(d3.scaleLinear().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
 		
-				.symbolSize(6)
+			// 	.symbolSize(6)
 		
-				.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
+			// 	.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
 		
-				.x(d3.scaleLinear().domain([4195000, 4210000]))
-				.y(d3.scaleLinear().domain([-10790000, -10765000]))
+			// 	.x(d3.scaleLinear().domain([4195000, 4210000]))
+			// 	.y(d3.scaleLinear().domain([-10790000, -10765000]))
 		
-				.elasticY(true)
-				.elasticX(true)
+			// 	.elasticY(true)
+			// 	.elasticX(true)
 
-				// 1 kilometer padding
-				.yAxisPadding(1000)
-				.xAxisPadding(1000)
+			// 	// 1 kilometer padding
+			// 	.yAxisPadding(1000)
+			// 	.xAxisPadding(1000)
 		
-				.renderHorizontalGridLines(true)
-				.renderVerticalGridLines(true)
+			// 	.renderHorizontalGridLines(true)
+			// 	.renderVerticalGridLines(true)
 		
-				.renderLabel(true)
-				.label(function(p) {
-				  return p.value;
-				});
+			// 	.renderLabel(true)
+			// 	.label(function(p) {
+			// 	  return p.value;
+			// 	});
 		
 			date_bar_chart
 				.width(700)
@@ -478,11 +478,12 @@ function drawChart(data) {
 			document.getElementById('t2').innerHTML = " selected. | ";
 			document.getElementById('t3').innerHTML = " Reset All";
 		
-			document.getElementById("coordinate-scatter").style.border = "1px solid black";
 			document.getElementById("map-chart").style.border = "1px solid black";
 
-			var t6 = performance.now();
-			data_load_text.innerHTML += " Indexed and drawn in " + (t6-t5).toFixed(0) + " ms.";
+			//document.getElementById("coordinate-scatter").style.border = "1px solid black";
+
+			var t2 = performance.now();
+			data_load_text.innerHTML += " Indexed and drawn in " + (t2-t1).toFixed(0) + " ms.";
 		});
 	});
 }
