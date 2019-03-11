@@ -19,6 +19,18 @@ router.get('/', function(req, res, next) {
 	// The .render() function uses PUG to render a HTML page as the response.
 	// (since PUG was set as the view engine in app.js)
 	res.render('index', { title: 'Dashboard' });
+
+});
+
+/*************************************************************************************
+Defines what should happen when http://localhost:3000 is requested with method GET.
+Renders the homepage.
+*************************************************************************************/
+router.get('/dashboard/1', function(req, res, next) {
+	// The .render() function uses PUG to render a HTML page as the response.
+	// (since PUG was set as the view engine in app.js)
+	res.render('bike-view1', { title: 'test' });
+
 });
 
 module.exports = router;
