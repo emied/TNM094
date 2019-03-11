@@ -179,7 +179,7 @@ h4.info-box-text {
 #menu-btn {
   transition: color 0.3s, margin-left .5s;
   margin-left: 10px;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
@@ -192,7 +192,7 @@ h4.info-box-text {
 
 #toggle-dots {
   transition: color 0.3s;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
@@ -237,4 +237,18 @@ g.station_dots {
 .topnav a.active {
   background-color: #4CAF50;
   color: white;
+}
+
+#warning {
+	transition: color 0.3s, margin-left .5s;
+  margin-left: 10px;
+  float: left;
+  color: #ff6666;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+#warning:hover{
+	color: #e60000;
 }
