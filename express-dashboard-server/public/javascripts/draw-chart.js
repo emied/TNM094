@@ -53,9 +53,7 @@ function drawChart(data) {
 			 the old method (at decimate=8). 
 
 			 Now bike_stations.get(station id).zip (for example) is used 
-			 to get specific data of a station. The bike data has
-			 station id's for start and end stations.
-
+			 to get specific data of a station.
 			**********************************************************/
 
 			var bike_stations = new Map();
@@ -82,7 +80,7 @@ function drawChart(data) {
 				// don't depend on filters yet.
 				if(!d3.select("g.station_dots").empty())
 				{
-					return;
+					//return;
 					//if(d3.select(".station-dots").style("display") == "none") { return; }
 					
 				}
@@ -96,21 +94,24 @@ function drawChart(data) {
 					group = svg.append("g").classed("station_dots", true);
 				}
 
-				var additional_nodes = group.selectAll("circle").data(bike_stations_zip, function(x) { return x.id; });
-
 				/* 
 				This function should probably filter the dots depending on current selection/filter, 
 				but it has to relate to the original bike dimension and not station coordinates.
 				Not sure how to implement this yet so for now the dots are not filtered.
-			
-				var i = 0;
-				_chart.dimension().top(Infinity).map(function(d) {
-					i++;
-					console.log(d.zip);
-					return d;
-				});
-				console.log(i) // equal to the number of selected/filtered records.
 				*/
+
+				var filtered_stations_map = new Map();
+				_chart.dimension().top(Infinity).map(function(d) {
+					var station = bike_stations.get(d.start_id);
+					if(station)
+					{
+						filtered_stations_map.set(d.start_id, station);
+					}
+				});
+
+				let filtered_stations = Array.from( filtered_stations_map.values() );
+
+				var additional_nodes = group.selectAll("circle").data(filtered_stations, function(x) { console.log(x); return x.zip; });
 
 				additional_nodes.enter()
 					.append("circle")
@@ -122,7 +123,7 @@ function drawChart(data) {
 					.style("fill", "white")
 					.style("stroke", "black")
 					.style("stroke-width", "0.1%")
-					.transition().style("opacity", 1.0).duration(500);
+					//.transition().style("opacity", 1.0).duration(500);
 
 				additional_nodes.exit().remove();
 			}
@@ -260,6 +261,9 @@ function drawChart(data) {
 			max_zip = Math.pow(max_zip, 1/8);
 			min_zip = Math.pow(min_zip, 1/8);
 			mid_zip = Math.pow(mid_zip, 1/8);
+
+			console.log(min_zip)
+			console.log(max_zip)
 
 			/*******************
 			Chart configurations
