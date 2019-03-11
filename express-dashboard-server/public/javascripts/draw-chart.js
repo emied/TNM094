@@ -111,7 +111,7 @@ function drawChart(data) {
 
 				let filtered_stations = Array.from( filtered_stations_map.values() );
 
-				var additional_nodes = group.selectAll("circle").data(filtered_stations, function(x) { console.log(x); return x.zip; });
+				var additional_nodes = group.selectAll("circle").data(filtered_stations, function(x) { return x.zip; });
 
 				additional_nodes.enter()
 					.append("circle")
@@ -119,7 +119,7 @@ function drawChart(data) {
 					.attr("y", 0)
 					.attr("r", 3)
 					.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
-					.style("opacity", 0.0)
+					.style("opacity", 1.0)
 					.style("fill", "white")
 					.style("stroke", "black")
 					.style("stroke-width", "0.1%")
@@ -261,9 +261,6 @@ function drawChart(data) {
 			max_zip = Math.pow(max_zip, 1/8);
 			min_zip = Math.pow(min_zip, 1/8);
 			mid_zip = Math.pow(mid_zip, 1/8);
-
-			console.log(min_zip)
-			console.log(max_zip)
 
 			/*******************
 			Chart configurations
