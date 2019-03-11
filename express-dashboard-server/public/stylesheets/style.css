@@ -179,7 +179,7 @@ h4.info-box-text {
 #menu-btn {
   transition: color 0.3s, margin-left .5s;
   margin-left: 10px;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
