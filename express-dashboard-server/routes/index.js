@@ -20,7 +20,7 @@ Renders the homepage.
 router.get('/', function(req, res, next) {
 	// The .render() function uses PUG to render a HTML page as the response.
 	// (since PUG was set as the view engine in app.js)
-	res.redirect('/dashboard/1');
+	res.redirect('dashboard?data=bike&view=1');
 });
 
 /*************************************************************************************

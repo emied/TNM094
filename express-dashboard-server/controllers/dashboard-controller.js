@@ -8,8 +8,17 @@ exports.dashboard = function(req, res) {
   {
     res.render('bikes/bike-view1');
   }
+  else if (data = "bike" && view == 2)
+  {
+    res.render('bikes/bike-view2');
+  }
+  else if (data = "bike" && view == 3)
+  {
+    res.render('bikes/bike-view3');
+  }
+
   else
   {
-    res.send("invalid!");
+    res.send("Incorrect URL");
   }
 };
