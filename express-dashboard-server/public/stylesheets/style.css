@@ -204,8 +204,8 @@ h4.info-box-text {
 }
 
 g.station_dots {
-  /*transition: opacity 0.5s;
-  opacity: 1.0;*/
+  transition: opacity 0.5s;
+  opacity: 1.0;
 }
 
 @media screen and (max-height: 450px) {
