@@ -6,12 +6,12 @@
 	Should be replaced with templates describing dashboards.
 	No index/home page will be needed since index will redirect to one of the dashboards.
 
-extends layout
+extends ../layout
 
 block content
 
-	include topmenu.pug
-	include sidemenu.pug
+	include ../topmenu.pug
+	include ../sidemenu.pug
 
 	#count-chart.dc-data-count(style="padding-left: 50px; padding-top: 0px; float: left")
 
