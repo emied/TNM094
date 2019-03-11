@@ -21,16 +21,27 @@ block content
 			span.total-count
 			span#t2
 			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
-			span  | 
+			span  |
 			span#data-load
 
-		hr
+
 		.info-boxes
 			#info-box-1
 			#info-box-2
 			#info-box-3
 			#info-box-4
-	
+
+		.dropdown
+			button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+				p test
+				span.caret
+			ul.dropdown-menu
+				li
+					a(href='#') hej
+				li.disabled
+
+
+
 		#chart-section(style='width: 1200px; height: 415px')
 				#map-chart(style='width: 415px; height: 415px')
 				#date-bar-chart(style='width: 700px; height: 150px')
@@ -40,7 +51,7 @@ block content
 				//- Should be possible to overlay this over the map using composite chart.
 
 				//#coordinate-scatter(style='width: 400px; height: 400px')
-		
+
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/date-slider.js')
 	script(src='javascripts/info-boxes.js')

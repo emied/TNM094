@@ -21,4 +21,10 @@ router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Dashboard' });
 });
 
+router.get('/bootstrap', function(req, res, next) {
+	// The .render() function uses PUG to render a HTML page as the response.
+	// (since PUG was set as the view engine in app.js)
+	res.render('index_bootstrap', { title: 'Dashboard' });
+});
+
 module.exports = router;

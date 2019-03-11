@@ -14,6 +14,7 @@ function infoBox(data) {
     ++counter
   });
   avgSpeed = (avgSpeed/counter).toFixed(2);
+  
 
   // Gave the text a class to only style these elements and swapped the order.
   // Also changed velocity to speed (velocity has a direction)

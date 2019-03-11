@@ -192,7 +192,7 @@ h4.info-box-text {
 
 #toggle-dots {
   transition: color 0.3s;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
@@ -237,4 +237,13 @@ g.station_dots {
 .topnav a.active {
   background-color: #4CAF50;
   color: white;
+}
+
+.dropdown {
+	left: 90%;
+	color: blue;
+}
+
+li.text::selection{
+	background: red;
 }
