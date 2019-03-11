@@ -256,6 +256,7 @@ g.station_dots {
 }
 #meny-warning:hover .dropdown-warning {
 	display: block;
+	background-color: blue;
 }
 
 .dropdown-warning {
@@ -267,8 +268,7 @@ g.station_dots {
 }
 
 .dropdown-warning a{
-	color: white;
-	background-color: pink;
+	color: pink;
 }
 
 /** warning pop-up **/
@@ -278,7 +278,6 @@ g.station_dots {
 	z-index: 1;
 	width: 100%;
 	height: 100%;
-	background-color: red;
 }
 
 .modal-content {
@@ -291,7 +290,6 @@ g.station_dots {
 	transition: color 0.3s, margin-left .5s;
   margin-left: 10px;
   float: left;
-  color: #ff6666;
   font-size: 30px;
   cursor: pointer;
   padding: 6px 0px;
