@@ -1,0 +1,49 @@
+//-
+	index.pug
+
+	Prototype webpage for testing API during development.
+
+	Should be replaced with templates describing dashboards.
+	No index/home page will be needed since index will redirect to one of the dashboards.
+
+extends ../layout
+
+block content
+
+	include ../topmenu.pug
+	include ../sidemenu.pug
+
+	#count-chart.dc-data-count(style="padding-left: 50px; padding-top: 0px; float: left")
+
+		div
+			span.filter-count
+			span#t1
+			span.total-count
+			span#t2
+			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
+			span  |  
+			span#data-load
+
+		.info-boxes
+			#info-box-1
+			#info-box-2
+			#info-box-3
+			#info-box-4
+	
+		#chart-section(style='width: 1200px; height: 415px')
+				#map-chart(style='width: 415px; height: 415px')
+				#date-bar-chart(style='width: 700px; height: 150px')
+				#pie-chart(style='width: 250px; height: 250px;margin-left: 50px')
+				#bike-id-chart(style='width: 400px; height: 250px;margin-left: 17px')
+
+				//- Should be possible to overlay this over the map using composite chart.
+
+				//#coordinate-scatter(style='width: 400px; height: 400px')
+		
+	script(src='../javascripts/draw-chart.js')
+	script(src='../javascripts/date-slider.js')
+	script(src='../javascripts/info-boxes.js')
+
+	//- Temporary solution to load data when page loads. Simulates a data request click.
+	script.
+		document.getElementById('set-date').click();

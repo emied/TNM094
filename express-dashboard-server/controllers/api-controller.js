@@ -2,7 +2,7 @@
 
 api-controller.js
 
-Does all request processing for API calls. This involves checking if 
+Does all request processing for API calls. This involves checking if
 the request query is valid and then creating and sending the response.
 
 Check exports.data_range for commented example.
@@ -17,7 +17,7 @@ const { check, validationResult } = require('express-validator/check');
 
 var debug_range = require('debug')('dashboard:api:data_range');
 
-/***********************************************  
+/***********************************************
 Validates HTTP requests for different API calls.
 ***********************************************/
 exports.validate = function(method) {
@@ -60,15 +60,15 @@ exports.validate = function(method) {
 	}
 };
 
-/************************************  
+/************************************
 Displays list of available API calls
 ************************************/
 exports.list = function(req, res) {
 	res.send('Implement API list');
 };
 
-/*************************************** 
-Returns range of decimated historic data 
+/***************************************
+Returns range of decimated historic data
 ***************************************/
 exports.data_range = function(req, res) {
 	debug_range( req.query );
@@ -76,7 +76,7 @@ exports.data_range = function(req, res) {
 	// Check if request is valid, respond with error if not.
 	// Uses the exports.validate function from above to determine this.
 	const errors = validationResult(req);
-	if (!errors.isEmpty()) 
+	if (!errors.isEmpty())
 	{
 		// Send error status code 400 and the array of errors as response if the request was invalid.
 		res.status(400).json({ errors: errors.array() });
@@ -88,19 +88,27 @@ exports.data_range = function(req, res) {
 
 	var data = datasets[dataset]; // Use requested dataset
 
+	// Improve performance when getting data from the most interesting time interval.
+	// An index table for each day, week and month is probably a good idea.
+	var i = 0;
+	if(start >= new Date('2018-11-03 00:00:00'))
+	{
+		i = 1458603;
+	}
+
 	// Accumulate all data entries that satisfies the request and store in result.
 	// Will only work for data sorted by start_time in ascending order, check data/datasets.js.
 	var result = [];
-	for (var i = 0; i < data.length; i += decimate) 
+	for ( ; i < data.length; i += decimate)
 	{
 		var date = new Date(data[i].start_time);
-		if (date >= start) 
+		if (date >= start)
 		{
-			if (date > end) 
+			if (date > end)
 			{
 				break;
-			} 
-			else 
+			}
+			else
 			{
 				result.push(data[i]);
 			}
@@ -111,9 +119,9 @@ exports.data_range = function(req, res) {
 	debug_range(result.length + ' entries sent');
 };
 
-/*************************************** 
-Returns specified data file. 
-Really unsafe, implement validation. 
+/***************************************
+Returns specified data file.
+Really unsafe, implement validation.
 ***************************************/
 exports.get_file = function(req, res) {
 	res.download('data/source/' + req.query.name);
