@@ -74,6 +74,7 @@ function drawChart(data) {
 			var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection) 
 			{
+				drawBikeRoute(_chart, selection);
 
 				var svg = _chart.svg();
 
@@ -130,6 +131,67 @@ function drawChart(data) {
 				});
 			}
 
+			var bike_id_group;
+			function drawBikeRoute(_chart, selection) 
+			{
+
+				var svg = _chart.svg();
+				//svg.selectAll("g.bike_id_path").remove();
+
+				var group = svg.selectAll("g.bike_id_path");
+
+				// Select the bike that has traveled the furthest distance to draw path for.
+				selected_bike_id = bike_id_group.top(1)[0].key;
+
+				if (group.empty()) {
+
+					var bike_id_path = [];
+
+					data.forEach( d => {
+						if(d.bike_id == selected_bike_id)
+						{
+							var start_station = bike_stations.get(d.start_id);
+							var end_station = bike_stations.get(d.end_id);
+
+							if(start_station && end_station)
+							{
+								var s = projection([parseFloat(start_station.lon), parseFloat(start_station.lat)]);
+								var e = projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
+								bike_id_path.push({x: s[0], y: s[1]});
+								bike_id_path.push({x: e[0], y: e[1]});
+							}
+							else
+							{
+								console.log("nope!")
+							}
+						}
+					});
+
+					group = svg.append("g").classed("bike_id_path", true);
+
+					var lineFunction = d3.line()
+						.x(function(d) { return d.x; })
+						.y(function(d) { return d.y; })
+						.curve(d3.curveLinear);
+
+					var path = group.append("path")
+						.attr("d", lineFunction(bike_id_path))
+						.attr("stroke", "white")
+						.attr("stroke-width", 1)
+						.attr("fill", "none");
+
+					var totalLength = path.node().getTotalLength();
+
+					path
+						.attr("stroke-dasharray", totalLength + " " + totalLength)
+						.attr("stroke-dashoffset", totalLength)
+						.transition()
+							.duration(totalLength)
+							.ease(d3.easeCubicIn)
+							.attr("stroke-dashoffset", 0);
+				}
+			}
+
 			var cross_filter = crossfilter(data);
 		
 			var count_chart = dc.dataCount("#count-chart");
@@ -158,7 +220,7 @@ function drawChart(data) {
 				return d.bike_id;
 			});
 		
-			var bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
+			bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
 
 			/***************************************************************
 			Station coordinate scatter chart
@@ -244,8 +306,8 @@ function drawChart(data) {
 
 			// Temporary offset and scale to zoom in on interesting region.
 			// The code would do this automatically if no-bike-station-zones are removed.
-			var t_of = [-75, 20];
-			var t_sc = 1.2; 
+			var t_of = [-65, 65];
+			var t_sc = 1.45; 
 			
 			var bounds  = path.bounds(map_data);
 			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);

@@ -43,7 +43,7 @@ noUiSlider.create(date_slider, {
 	tooltips: [{ to: function(v) { return formatDate(new Date(+v)); }},
 		{ to: function(v) { return formatDate(new Date(+v)); } }],
 
-	start: [timestamp('2018-01-01'), timestamp('2018-12-31')]
+	start: [timestamp('2018-11-03'), timestamp('2018-11-15')]
 });
 
 noUiSlider.create(decimate_slider, {
@@ -56,7 +56,7 @@ noUiSlider.create(decimate_slider, {
 
 	tooltips: [{ to: function(v) { return Math.round(v); }}],
 
-	start: 64
+	start: 1
 });
 
 var set_date_button = document.getElementById('set-date');
