@@ -1,17 +1,36 @@
 extends layout
 
 block content
+  
+  include topmenu.pug
+  include sidemenu.pug
+  
+  #count-chart.dc-data-count(style="padding-left: 50px; padding-top: 0px; float: left")
+
+  div
+    span.filter-count
+    span#t1
+    span.total-count
+    span#t2
+    a#t3(href='javascript:dc.filterAll();dc.renderAll();')
+    span  |
+    span#data-load
 
   .container
-    br
-    .row
-      .col-sm-3
-        .form-group
-          #filterDate2
-            // Datepicker as text field
-            .input-group.date(data-date-format='dd.mm.yyyy')
-              input.form-control(type='text', placeholder='dd.mm.yyyy')
-              .input-group-addon
-                span.glyphicon.glyphicon-th
-    script(type='text/javascript').
-      $('.input-group.date').datepicker({format: "dd.mm.yyyy"}); 
+    .col-md-5
+      .form-group 
+        #datetimepicker.input-group.date               
+          input(type='text', name='daterange', value='01/01/2018 - 01/15/2018' class="form-control")
+          span.input-group-addon
+            span.glyphicon.glyphicon-calendar              
+  
+  #chart-section(style='width: 1200px; height: 415px')
+    #map-chart(style='width: 415px; height: 415px')
+    #date-bar-chart(style='width: 700px; height: 150px')
+    #pie-chart(style='width: 250px; height: 250px;margin-left: 50px')
+    #bike-id-chart(style='width: 400px; height: 250px;margin-left: 17px')
+
+
+  script(src='javascripts/draw-chart.js')
+  script(src='javascripts/filter-menu.js')
+    
