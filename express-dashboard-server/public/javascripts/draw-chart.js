@@ -53,9 +53,7 @@ function drawChart(data) {
 			 the old method (at decimate=8). 
 
 			 Now bike_stations.get(station id).zip (for example) is used 
-			 to get specific data of a station. The bike data has
-			 station id's for start and end stations.
-
+			 to get specific data of a station.
 			**********************************************************/
 
 			var bike_stations = new Map();
@@ -70,61 +68,66 @@ function drawChart(data) {
 
 			/********************************************** 
 			Function that draws circles at station coordinates
-			on the map chart.
-
-			Based on https://stackoverflow.com/a/35476690 
+			on the map chart. Called by the map chart each time
+			it re-renders (i.e. when crossfilter changes).
 			**********************************************/
-			var projection; // this gets set later.
+			var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection) 
 			{
 
-				// No need to redraw when filter changes because dots 
-				// don't depend on filters yet.
-				if(!d3.select("g.station_dots").empty())
-				{
-					return;
-					//if(d3.select(".station-dots").style("display") == "none") { return; }
-					
-				}
-
 				var svg = _chart.svg();
-				svg.selectAll("g.station_dots").remove();
 
 				var group = svg.selectAll("g.station_dots");
 
+				// Create SVG circle elements for all stations.
+				// This is only done once when the page first loads.
 				if (group.empty()) {
+
 					group = svg.append("g").classed("station_dots", true);
+
+					var additional_nodes = group.selectAll("circle").data(bike_stations_zip, function(x) { return x.id; });
+
+					additional_nodes.enter()
+						.append("circle")
+						.attr("x", 0)
+						.attr("y", 0)
+						.attr("r", 0)
+						.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+						.style("opacity", 1.0)
+						.style("fill", "white")
+						.style("stroke", "black")
+						.style("stroke-width", "0.1%")
+
+					additional_nodes.exit().remove();
 				}
 
-				var additional_nodes = group.selectAll("circle").data(bike_stations_zip, function(x) { return x.id; });
-
-				/* 
-				This function should probably filter the dots depending on current selection/filter, 
-				but it has to relate to the original bike dimension and not station coordinates.
-				Not sure how to implement this yet so for now the dots are not filtered.
-			
-				var i = 0;
+				// Find stations selected with current crossfilter
+				var filtered_stations = new Map();
 				_chart.dimension().top(Infinity).map(function(d) {
-					i++;
-					console.log(d.zip);
-					return d;
+					var station = bike_stations.get(d.start_id);
+					if(station)
+					{
+						filtered_stations.set(d.start_id, station);
+					}
 				});
-				console.log(i) // equal to the number of selected/filtered records.
-				*/
 
-				additional_nodes.enter()
-					.append("circle")
-					.attr("x", 0)
-					.attr("y", 0)
-					.attr("r", 3)
-					.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
-					.style("opacity", 0.0)
-					.style("fill", "white")
-					.style("stroke", "black")
-					.style("stroke-width", "0.1%")
-					.transition().style("opacity", 1.0).duration(500);
-
-				additional_nodes.exit().remove();
+				// Loop through all SVG circle elements and set radius
+				// to 3 or 0 depending on if the station should be visible
+				// or not according to the filtered stations.
+				// Also uses a variable transition duration to make
+				// the radius animate in and out at different speeds.
+				group.selectAll("circle").each(function(d, i) {
+					if(filtered_stations.get(d.id))
+					{
+						d3.select(this)
+							.transition().attr("r", 3.5).duration(i*10)
+					}
+					else
+					{
+						d3.select(this)
+							.transition().attr("r", 0).duration(i*10)
+					}
+				});
 			}
 
 			var cross_filter = crossfilter(data);
