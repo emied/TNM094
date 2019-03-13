@@ -113,9 +113,5 @@ set_date_button.addEventListener('click', function() {
 
 		drawChart(data);
 
-		/*
-		drawChart() now does this with updating values.
-		infoBox(data);
-		*/
 	}
 });

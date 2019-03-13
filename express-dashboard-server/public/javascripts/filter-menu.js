@@ -2,7 +2,9 @@
 var data_load_text = document.getElementById('data-load');
 data_load_text.innerHTML = "Status: Waiting for request.";
 
-$(function() {
+
+
+$(function filter() {
   $('input[name="daterange"]').daterangepicker({
     opens: 'right'
   }, function(start, end, label) {
