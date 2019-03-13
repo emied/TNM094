@@ -2,9 +2,9 @@ var data_load_text = document.getElementById('data-load');
 
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
-	var start = "2018-01-01+00:00:00";
-	var end = "2018-12-31+23:59:59";
-	var decimate = 64; // decimate value should be set depending on device
+	var start = "2018-11-03+00:00:00";
+	var end = "2018-11-15+23:59:59";
+	var decimate = 1; // decimate value should be set depending on device
 
 	data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
 	data_load_text.innerHTML += "% reduced data between " + start + " and " + end + " from server...";
@@ -19,7 +19,6 @@ function startupDataRequest() {
 	request.send();
 
 	request.onload = function() {
-
 		// Check and display errors. There's probably a better way but this is just for testing.
 		if (request.status != 200)
 		{

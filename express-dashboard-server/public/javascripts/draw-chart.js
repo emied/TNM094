@@ -67,7 +67,7 @@ function drawChart(data) {
 			var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection) 
 			{
-				//drawBikeRoute(_chart, selection);
+				drawBikeRoute(_chart, selection);
 
 				var svg = _chart.svg();
 
@@ -413,7 +413,7 @@ function drawChart(data) {
 					return p;
 				},
 
-				function(p,v) 
+				function(p, v) 
 				{ 
 					const count = p.bikes.get(v.bike_id);
 					if (count === 1) 

@@ -1,29 +1,37 @@
-
 var data_load_text = document.getElementById('data-load');
 data_load_text.innerHTML = "Status: Waiting for request.";
 
-
+// For debugging
+var decimate_slider = document.getElementById('decimate-slider');
+noUiSlider.create(decimate_slider, {
+  range: { min: 1, max: 64 },
+  step: 1,
+  tooltips: [{ to: function(v) { return Math.round(v); }}],
+  start: 32
+});
 
 $(function filter() {
   $('input[name="daterange"]').daterangepicker({
     opens: 'right'
-  }, function(start, end, label) {
-    var dataset = 'bike';
-    data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / 20).toFixed(2);
-    data_load_text.innerHTML += "% reduced data between " + start.format('YYYY-MM-DD') + " and " + end.format('YYYY-MM-DD') + " from server...";
+  }, function(start_date, end_date, label) {
 
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    var end = end_date.format('YYYY-MM-DD');
+    var start = start_date.format('YYYY-MM-DD');
+    var dataset = 'bike';
+    var decimate = Math.round(decimate_slider.noUiSlider.get());
 
     var t0 = performance.now();
 
-    var requestURL = '/api/data_range?dataset=' + dataset + '&start=' + start.format('YYYY-MM-DD') + "&end=" + end.format('YYYY-MM-DD') + "&decimate=" + 20;
+    data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
+    data_load_text.innerHTML += "% reduced data between " + start + " and " + end + " from server...";
+
+    var requestURL = '/api/data_range?dataset=' + dataset + '&start=' + start + "&end=" + end + "&decimate=" + decimate.toString();
     var request = new XMLHttpRequest();
     request.open('GET', requestURL);
     request.responseType = 'json';
     request.send();
 
     request.onload = function() {
-
       // Check and display errors. There's probably a better way but this is just for testing.
       if (request.status != 200)
       {

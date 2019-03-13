@@ -13,15 +13,6 @@ body {
 	font-weight: bold;
 }
 
-.slider {
-	max-width: 400px;
-  margin-left: 45px;
-  margin-right: 45px;
-  margin-top: 20px;
-	/*margin-top: 60px;*/
-	/*margin-bottom: 40px;*/
-}
-
 .noUi-handle-lower .noUi-tooltip
 {
   bottom: -130%;
@@ -52,17 +43,6 @@ body {
 
 #coordinate-scatter g.axis {
   display: none;
-}
-
-#set-date {
-  background: #818181;
-  font: 700 11px/30px Arial;
-  text-transform: uppercase;
-  padding: 0 15px;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin: 15px 5px 0 0;
 }
 
 button {
@@ -121,7 +101,7 @@ button {
 }
 
 /* warning boxes (red) */
-#war-box-1 {
+#warning-box-1 {
   width: 250px;
   height: 150px;
   background-color: #e60000;
@@ -130,7 +110,7 @@ button {
 	border-radius: 5px;
 }
 
-#war-box-2 {
+#warning-box-2 {
   width: 250px;
   height: 150px;
   background-color: #ff4d4d;
@@ -155,17 +135,6 @@ h4.info-box-text {
 	color: white;
 	text-align: center;
 }
-
-/*
-#box-test {
-  width: 300px;
-  height: 300px;
-  padding: 50px;
-  position: absolute;
-  margin: -100px 0px 0px 850px;
-  cursor: pointer;
-}
-*/
 
 /* Sidemenu */
 
@@ -261,9 +230,9 @@ g.station_dots {
 
 /** Warning **/
 
-#meny-warning {
+#menu-warning {
 	transition: color 0.3s, margin-left .5s;
-  margin-left: 10px;
+  margin-left: 20px;
   float: left;
   color: #ff3333;
   font-size: 30px;
@@ -271,15 +240,15 @@ g.station_dots {
   padding: 6px 0px;
 }
 
-#meny-warning:hover{
+#menu-warning:hover{
 	color: #e60000;
 }
 
-#meny-warning:hover #warModal {
+#menu-warning:hover #warning-modal {
 	display: block;
 }
 
-#warModal {
+#warning-modal {
 	display: none;
 	z-index: 1;
 	text-align: center;
@@ -291,29 +260,20 @@ g.station_dots {
 	background: rgba(255, 102, 102, 0.7);
 }
 
-#close-war {
-	cursor: pointer;
-	font-size: 30px;
-}
-
-#close-war:hover {
-	color: #ffffff;
-}
-
 .modal-content {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 25px;
 	margin: auto;
 }
 
-#fix-war {
+#fix-warning {
 	cursor: pointer;
 	color: black;
 	margin-left: 10px;
 	font-size: 25px;
 }
 
-#fix-war:hover {
+#fix-warning:hover {
 	text-decoration: none;
 	color: white;
 }

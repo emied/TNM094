@@ -1,11 +1,3 @@
-//-
-	index.pug
-
-	Prototype webpage for testing API during development.
-
-	Should be replaced with templates describing dashboards.
-	No index/home page will be needed since index will redirect to one of the dashboards.
-
 extends ../layout
 
 block content
@@ -35,9 +27,8 @@ block content
 				#bike-id-chart(style='width: 400px; height: 250px;margin-left: 17px')
 		
 	script(src='../javascripts/draw-chart.js')
-	script(src='../javascripts/date-slider.js')
+	script(src='../javascripts/filter-menu.js')
 	script(src='javascripts/startup-data-request.js')
-	script(src='../javascripts/info-boxes.js')
 
 	//- Temporary solution to load data when page loads. Simulates a data request click.
 	script.
