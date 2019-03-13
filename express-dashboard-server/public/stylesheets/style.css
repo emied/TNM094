@@ -120,6 +120,26 @@ button {
   float: left;
 }
 
+/* warning boxes (red) */
+#war-box-1 {
+  width: 250px;
+  height: 150px;
+  background-color: #e60000;
+  margin: 15px 15px 15px 15px;
+  float: left;
+	border-radius: 5px;
+}
+
+#war-box-2 {
+  width: 250px;
+  height: 150px;
+  background-color: #ff4d4d;
+  margin: 15px 15px 15px 15px;
+  float: left;
+	border-radius: 5px;
+}
+
+
 /*style font inside infoboxes, */
 h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
@@ -192,7 +212,7 @@ h4.info-box-text {
 
 #toggle-dots {
   transition: color 0.3s;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;
@@ -237,4 +257,73 @@ g.station_dots {
 .topnav a.active {
   background-color: #4CAF50;
   color: white;
+}
+
+/** Warning **/
+
+#meny-warning {
+	transition: color 0.3s, margin-left .5s;
+  margin-left: 10px;
+  float: left;
+  color: #ff3333;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+#meny-warning:hover{
+	color: #e60000;
+}
+
+#meny-warning:hover #warModal {
+	display: block;
+}
+
+#warModal {
+	display: none;
+	z-index: 1;
+	text-align: center;
+	padding-top: 10px;
+	border-top: solid rgba(255,255, 255, 0.5);
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	background: rgba(255, 102, 102, 0.7);
+}
+
+#close-war {
+	cursor: pointer;
+	font-size: 30px;
+}
+
+#close-war:hover {
+	color: #ffffff;
+}
+
+.modal-content {
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 25px;
+	margin: auto;
+}
+
+#fix-war {
+	cursor: pointer;
+	color: black;
+	margin-left: 10px;
+	font-size: 25px;
+}
+
+#fix-war:hover {
+	text-decoration: none;
+	color: white;
+}
+
+/** Questionmark - will not work :( **/
+.question {
+	transition: color 0.3s, margin-left .5s;
+  margin-left: 10px;
+  float: left;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
 }
