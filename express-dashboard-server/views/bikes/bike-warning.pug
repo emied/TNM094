@@ -1,0 +1,42 @@
+//-
+	index.pug
+
+	Prototype webpage for testing API during development.
+
+	Should be replaced with templates describing dashboards.
+	No index/home page will be needed since index will redirect to one of the dashboards.
+
+extends ../layout
+
+block content
+
+	include ../topmenu.pug
+	include ../sidemenu.pug
+
+	#count-chart.dc-data-count(style="padding-left: 50px; padding-top: 0px; float: left")
+
+		div
+			span.filter-count
+			span#t1
+			span.total-count
+			span#t2
+			a#t3(href='javascript:dc.filterAll();dc.renderAll();')
+			span  |
+			span#data-load
+
+		.info-boxes
+			#war-box-1
+			#war-box-2
+
+
+				//- Should be possible to overlay this over the map using composite chart.
+
+				//#coordinate-scatter(style='width: 400px; height: 400px')
+
+	script(src='../javascripts/draw-chart.js')
+	script(src='../javascripts/date-slider.js')
+	script(src='../javascripts/info-boxes.js')
+
+	//- Temporary solution to load data when page loads. Simulates a data request click.
+	script.
+		document.getElementById('set-date').click();
