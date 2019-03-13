@@ -12,13 +12,6 @@ data point distribution over the time interval.
 
 ***************************************************/
 
-const EARTH_RADIUS = 6371000;
-
-function deg2rad(deg)
-{
-	return deg * Math.PI / 180.0;
-}
-
 function remove_empty_bins(source_group) {
   return {
     all: function() {
@@ -215,43 +208,7 @@ function drawChart(data) {
 			var bike_id_dimension = cross_filter.dimension(function(d) {
 				return d.bike_id;
 			});
-		
 			bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
-
-			/***************************************************************
-			Station coordinate scatter chart
-
-			This scatter plot is basically a map but without geology lines.
-			Should be possible to overlay the map.
-		
-			Blue dots = low activity
-			Green dots = medium activity
-			Orange dots = high activity
-			***************************************************************/
-			// var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
-
-			// var start_coordinate_dimension = cross_filter.dimension(function(d) {
-			// 	const max_lat = 37.88022244590679;
-			// 	const min_lat = 37.330165;
-		
-			// 	var mid_lat = min_lat + (max_lat-min_lat)/2.0;
-		
-			// 	x = EARTH_RADIUS * deg2rad(d.lon) * Math.cos(deg2rad(mid_lat));
-			// 	y = EARTH_RADIUS * deg2rad(d.lat);
-		
-			// 	return [x, y];
-			// });
-			// var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
-		
-			// non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
-
-			// var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			// var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			// var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
-		
-			// max_coord_count = Math.pow(max_coord_count, 1/8);
-			// min_coord_count = Math.pow(min_coord_count, 1/8);
-			// mid_coord_count = Math.pow(mid_coord_count, 1/8);
 			
 			/*************
 				Pie chart
@@ -347,40 +304,6 @@ function drawChart(data) {
 					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
 		
-			// coordinate_scatter
-			// 	.width(400)
-			// 	.height(400)
-			// 	.dimension(start_coordinate_dimension)
-			// 	.group(non_empty_start_coordinate_group)
-		
-			// 	.colorAccessor(function(d) {
-			// 		return Math.pow(d.value, 1/8);
-			// 	})
-		
-			// 	.colors(d3.scaleLinear().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
-		
-			// 	.symbolSize(6)
-		
-			// 	.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
-		
-			// 	.x(d3.scaleLinear().domain([4195000, 4210000]))
-			// 	.y(d3.scaleLinear().domain([-10790000, -10765000]))
-		
-			// 	.elasticY(true)
-			// 	.elasticX(true)
-
-			// 	// 1 kilometer padding
-			// 	.yAxisPadding(1000)
-			// 	.xAxisPadding(1000)
-		
-			// 	.renderHorizontalGridLines(true)
-			// 	.renderVerticalGridLines(true)
-		
-			// 	.renderLabel(true)
-			// 	.label(function(p) {
-			// 	  return p.value;
-			// 	});
-		
 			date_bar_chart
 				.width(700)
 				.height(150)
@@ -431,57 +354,6 @@ function drawChart(data) {
 			count_chart
 				.dimension(cross_filter)
 				.group(cross_filter.groupAll());
-		
-			/*********
-			FLYTTA PIECHART FUNKTION - KANSKE ONÖDIG ----
-		
-			//Call dragElement
-			dragElement(document.getElementById("pie-chart"));
-		
-			function dragElement(elmnt) {
-			  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-			  if (document.getElementById(elmnt)) {
-		
-			    // if present, the header is where you move the DIV from:
-			    document.getElementById(elmnt).onmousedown = dragMouseDown;
-			  }
-				else {
-			    // otherwise, move the DIV from anywhere inside the DIV:
-			    elmnt.onmousedown = dragMouseDown;
-			  }
-		
-				function dragMouseDown(e) {
-			  e = e || window.event;
-			  e.preventDefault();
-			  // get the mouse cursor position at startup:
-			  pos3 = e.clientX;
-			  pos4 = e.clientY;
-			  document.onmouseup = closeDragElement;
-			  // call a function whenever the cursor moves:
-			  document.onmousemove = elementDrag;
-				}
-		
-				function elementDrag(e) {
-			  e = e || window.event;
-			  e.preventDefault();
-			  // calculate the new cursor position:
-			  pos1 = pos3 - e.clientX;
-			  pos2 = pos4 - e.clientY;
-			  pos3 = e.clientX;
-			  pos4 = e.clientY;
-			  // set the element's new position:
-			  elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-			  elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-				}
-		
-				function closeDragElement() {
-			  	// stop moving when mouse button is released:
-			  	document.onmouseup = null;
-			  	document.onmousemove = null;
-				}
-			}
-		
-			*********************************/
 
 			/******************
 			Average speed display
@@ -605,10 +477,12 @@ function drawChart(data) {
 			document.getElementById('t1').innerHTML = " bike rides out of ";
 			document.getElementById('t2').innerHTML = " selected. | ";
 			document.getElementById('t3').innerHTML = " Reset All";
-		
-			document.getElementById("map-chart").style.border = "1px solid black";
-
-			//document.getElementById("coordinate-scatter").style.border = "1px solid black";
+			
+			var map_chart_element = document.getElementById("map-chart");
+			if(map_chart_element)
+			{
+				map_chart_element.style.border = "1px solid black";
+			}
 
 			var t2 = performance.now();
 			data_load_text.innerHTML += " Indexed and drawn in " + (t2-t1).toFixed(0) + " ms.";

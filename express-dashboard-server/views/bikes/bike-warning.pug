@@ -28,15 +28,10 @@ block content
 			#war-box-1
 			#war-box-2
 
-
-				//- Should be possible to overlay this over the map using composite chart.
-
-				//#coordinate-scatter(style='width: 400px; height: 400px')
-
 	script(src='../javascripts/draw-chart.js')
 	script(src='../javascripts/date-slider.js')
 	script(src='../javascripts/info-boxes.js')
 
 	//- Temporary solution to load data when page loads. Simulates a data request click.
 	script.
-		document.getElementById('set-date').click();
+		startupDataRequest();

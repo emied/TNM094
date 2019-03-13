@@ -29,6 +29,4 @@ Renders the homepage.
 *************************************************************************************/
 router.get('/dashboard', dashboard_controller.dashboard);
 
-
-
 module.exports = router;
