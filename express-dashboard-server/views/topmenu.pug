@@ -8,10 +8,10 @@
 		a(href='dashboard?data=bike&view=2') View2
 		a(href='dashboard?data=bike&view=3') View3
 
-		span#meny-warning.glyphicon.glyphicon-bullhorn(onclick='toggleWar()')
-			.dropdown-warning
-					a(href='#') warning 1
+	span#meny-warning.glyphicon.glyphicon-bullhorn(onclick='toggleWar()')
+
 
 #warModal
-			.modal-content
 			p Du har 10 varningar
+			span#close-war.glyphicon.glyphicon-chevron-up(onclick='closeWar()')
+			a(href='dashboard?data=bike&view=4')#fix-war.glyphicon.glyphicon-wrench

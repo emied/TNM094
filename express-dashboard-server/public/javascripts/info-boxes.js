@@ -22,4 +22,11 @@ function infoBox(data) {
 
   document.getElementById('info-box-2').innerHTML = "<h4 class='info-box-text'><br>Average Speed</h4>";
   document.getElementById('info-box-2').innerHTML += "<h5 class='info-box-text'>" + avgSpeed + " km/h</h5>";
+
+//Belive this way is wrong but idk it wont work tho
+  document.getElementById('war-box-1').innerHTML = "<h4 class='info-box-text'><br>Total Distance</h4>";
+  document.getElementById('war-box-1').innerHTML += "<h5 class='info-box-text'>" + Math.round(distSum)/1000 + " km</h5>";
+
+  document.getElementById('war-box-2').innerHTML = "<h4 class='info-box-text'><br>Average Speed</h4>";
+  document.getElementById('war-box-2').innerHTML += "<h5 class='info-box-text'>" + avgSpeed + " km/h</h5>";
 }

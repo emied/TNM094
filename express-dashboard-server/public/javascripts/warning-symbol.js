@@ -13,7 +13,11 @@ var open = true;
 var modal = document.getElementById('warModal');
 
 function toggleWar() { //Open small window
-    document.getElementById("meny-warning");
     modal.style.display = "block";
     open = !open;
+}
+
+function closeWar() {
+  modal.style.display = "none";
+
 }
