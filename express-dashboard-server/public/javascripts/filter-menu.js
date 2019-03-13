@@ -51,11 +51,6 @@ $(function filter() {
       }
 
       drawChart(data);
-
-      /*
-      drawChart() now does this with updating values.
-      infoBox(data);
-      */
     }
   });
 });

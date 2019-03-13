@@ -40,8 +40,9 @@ block content
 		
 	script(src='../javascripts/draw-chart.js')
 	script(src='../javascripts/date-slider.js')
+	script(src='javascripts/startup-data-request.js')
 	script(src='../javascripts/info-boxes.js')
 
 	//- Temporary solution to load data when page loads. Simulates a data request click.
 	script.
-		document.getElementById('set-date').click();
+		startupDataRequest();

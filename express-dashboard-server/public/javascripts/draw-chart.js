@@ -74,7 +74,7 @@ function drawChart(data) {
 			var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection) 
 			{
-				drawBikeRoute(_chart, selection);
+				//drawBikeRoute(_chart, selection);
 
 				var svg = _chart.svg();
 
@@ -159,10 +159,6 @@ function drawChart(data) {
 								var e = projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
 								bike_id_path.push({x: s[0], y: s[1]});
 								bike_id_path.push({x: e[0], y: e[1]});
-							}
-							else
-							{
-								console.log("nope!")
 							}
 						}
 					});
