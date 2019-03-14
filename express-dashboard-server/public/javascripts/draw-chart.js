@@ -26,7 +26,7 @@ function drawChart(data) {
 	var t1 = performance.now();
 	d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
 		d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
-
+			
 			// Filter out stations that we haven't assigned ZIP codes to yet
 			bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
@@ -406,15 +406,13 @@ function drawChart(data) {
 			var unique_bikes_display = dc.numberDisplay("#info-box-3");
 
 			var unique_bikes_group = cross_filter.groupAll().reduce(
-				function(p, v)
-				{ 
+				function(p, v) { 
 					const count = p.bikes.get(v.bike_id) ||  0;
 					p.bikes.set(v.bike_id, count + 1);
 					return p;
 				},
 
-				function(p, v) 
-				{ 
+				function(p, v) { 
 					const count = p.bikes.get(v.bike_id);
 					if (count === 1) 
 					{
@@ -427,8 +425,7 @@ function drawChart(data) {
 					return p;
 				},
 
-				function() 
-				{ 
+				function() { 
 					return { bikes: new Map() };
 				}
 			);

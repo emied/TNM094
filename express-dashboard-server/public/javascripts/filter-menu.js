@@ -13,11 +13,11 @@ noUiSlider.create(decimate_slider, {
 $(function filter() {
   $('input[name="daterange"]').daterangepicker({
     opens: 'right'
-  }, function(start_date, end_date, label) {
-
-    var end = end_date.format('YYYY-MM-DD');
-    var start = start_date.format('YYYY-MM-DD');
+  }, function(start, end, label) {
+    
     var dataset = 'bike';
+    start = start.format('YYYY-MM-DD');
+    end = end.format('YYYY-MM-DD');
     var decimate = Math.round(decimate_slider.noUiSlider.get());
 
     var t0 = performance.now();
