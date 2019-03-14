@@ -192,7 +192,7 @@ h4.info-box-text {
 
 #toggle-dots {
   transition: color 0.3s;
-  float: left; 
+  float: left;
   color: #e1e1e1;
   font-size: 30px;
   cursor: pointer;

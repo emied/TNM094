@@ -37,22 +37,22 @@ function drawChart(data) {
 			// Filter out stations that we haven't assigned ZIP codes to yet
 			bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
-			/********************************************************** 
+			/**********************************************************
 			 For each bike ride, find the ZIP code of its start station
 			 and remove data entry if none can be found.
 			 Since we only use geo data with ZIP codes from SF currently,
 			 every bike ride outside SF will be removed (Bay Area, San Jose)
 
-			 This is pretty processing intensive. It's basically a tradeoff 
+			 This is pretty processing intensive. It's basically a tradeoff
 			 between bandwidth and processing (less data needs to be sent
 			 but more processing needs to be done on that data). There
 			 might me a better solution.
 
-			 Update: 
+			 Update:
 			 This gives a 600% performance improvement compared to
-			 the old method (at decimate=8). 
+			 the old method (at decimate=8).
 
-			 Now bike_stations.get(station id).zip (for example) is used 
+			 Now bike_stations.get(station id).zip (for example) is used
 			 to get specific data of a station.
 			**********************************************************/
 
@@ -66,23 +66,23 @@ function drawChart(data) {
 			// Filter out bike ride entries that starts in a station w/o ZIP code
 			data = data.filter(d => { return bike_stations.get(d.start_id)});
 
-			/********************************************** 
+			/**********************************************
 			Function that draws circles at station coordinates
 			on the map chart.
 
-			Based on https://stackoverflow.com/a/35476690 
+			Based on https://stackoverflow.com/a/35476690
 			**********************************************/
 			var projection; // this gets set later.
-			function drawStationDots(_chart, selection) 
+			function drawStationDots(_chart, selection)
 			{
 
-				// No need to redraw when filter changes because dots 
+				// No need to redraw when filter changes because dots
 				// don't depend on filters yet.
 				if(!d3.select("g.station_dots").empty())
 				{
 					//return;
 					//if(d3.select(".station-dots").style("display") == "none") { return; }
-					
+
 				}
 
 				var svg = _chart.svg();
@@ -94,8 +94,8 @@ function drawChart(data) {
 					group = svg.append("g").classed("station_dots", true);
 				}
 
-				/* 
-				This function should probably filter the dots depending on current selection/filter, 
+				/*
+				This function should probably filter the dots depending on current selection/filter,
 				but it has to relate to the original bike dimension and not station coordinates.
 				Not sure how to implement this yet so for now the dots are not filtered.
 				*/
@@ -129,7 +129,7 @@ function drawChart(data) {
 			}
 
 			var cross_filter = crossfilter(data);
-		
+
 			var count_chart = dc.dataCount("#count-chart");
 
 			/**********************************
@@ -146,7 +146,7 @@ function drawChart(data) {
 
 			var start = new Date(day_dimension.bottom(1)[0].start_time);
 			var end = new Date(day_dimension.top(1)[0].start_time);
-			
+
 			/**********************************
 				Bike id row chart
 			***********************************/
@@ -155,7 +155,7 @@ function drawChart(data) {
 			var bike_id_dimension = cross_filter.dimension(function(d) {
 				return d.bike_id;
 			});
-		
+
 			var bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
 
 			/***************************************************************
@@ -163,7 +163,7 @@ function drawChart(data) {
 
 			This scatter plot is basically a map but without geology lines.
 			Should be possible to overlay the map.
-		
+
 			Blue dots = low activity
 			Green dots = medium activity
 			Orange dots = high activity
@@ -173,26 +173,26 @@ function drawChart(data) {
 			// var start_coordinate_dimension = cross_filter.dimension(function(d) {
 			// 	const max_lat = 37.88022244590679;
 			// 	const min_lat = 37.330165;
-		
+
 			// 	var mid_lat = min_lat + (max_lat-min_lat)/2.0;
-		
+
 			// 	x = EARTH_RADIUS * deg2rad(d.lon) * Math.cos(deg2rad(mid_lat));
 			// 	y = EARTH_RADIUS * deg2rad(d.lat);
-		
+
 			// 	return [x, y];
 			// });
 			// var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
-		
+
 			// non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
 
 			// var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
 			// var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
 			// var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
-		
+
 			// max_coord_count = Math.pow(max_coord_count, 1/8);
 			// min_coord_count = Math.pow(min_coord_count, 1/8);
 			// mid_coord_count = Math.pow(mid_coord_count, 1/8);
-			
+
 			/*************
 				Pie chart
 			*************/
@@ -209,16 +209,16 @@ function drawChart(data) {
 				}
 				else
 					test = "Other"
-		
+
 				return test;
 			});
 			var genderGroup = genderDimension.group().reduceCount();
 
 			/**************************************************************
-			Map choropleth chart over ZIP code regions in SF. 
+			Map choropleth chart over ZIP code regions in SF.
 
 			Color corresponds to the amount of bike rides that start in the region.
-		
+
 			Gray = no bike rides (probably because there's no stations in region)
 			Blue = medium activity
 			Green = high activity
@@ -232,25 +232,25 @@ function drawChart(data) {
 				return bike_stations.get(d.start_id).zip;
 			});
 			var zip_group = zip_dimension.group().reduceCount();
-			
+
 			var center = d3.geoCentroid(map_data)
 			var scale  = 100;
 			var offset = [width/2, height/2];
 			projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-			
+
 			var path = d3.geoPath().projection(projection);
 
 			// Temporary offset and scale to zoom in on interesting region.
 			// The code would do this automatically if no-bike-station-zones are removed.
 			var t_of = [-75, 20];
-			var t_sc = 1.2; 
-			
+			var t_sc = 1.2;
+
 			var bounds  = path.bounds(map_data);
 			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
 			var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
 			var scale   = (hscale < vscale) ? hscale : vscale;
 			var offset  = [width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
-			
+
 			projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 			path = path.projection(projection);
 
@@ -286,41 +286,41 @@ function drawChart(data) {
 				.title(function (p) {
 					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
-		
+
 			// coordinate_scatter
 			// 	.width(400)
 			// 	.height(400)
 			// 	.dimension(start_coordinate_dimension)
 			// 	.group(non_empty_start_coordinate_group)
-		
+
 			// 	.colorAccessor(function(d) {
 			// 		return Math.pow(d.value, 1/8);
 			// 	})
-		
+
 			// 	.colors(d3.scaleLinear().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
-		
+
 			// 	.symbolSize(6)
-		
+
 			// 	.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
-		
+
 			// 	.x(d3.scaleLinear().domain([4195000, 4210000]))
 			// 	.y(d3.scaleLinear().domain([-10790000, -10765000]))
-		
+
 			// 	.elasticY(true)
 			// 	.elasticX(true)
 
 			// 	// 1 kilometer padding
 			// 	.yAxisPadding(1000)
 			// 	.xAxisPadding(1000)
-		
+
 			// 	.renderHorizontalGridLines(true)
 			// 	.renderVerticalGridLines(true)
-		
+
 			// 	.renderLabel(true)
 			// 	.label(function(p) {
 			// 	  return p.value;
 			// 	});
-		
+
 			date_bar_chart
 				.width(700)
 				.height(150)
@@ -337,7 +337,7 @@ function drawChart(data) {
 					return d.key;
 				})
 				.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
-		
+
 			bike_id_chart
 				.width(400)
 				.height(250)
@@ -345,7 +345,7 @@ function drawChart(data) {
 				.dimension(bike_id_dimension)
 				// Not possible to remove x-axis for this chart via css for whatever reason.
 				// This works but it's ugly
-				.margins({left: 30, top: 10, right: 50, bottom: -1}) 
+				.margins({left: 30, top: 10, right: 50, bottom: -1})
 				.rowsCap(5)
 				.othersGrouper(false)
 				.label(function(d) {
@@ -356,7 +356,7 @@ function drawChart(data) {
 				})
 				.elasticX(true)
 				.xAxis().ticks(3);
-		
+
 			pie_chart
 				.width(250)
 				.height(250)
@@ -367,21 +367,21 @@ function drawChart(data) {
 						console.log('click!', d);
 					});
 				});
-		
+
 			count_chart
 				.dimension(cross_filter)
 				.group(cross_filter.groupAll());
-		
+
 			/*********
 			FLYTTA PIECHART FUNKTION - KANSKE ONÖDIG ----
-		
+
 			//Call dragElement
 			dragElement(document.getElementById("pie-chart"));
-		
+
 			function dragElement(elmnt) {
 			  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 			  if (document.getElementById(elmnt)) {
-		
+
 			    // if present, the header is where you move the DIV from:
 			    document.getElementById(elmnt).onmousedown = dragMouseDown;
 			  }
@@ -389,7 +389,7 @@ function drawChart(data) {
 			    // otherwise, move the DIV from anywhere inside the DIV:
 			    elmnt.onmousedown = dragMouseDown;
 			  }
-		
+
 				function dragMouseDown(e) {
 			  e = e || window.event;
 			  e.preventDefault();
@@ -400,7 +400,7 @@ function drawChart(data) {
 			  // call a function whenever the cursor moves:
 			  document.onmousemove = elementDrag;
 				}
-		
+
 				function elementDrag(e) {
 			  e = e || window.event;
 			  e.preventDefault();
@@ -413,14 +413,14 @@ function drawChart(data) {
 			  elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
 			  elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
 				}
-		
+
 				function closeDragElement() {
 			  	// stop moving when mouse button is released:
 			  	document.onmouseup = null;
 			  	document.onmousemove = null;
 				}
 			}
-		
+
 			*********************************/
 
 			/******************
@@ -441,11 +441,11 @@ function drawChart(data) {
 
 					return p;
 				},
-				function () { 
+				function () {
 					return {
 						count: 0,
 						sum_speed: 0.0
-					}; 
+					};
 				}
 			);
 
@@ -475,28 +475,28 @@ function drawChart(data) {
 
 			var unique_bikes_group = cross_filter.groupAll().reduce(
 				function(p, v)
-				{ 
+				{
 					const count = p.bikes.get(v.bike_id) ||  0;
 					p.bikes.set(v.bike_id, count + 1);
 					return p;
 				},
 
-				function(p,v) 
-				{ 
+				function(p,v)
+				{
 					const count = p.bikes.get(v.bike_id);
-					if (count === 1) 
+					if (count === 1)
 					{
 						p.bikes.delete(v.bike_id);
-					} 
-					else 
+					}
+					else
 					{
 						p.bikes.set(v.bike_id, count - 1);
 					}
 					return p;
 				},
 
-				function() 
-				{ 
+				function()
+				{
 					return { bikes: new Map() };
 				}
 			);
@@ -525,11 +525,11 @@ function drawChart(data) {
 
 					return p;
 				},
-				function () { 
+				function () {
 					return {
 						count: 0,
 						sum_duration: 0.0
-					}; 
+					};
 				}
 			);
 
@@ -538,14 +538,14 @@ function drawChart(data) {
 				.valueAccessor(d => { return d.count ? (d.sum_duration / (d.count)) : 0 })
 				.html({some: "<h4 class='info-box-text'><br>Average Trip Duration</h4><h5 class='info-box-text'>%number sec</h5>"})
 				.group(avg_duration_group);
-			
+
 			dc.renderAll();
 
 			// Super ugly solution but prevents this from showing before chart is loaded.
 			document.getElementById('t1').innerHTML = " bike rides out of ";
 			document.getElementById('t2').innerHTML = " selected. | ";
 			document.getElementById('t3').innerHTML = " Reset All";
-		
+
 			document.getElementById("map-chart").style.border = "1px solid black";
 
 			//document.getElementById("coordinate-scatter").style.border = "1px solid black";
