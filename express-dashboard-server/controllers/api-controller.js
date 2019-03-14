@@ -88,10 +88,18 @@ exports.data_range = function(req, res) {
 
 	var data = datasets[dataset]; // Use requested dataset
 
+	// Improve performance when getting data from the most interesting time interval.
+	// An index table for each day, week and month is probably a good idea.
+	var i = 0;
+	if(start >= new Date('2018-11-03 00:00:00'))
+	{
+		i = 1458603;
+	}
+
 	// Accumulate all data entries that satisfies the request and store in result.
 	// Will only work for data sorted by start_time in ascending order, check data/datasets.js.
 	var result = [];
-	for (var i = 0; i < data.length; i += decimate)
+	for ( ; i < data.length; i += decimate)
 	{
 		var date = new Date(data[i].start_time);
 		if (date >= start)

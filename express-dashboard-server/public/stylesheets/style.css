@@ -13,15 +13,6 @@ body {
 	font-weight: bold;
 }
 
-.slider {
-	max-width: 400px;
-  margin-left: 45px;
-  margin-right: 45px;
-  margin-top: 20px;
-	/*margin-top: 60px;*/
-	/*margin-bottom: 40px;*/
-}
-
 .noUi-handle-lower .noUi-tooltip
 {
   bottom: -130%;
@@ -52,17 +43,6 @@ body {
 
 #coordinate-scatter g.axis {
   display: none;
-}
-
-#set-date {
-  background: #818181;
-  font: 700 11px/30px Arial;
-  text-transform: uppercase;
-  padding: 0 15px;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin: 15px 5px 0 0;
 }
 
 button {
@@ -120,6 +100,26 @@ button {
   float: left;
 }
 
+/* warning boxes (red) */
+#warning-box-1 {
+  width: 250px;
+  height: 150px;
+  background-color: #e60000;
+  margin: 15px 15px 15px 15px;
+  float: left;
+	border-radius: 5px;
+}
+
+#warning-box-2 {
+  width: 250px;
+  height: 150px;
+  background-color: #ff4d4d;
+  margin: 15px 15px 15px 15px;
+  float: left;
+	border-radius: 5px;
+}
+
+
 /*style font inside infoboxes, */
 h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
@@ -135,17 +135,6 @@ h4.info-box-text {
 	color: white;
 	text-align: center;
 }
-
-/*
-#box-test {
-  width: 300px;
-  height: 300px;
-  padding: 50px;
-  position: absolute;
-  margin: -100px 0px 0px 850px;
-  cursor: pointer;
-}
-*/
 
 /* Sidemenu */
 
@@ -204,8 +193,8 @@ h4.info-box-text {
 }
 
 g.station_dots {
-  /*transition: opacity 0.5s;
-  opacity: 1.0;*/
+  transition: opacity 0.5s;
+  opacity: 1.0;
 }
 
 @media screen and (max-height: 450px) {
@@ -237,4 +226,64 @@ g.station_dots {
 .topnav a.active {
   background-color: #4CAF50;
   color: white;
+}
+
+/** Warning **/
+
+#menu-warning {
+	transition: color 0.3s, margin-left .5s;
+  margin-left: 20px;
+  float: left;
+  color: #ff3333;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+#menu-warning:hover{
+	color: #e60000;
+}
+
+#menu-warning:hover #warning-modal {
+	display: block;
+}
+
+#warning-modal {
+	display: none;
+	z-index: 1;
+	text-align: center;
+	padding-top: 10px;
+	border-top: solid rgba(255,255, 255, 0.5);
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	background: rgba(255, 102, 102, 0.7);
+}
+
+.modal-content {
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 25px;
+	margin: auto;
+}
+
+#fix-warning {
+	cursor: pointer;
+	color: black;
+	margin-left: 10px;
+	font-size: 25px;
+}
+
+#fix-warning:hover {
+	text-decoration: none;
+	color: white;
+}
+
+/** Questionmark - will not work :( **/
+.question {
+	transition: color 0.3s, margin-left .5s;
+  margin-left: 10px;
+  float: left;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 6px 0px;
 }

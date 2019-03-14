@@ -58,7 +58,6 @@ query_button.addEventListener('click', function() {
 });
 
 individual_button.addEventListener('click', function() {
-
 	var dataset = document.getElementById('dataset').value;
 	var start = document.getElementById('start').value;
 	var end = document.getElementById('end').value;

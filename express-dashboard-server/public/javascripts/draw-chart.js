@@ -12,13 +12,6 @@ data point distribution over the time interval.
 
 ***************************************************/
 
-const EARTH_RADIUS = 6371000;
-
-function deg2rad(deg)
-{
-	return deg * Math.PI / 180.0;
-}
-
 function remove_empty_bins(source_group) {
   return {
     all: function() {
@@ -68,64 +61,124 @@ function drawChart(data) {
 
 			/**********************************************
 			Function that draws circles at station coordinates
-			on the map chart.
-
-			Based on https://stackoverflow.com/a/35476690
+			on the map chart. Called by the map chart each time
+			it re-renders (i.e. when crossfilter changes).
 			**********************************************/
-			var projection; // this gets set later.
+			var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection)
 			{
-
-				// No need to redraw when filter changes because dots
-				// don't depend on filters yet.
-				if(!d3.select("g.station_dots").empty())
-				{
-					//return;
-					//if(d3.select(".station-dots").style("display") == "none") { return; }
-
-				}
+				drawBikeRoute(_chart, selection);
 
 				var svg = _chart.svg();
-				svg.selectAll("g.station_dots").remove();
 
 				var group = svg.selectAll("g.station_dots");
 
+				// Create SVG circle elements for all stations.
+				// This is only done once when the page first loads.
 				if (group.empty()) {
+
 					group = svg.append("g").classed("station_dots", true);
+
+					var additional_nodes = group.selectAll("circle").data(bike_stations_zip, function(x) { return x.id; });
+
+					additional_nodes.enter()
+						.append("circle")
+						.attr("x", 0)
+						.attr("y", 0)
+						.attr("r", 0)
+						.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+						.style("opacity", 1.0)
+						.style("fill", "white")
+						.style("stroke", "black")
+						.style("stroke-width", "0.1%")
+
+					additional_nodes.exit().remove();
 				}
 
-				/*
-				This function should probably filter the dots depending on current selection/filter,
-				but it has to relate to the original bike dimension and not station coordinates.
-				Not sure how to implement this yet so for now the dots are not filtered.
-				*/
-
-				var filtered_stations_map = new Map();
+				// Find stations selected with current crossfilter
+				var filtered_stations = new Map();
 				_chart.dimension().top(Infinity).map(function(d) {
 					var station = bike_stations.get(d.start_id);
 					if(station)
 					{
-						filtered_stations_map.set(d.start_id, station);
+						filtered_stations.set(d.start_id, station);
 					}
 				});
 
-				let filtered_stations = Array.from( filtered_stations_map.values() );
+				// Loop through all SVG circle elements and set radius
+				// to 3 or 0 depending on if the station should be visible
+				// or not according to the filtered stations.
+				// Also uses a variable transition duration to make
+				// the radius animate in and out at different speeds.
+				group.selectAll("circle").each(function(d, i) {
+					if(filtered_stations.get(d.id))
+					{
+						d3.select(this)
+							.transition().attr("r", 3.5).duration(i*10)
+					}
+					else
+					{
+						d3.select(this)
+							.transition().attr("r", 0).duration(i*10)
+					}
+				});
+			}
 
-				var additional_nodes = group.selectAll("circle").data(filtered_stations, function(x) { return x.zip; });
+			var bike_id_group;
+			function drawBikeRoute(_chart, selection)
+			{
 
-				additional_nodes.enter()
-					.append("circle")
-					.attr("x", 0)
-					.attr("y", 0)
-					.attr("r", 3)
-					.attr("transform", function(d){ var v = projection([d.lon, d.lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
-					.style("opacity", 1.0)
-					.style("fill", "white")
-					.style("stroke", "black")
-					.style("stroke-width", "0.1%")
-					//.transition().style("opacity", 1.0).duration(500);
+				var svg = _chart.svg();
+				//svg.selectAll("g.bike_id_path").remove();
 
-				additional_nodes.exit().remove();
+				var group = svg.selectAll("g.bike_id_path");
+
+				// Select the bike that has traveled the furthest distance to draw path for.
+				selected_bike_id = bike_id_group.top(1)[0].key;
+
+				if (group.empty()) {
+
+					var bike_id_path = [];
+
+					data.forEach( d => {
+						if(d.bike_id == selected_bike_id)
+						{
+							var start_station = bike_stations.get(d.start_id);
+							var end_station = bike_stations.get(d.end_id);
+
+							if(start_station && end_station)
+							{
+								var s = projection([parseFloat(start_station.lon), parseFloat(start_station.lat)]);
+								var e = projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
+								bike_id_path.push({x: s[0], y: s[1]});
+								bike_id_path.push({x: e[0], y: e[1]});
+							}
+						}
+					});
+
+					group = svg.append("g").classed("bike_id_path", true);
+
+					var lineFunction = d3.line()
+						.x(function(d) { return d.x; })
+						.y(function(d) { return d.y; })
+						.curve(d3.curveLinear);
+
+					var path = group.append("path")
+						.attr("d", lineFunction(bike_id_path))
+						.attr("stroke", "white")
+						.attr("stroke-width", 1)
+						.attr("fill", "none");
+
+					var totalLength = path.node().getTotalLength();
+
+					path
+						.attr("stroke-dasharray", totalLength + " " + totalLength)
+						.attr("stroke-dashoffset", totalLength)
+						.transition()
+							.duration(totalLength)
+							.ease(d3.easeCubicIn)
+							.attr("stroke-dashoffset", 0);
+				}
 			}
 
 			var cross_filter = crossfilter(data);
@@ -155,43 +208,7 @@ function drawChart(data) {
 			var bike_id_dimension = cross_filter.dimension(function(d) {
 				return d.bike_id;
 			});
-
-			var bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
-
-			/***************************************************************
-			Station coordinate scatter chart
-
-			This scatter plot is basically a map but without geology lines.
-			Should be possible to overlay the map.
-
-			Blue dots = low activity
-			Green dots = medium activity
-			Orange dots = high activity
-			***************************************************************/
-			// var coordinate_scatter = dc.scatterPlot('#coordinate-scatter');
-
-			// var start_coordinate_dimension = cross_filter.dimension(function(d) {
-			// 	const max_lat = 37.88022244590679;
-			// 	const min_lat = 37.330165;
-
-			// 	var mid_lat = min_lat + (max_lat-min_lat)/2.0;
-
-			// 	x = EARTH_RADIUS * deg2rad(d.lon) * Math.cos(deg2rad(mid_lat));
-			// 	y = EARTH_RADIUS * deg2rad(d.lat);
-
-			// 	return [x, y];
-			// });
-			// var start_coordinate_group = start_coordinate_dimension.group().reduceCount();
-
-			// non_empty_start_coordinate_group = remove_empty_bins(start_coordinate_group);
-
-			// var max_coord_count = Math.max.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			// var min_coord_count = Math.min.apply(Math, non_empty_start_coordinate_group.all().map(function(o) { return parseFloat(o.value); }));
-			// var mid_coord_count = Math.round(min_coord_count + (max_coord_count - min_coord_count) / 2.0);
-
-			// max_coord_count = Math.pow(max_coord_count, 1/8);
-			// min_coord_count = Math.pow(min_coord_count, 1/8);
-			// mid_coord_count = Math.pow(mid_coord_count, 1/8);
+			bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
 
 			/*************
 				Pie chart
@@ -242,8 +259,8 @@ function drawChart(data) {
 
 			// Temporary offset and scale to zoom in on interesting region.
 			// The code would do this automatically if no-bike-station-zones are removed.
-			var t_of = [-75, 20];
-			var t_sc = 1.2;
+			var t_of = [-65, 65];
+			var t_sc = 1.45;
 
 			var bounds  = path.bounds(map_data);
 			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
@@ -286,40 +303,6 @@ function drawChart(data) {
 				.title(function (p) {
 					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
-
-			// coordinate_scatter
-			// 	.width(400)
-			// 	.height(400)
-			// 	.dimension(start_coordinate_dimension)
-			// 	.group(non_empty_start_coordinate_group)
-
-			// 	.colorAccessor(function(d) {
-			// 		return Math.pow(d.value, 1/8);
-			// 	})
-
-			// 	.colors(d3.scaleLinear().domain([min_coord_count, mid_coord_count, max_coord_count]).interpolate(d3.interpolateLab).range(['#0cb1e6', "#2ac862", '#e09950']))
-
-			// 	.symbolSize(6)
-
-			// 	.margins({left: 0, top: 0, right: 0, bottom: 0}) // Compensate for removed axes
-
-			// 	.x(d3.scaleLinear().domain([4195000, 4210000]))
-			// 	.y(d3.scaleLinear().domain([-10790000, -10765000]))
-
-			// 	.elasticY(true)
-			// 	.elasticX(true)
-
-			// 	// 1 kilometer padding
-			// 	.yAxisPadding(1000)
-			// 	.xAxisPadding(1000)
-
-			// 	.renderHorizontalGridLines(true)
-			// 	.renderVerticalGridLines(true)
-
-			// 	.renderLabel(true)
-			// 	.label(function(p) {
-			// 	  return p.value;
-			// 	});
 
 			date_bar_chart
 				.width(700)
@@ -372,57 +355,6 @@ function drawChart(data) {
 				.dimension(cross_filter)
 				.group(cross_filter.groupAll());
 
-			/*********
-			FLYTTA PIECHART FUNKTION - KANSKE ONÖDIG ----
-
-			//Call dragElement
-			dragElement(document.getElementById("pie-chart"));
-
-			function dragElement(elmnt) {
-			  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-			  if (document.getElementById(elmnt)) {
-
-			    // if present, the header is where you move the DIV from:
-			    document.getElementById(elmnt).onmousedown = dragMouseDown;
-			  }
-				else {
-			    // otherwise, move the DIV from anywhere inside the DIV:
-			    elmnt.onmousedown = dragMouseDown;
-			  }
-
-				function dragMouseDown(e) {
-			  e = e || window.event;
-			  e.preventDefault();
-			  // get the mouse cursor position at startup:
-			  pos3 = e.clientX;
-			  pos4 = e.clientY;
-			  document.onmouseup = closeDragElement;
-			  // call a function whenever the cursor moves:
-			  document.onmousemove = elementDrag;
-				}
-
-				function elementDrag(e) {
-			  e = e || window.event;
-			  e.preventDefault();
-			  // calculate the new cursor position:
-			  pos1 = pos3 - e.clientX;
-			  pos2 = pos4 - e.clientY;
-			  pos3 = e.clientX;
-			  pos4 = e.clientY;
-			  // set the element's new position:
-			  elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-			  elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-				}
-
-				function closeDragElement() {
-			  	// stop moving when mouse button is released:
-			  	document.onmouseup = null;
-			  	document.onmousemove = null;
-				}
-			}
-
-			*********************************/
-
 			/******************
 			Average speed display
 			******************/
@@ -474,15 +406,13 @@ function drawChart(data) {
 			var unique_bikes_display = dc.numberDisplay("#info-box-3");
 
 			var unique_bikes_group = cross_filter.groupAll().reduce(
-				function(p, v)
-				{
+				function(p, v) {
 					const count = p.bikes.get(v.bike_id) ||  0;
 					p.bikes.set(v.bike_id, count + 1);
 					return p;
 				},
 
-				function(p,v)
-				{
+				function(p, v) {
 					const count = p.bikes.get(v.bike_id);
 					if (count === 1)
 					{
@@ -495,8 +425,7 @@ function drawChart(data) {
 					return p;
 				},
 
-				function()
-				{
+				function() {
 					return { bikes: new Map() };
 				}
 			);
@@ -546,9 +475,11 @@ function drawChart(data) {
 			document.getElementById('t2').innerHTML = " selected. | ";
 			document.getElementById('t3').innerHTML = " Reset All";
 
-			document.getElementById("map-chart").style.border = "1px solid black";
-
-			//document.getElementById("coordinate-scatter").style.border = "1px solid black";
+			var map_chart_element = document.getElementById("map-chart");
+			if(map_chart_element)
+			{
+				map_chart_element.style.border = "1px solid black";
+			}
 
 			var t2 = performance.now();
 			data_load_text.innerHTML += " Indexed and drawn in " + (t2-t1).toFixed(0) + " ms.";
