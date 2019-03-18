@@ -57,7 +57,7 @@ button {
 }
 
 /* div containing info boxes */
-.info-boxes {
+#info-boxes {
   width: 1200px;
   height: 150px;
 
@@ -65,39 +65,27 @@ button {
 }
 
 #info-box-1 {
-  width: 250px;
   height: 150px;
   background-color: #2ac8bc;
-  margin: 15px 15px 15px 15px;
-  float: left;
 	border-radius: 5px;
 }
 
 #info-box-2 {
-  width: 250px;
   height: 150px;
   background-color: #2ac862;
-  margin: 15px 15px 15px 15px;
-  float: left;
 	border-radius: 5px;
 }
 
 #info-box-3 {
-  width: 250px;
   height: 150px;
   background-color: #0cb1e6;
-  margin: 15px 15px 15px 15px;
 	border-radius: 5px;
-  float: left;
 }
 
 #info-box-4 {
-  width: 250px;
   height: 150px;
   background-color: #e09950;
-  margin: 15px 15px 15px 15px;
 	border-radius: 5px;
-  float: left;
 }
 
 /* warning boxes (red) */
@@ -125,7 +113,7 @@ h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	color: white;
 	font-size: 25px;
-	text-align: center;
+	/*text-align: center;*/
 }
 
 /*style font inside infoboxes, */
@@ -133,7 +121,7 @@ h4.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
 	color: white;
-	text-align: center;
+	/*text-align: center;*/
 }
 
 /* Sidemenu */

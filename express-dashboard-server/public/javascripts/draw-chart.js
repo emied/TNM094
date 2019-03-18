@@ -12,6 +12,11 @@ data point distribution over the time interval.
 
 ***************************************************/
 
+var bike_id_chart = dc.rowChart('#bike-id-chart');
+var pie_chart = dc.pieChart('#pie-chart');
+var date_bar_chart = dc.barChart('#date-bar-chart');
+var map_chart = dc.geoChoroplethChart("#map-chart");
+
 function remove_empty_bins(source_group) {
   return {
     all: function() {
@@ -22,11 +27,15 @@ function remove_empty_bins(source_group) {
   };
 }
 
+var m_data;
+
 function drawChart(data) {
 	var t1 = performance.now();
 	d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
 		d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
-			
+
+			m_data = map_data;
+
 			// Filter out stations that we haven't assigned ZIP codes to yet
 			bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
@@ -166,7 +175,7 @@ function drawChart(data) {
 					var path = group.append("path")
 						.attr("d", lineFunction(bike_id_path))
 						.attr("stroke", "white")
-						.attr("stroke-width", 1)
+						.attr("stroke-width", 0.5)
 						.attr("fill", "none");
 
 					var totalLength = path.node().getTotalLength();
@@ -188,7 +197,6 @@ function drawChart(data) {
 			/**********************************
 				Date bar chart
 			***********************************/
-			var date_bar_chart = dc.barChart('#date-bar-chart');
 
 			var day_dimension = cross_filter.dimension(function(d) {
 				var date = new Date(d.start_time);
@@ -203,7 +211,6 @@ function drawChart(data) {
 			/**********************************
 				Bike id row chart
 			***********************************/
-			var bike_id_chart = dc.rowChart('#bike-id-chart');
 
 			var bike_id_dimension = cross_filter.dimension(function(d) {
 				return d.bike_id;
@@ -213,7 +220,6 @@ function drawChart(data) {
 			/*************
 				Pie chart
 			*************/
-			var pie_chart = dc.pieChart('#pie-chart');
 
 			//hehe ugly solution
 			var genderDimension = cross_filter.dimension(function(d) {
@@ -240,10 +246,10 @@ function drawChart(data) {
 			Blue = medium activity
 			Green = high activity
 			***************************************************************/
-			var map_chart = dc.geoChoroplethChart("#map-chart");
+			
 
-			var width = 415;
-			var height = 415;
+			var width = $("#map-chart").width();
+			var height = 400;
 
 			var zip_dimension = cross_filter.dimension(function(d) {
 				return bike_stations.get(d.start_id).zip;
@@ -305,7 +311,8 @@ function drawChart(data) {
 				});
 		
 			date_bar_chart
-				.width(700)
+				//.width(700)
+				.width($('#date-bar-chart').width())
 				.height(150)
 				.x(d3.scaleTime().domain([start, end]))
 				.round(d3.timeDay.round)
@@ -322,7 +329,8 @@ function drawChart(data) {
 				.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 		
 			bike_id_chart
-				.width(400)
+				//.width(400)
+				.width($("#bike-id-chart").width())
 				.height(250)
 				.group(bike_id_group)
 				.dimension(bike_id_dimension)
@@ -341,7 +349,8 @@ function drawChart(data) {
 				.xAxis().ticks(3);
 		
 			pie_chart
-				.width(250)
+				//.width(250)
+				.width($("#pie-chart").width())
 				.height(250)
 				.dimension(genderDimension)
 				.group(genderGroup)
@@ -471,9 +480,9 @@ function drawChart(data) {
 			dc.renderAll();
 
 			// Super ugly solution but prevents this from showing before chart is loaded.
-			document.getElementById('t1').innerHTML = " bike rides out of ";
-			document.getElementById('t2').innerHTML = " selected. | ";
-			document.getElementById('t3').innerHTML = " Reset All";
+			//document.getElementById('t1').innerHTML = " bike rides out of ";
+			//document.getElementById('t2').innerHTML = " selected. | ";
+			//document.getElementById('t3').innerHTML = " Reset All";
 			
 			var map_chart_element = document.getElementById("map-chart");
 			if(map_chart_element)
@@ -486,3 +495,51 @@ function drawChart(data) {
 		});
 	});
 }
+
+window.onresize = function(event) {
+  bike_id_chart
+  	.width($('#bike-id-chart').width())
+  	.transitionDuration(0);
+  pie_chart
+  	.width($('#pie-chart').width())
+  	.transitionDuration(0);
+  date_bar_chart
+  	.width($('#date-bar-chart').width())
+  	.transitionDuration(0);
+
+  var width = $("#map-chart").width();
+	var height = 400;
+	
+	var center = d3.geoCentroid(m_data)
+	var scale  = 100;
+	var offset = [width/2, height/2];
+	projection = d3.geoMercator().scale(scale).center(center).translate(offset);
+	
+	var path = d3.geoPath().projection(projection);
+
+	// Temporary offset and scale to zoom in on interesting region.
+	// The code would do this automatically if no-bike-station-zones are removed.
+	var t_of = [-65, 65];
+	var t_sc = 1.45; 
+	
+	var bounds  = path.bounds(m_data);
+	var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+	var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+	var scale   = (hscale < vscale) ? hscale : vscale;
+	var offset  = [width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
+	
+	projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
+
+	map_chart
+	 .width(width)
+	 .projection(projection)
+	 .transitionDuration(0);
+
+  dc.renderAll();
+
+  // set back to default
+  bike_id_chart.transitionDuration(750);
+  pie_chart.transitionDuration(750);
+  date_bar_chart.transitionDuration(750);
+  map_chart.transitionDuration(750);
+};
