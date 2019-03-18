@@ -1,34 +1,26 @@
 extends layout
 
 block content
-	
 	nav.navbar.navbar-expand-lg.navbar-light.bg-light
-		a.navbar-brand(href='#') Navbar
-		button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+		a.navbar-brand(href='#') Dashboard
+		button.navbar-toggler(type='button', data-toggle='collapse', data-target='#collapsed-content', aria-controls='collapsed-content')
 			span.navbar-toggler-icon
-		#navbarSupportedContent.collapse.navbar-collapse
+		#collapsed-content.collapse.navbar-collapse
 			ul.navbar-nav.mr-auto
 				li.nav-item.active
-					a.nav-link(href='#')
-						| Home 
-						span.sr-only (current)
+					a.nav-link(href='#') View 1
 				li.nav-item
-					a.nav-link(href='#') Link
-				li.nav-item.dropdown
-					a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Dropdown
-					.dropdown-menu(aria-labelledby='navbarDropdown')
-						a.dropdown-item(href='#') Action
-						a.dropdown-item(href='#') Another action
-						.dropdown-divider
-						a.dropdown-item(href='#') Something else here
+					a.nav-link(href='#') View 2
 				li.nav-item
-					a.nav-link.disabled(href='#') Disabled
-			form.form-inline.my-2.my-lg-0
-				input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search')
-				button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+					a.nav-link(href='#') View 3
+			form.form-inline
+				.input-group-prepend
+					span#calendar-addon.input-group-text.fas.fa-calendar-alt
+				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
 
 	.container-fluid.px-5
 		a#data-load(style="display: none")
+		#decimate-slider(style="display: none")
 		.row
 			each x in [1, 2, 3, 4]
 				.col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
@@ -42,8 +34,9 @@ block content
 					#pie-chart.col-xs-12.col-sm-5.col-md-5.col-lg-5
 					#bike-id-chart.col-xs-12.col-sm-7.col-md-7.col-lg-7
 
-	script(src='../javascripts/draw-chart.js')
+	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/startup-data-request.js')
+	script(src='javascripts/filter-menu.js')
 
 	script.
 		startupDataRequest();
