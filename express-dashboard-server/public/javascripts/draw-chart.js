@@ -11,7 +11,7 @@ data point distribution over the time interval.
 + more
 
 ***************************************************/
-
+var projection;
 var bike_id_chart = dc.rowChart('#bike-id-chart');
 var pie_chart = dc.pieChart('#pie-chart');
 var date_bar_chart = dc.barChart('#date-bar-chart');
@@ -73,7 +73,7 @@ function drawChart(data) {
 			on the map chart. Called by the map chart each time
 			it re-renders (i.e. when crossfilter changes).
 			**********************************************/
-			var projection; // this gets set further down in the map chart section.
+			//var projection; // this gets set further down in the map chart section.
 			function drawStationDots(_chart, selection) 
 			{
 				drawBikeRoute(_chart, selection);
