@@ -1,11 +1,17 @@
 extends layout
 
 block content
-	nav.navbar.navbar-expand-lg.navbar-light.bg-light
-		a.navbar-brand(href='#') Dashboard
-		button.navbar-toggler(type='button', data-toggle='collapse', data-target='#collapsed-content', aria-controls='collapsed-content')
+
+	nav#sidebar
+		p stuff
+
+	nav#topmenu.navbar.navbar-expand-lg.navbar-light.bg-light
+		button#toggle-sidemenu.togglerbtn.m-0(type='button')
 			span.navbar-toggler-icon
-		#collapsed-content.collapse.navbar-collapse
+		a.navbar-brand(href='#') #{title}
+		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topmenu', aria-controls='collapsed-topmenu')
+			span.navbar-toggler-icon
+		#collapsed-topmenu.collapse.navbar-collapse
 			ul.navbar-nav.mr-auto
 				li.nav-item.active
 					a.nav-link(href='#') View 1
@@ -13,11 +19,14 @@ block content
 					a.nav-link(href='#') View 2
 				li.nav-item
 					a.nav-link(href='#') View 3
+				li.nav-item
+					a.nav-link.fas.fa-bullhorn(href='#')
+
 			form.form-inline
 				.input-group-prepend
 					span#calendar-addon.input-group-text.fas.fa-calendar-alt
 				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
-
+	
 	.container-fluid.px-5
 		a#data-load(style="display: none")
 		#decimate-slider(style="display: none")
@@ -37,6 +46,9 @@ block content
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/startup-data-request.js')
 	script(src='javascripts/filter-menu.js')
+	script(src='javascripts/sidemenu.js')
+
+
 
 	script.
 		startupDataRequest();

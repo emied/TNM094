@@ -116,7 +116,7 @@ h4.info-box-text {
 
 /* Sidemenu */
 
-.sidenav {
+/*.sidenav {
   height: 100%;
   width: 0;
   position: fixed;
@@ -126,9 +126,9 @@ h4.info-box-text {
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 90px;
-	background: rgba(0, 0, 0, 0.9); /* Only set opacity for bg, not text */
+	background: rgba(0, 0, 0, 0.9); 
   white-space: nowrap;
-}
+}*/
 
 .sidenav a {
   padding: 8px 8px 32px 32px;
@@ -264,4 +264,43 @@ g.station_dots {
   font-size: 30px;
   cursor: pointer;
   padding: 6px 0px;
+}
+
+/* Copy of the button.navbar-toggler style for the sidenav */
+.togglerbtn {
+  padding:.25rem .75rem;
+  font-size:1.25rem;
+  line-height:1;
+  background-color:transparent;
+  border:1px solid transparent;
+  border-radius:.25rem;
+  border-color: rgba(0,0,0,.1);
+  color: rgba(0,0,0,.5);
+}
+
+#sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 90px;
+  background: rgba(0, 0, 0, 0.9); 
+  white-space: nowrap;
+}
+
+#sidebar.active {
+    width: 250px;
+}
+
+#topmenu {
+  transition: 0.5s;
+  margin-left: 0px;
+}
+
+#topmenu.active {
+  margin-left: 250px;
 }

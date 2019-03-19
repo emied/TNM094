@@ -496,18 +496,18 @@ function drawChart(data) {
 	});
 }
 
-window.onresize = function(event) {
-  bike_id_chart
-  	.width($('#bike-id-chart').width())
-  	.transitionDuration(0);
-  pie_chart
-  	.width($('#pie-chart').width())
-  	.transitionDuration(0);
-  date_bar_chart
-  	.width($('#date-bar-chart').width())
-  	.transitionDuration(0);
+function resizeCharts() {
+	bike_id_chart
+		.width($('#bike-id-chart').width())
+		.transitionDuration(0);
+	pie_chart
+		.width($('#pie-chart').width())
+		.transitionDuration(0);
+	date_bar_chart
+		.width($('#date-bar-chart').width())
+		.transitionDuration(0);
 
-  var width = $("#map-chart").width();
+	var width = $("#map-chart").width();
 	var height = 400;
 	
 	var center = d3.geoCentroid(m_data)
@@ -531,15 +531,19 @@ window.onresize = function(event) {
 	projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 
 	map_chart
-	 .width(width)
-	 .projection(projection)
-	 .transitionDuration(0);
+		.width(width)
+		.projection(projection)
+		.transitionDuration(0);
 
-  dc.renderAll();
+	dc.renderAll();
 
-  // set back to default
-  bike_id_chart.transitionDuration(750);
-  pie_chart.transitionDuration(750);
-  date_bar_chart.transitionDuration(750);
-  map_chart.transitionDuration(750);
+	// set back to default
+	bike_id_chart.transitionDuration(750);
+	pie_chart.transitionDuration(750);
+	date_bar_chart.transitionDuration(750);
+	map_chart.transitionDuration(750);
+}
+
+window.onresize = function(event) {
+	resizeCharts();
 };
