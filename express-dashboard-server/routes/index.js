@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 router.get('/dashboard', dashboard_controller.dashboard);
 
 router.get('/bootstrap', function(req, res) {
-	res.render('bootstrap', {title: 'bootstrap'});
+	res.render('bootstrap', {title: 'Bike Dashboard'});
 });
 
 module.exports = router;

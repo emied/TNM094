@@ -266,16 +266,11 @@ g.station_dots {
   padding: 6px 0px;
 }
 
-/* Copy of the button.navbar-toggler style for the sidenav */
 .togglerbtn {
   padding:.25rem .75rem;
   font-size:1.25rem;
   line-height:1;
-  background-color:transparent;
-  border:1px solid transparent;
-  border-radius:.25rem;
-  border-color: rgba(0,0,0,.1);
-  color: rgba(0,0,0,.5);
+  cursor: pointer;
 }
 
 #sidebar {
@@ -303,4 +298,37 @@ g.station_dots {
 
 #topmenu.active {
   margin-left: 250px;
+}
+
+#superscript-warnings {
+  vertical-align: top; 
+  position: relative; 
+  top: -2px; 
+  font-size: 10px; 
+  color:#ff3838;
+}
+
+.navbar-custom {
+  background-color: #2abac8;
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: rgba(255,255,255,.8);
+}
+
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,.5);
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+.toggle-icon {
+  font-size: 2rem;
+  color: rgba(255,255,255,.8);
 }

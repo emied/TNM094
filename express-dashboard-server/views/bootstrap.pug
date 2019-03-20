@@ -5,26 +5,26 @@ block content
 	nav#sidebar
 		p stuff
 
-	nav#topmenu.navbar.navbar-expand-lg.navbar-light.bg-light
-		button#toggle-sidemenu.togglerbtn.m-0(type='button')
-			span.navbar-toggler-icon
-		a.navbar-brand(href='#') #{title}
+	nav#topmenu.navbar.navbar-expand-lg.navbar-custom.p-1
+		a#toggle-sidemenu.togglerbtn.m-0
+			span.toggle-icon.fas.fa-bars
+		a.navbar-brand.mx-lg-5.m-0(href='#') #{title}
 		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topmenu', aria-controls='collapsed-topmenu')
-			span.navbar-toggler-icon
+			span.toggle-icon.fas.fa-bars
 		#collapsed-topmenu.collapse.navbar-collapse
-			ul.navbar-nav.mr-auto
-				li.nav-item.active
+			ul.navbar-nav.mr-auto.nav-pills
+				li.nav-item.active.d-flex.justify-content-center
 					a.nav-link(href='#') View 1
-				li.nav-item
+				li.nav-item.d-flex.justify-content-center
 					a.nav-link(href='#') View 2
-				li.nav-item
+				li.nav-item.d-flex.justify-content-center
 					a.nav-link(href='#') View 3
-				li.nav-item
+				li.nav-item.d-flex.justify-content-center
 					a.nav-link.fas.fa-bullhorn(href='#')
-
-			form.form-inline
+						sup#superscript-warnings  (5)
+			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend
-					span#calendar-addon.input-group-text.fas.fa-calendar-alt
+					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
 				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
 	
 	.container-fluid.px-5
