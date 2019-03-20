@@ -1,6 +1,7 @@
 body {
 	padding: 0px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #eeeeee;
 }
 
 .dc-data-count .filter-count {
@@ -331,4 +332,13 @@ g.station_dots {
 .toggle-icon {
   font-size: 2rem;
   color: rgba(255,255,255,.8);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.chart-card {
+  background-color: #ffffff;
+  border-radius: 5px;
 }
