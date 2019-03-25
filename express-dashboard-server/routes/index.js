@@ -14,13 +14,9 @@ var router = express.Router();
 var dashboard_controller = require('../controllers/dashboard-controller');
 
 router.get('/', function(req, res, next) {
-	res.redirect('bootstrap');
+	res.redirect('dashboard?data=bike&view=1');
 });
 
 router.get('/dashboard', dashboard_controller.dashboard);
-
-router.get('/bootstrap', function(req, res) {
-	res.render('bootstrap', {title: 'Bike Dashboard'});
-});
 
 module.exports = router;

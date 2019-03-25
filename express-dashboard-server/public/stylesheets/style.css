@@ -4,16 +4,6 @@ body {
   background-color: #eeeeee;
 }
 
-.dc-data-count .filter-count {
-	color: #3fb8af;
-	font-weight: bold;
-}
-
-.dc-data-count .total-count {
-	color: #3fb8af;
-	font-weight: bold;
-}
-
 .noUi-handle-lower .noUi-tooltip
 {
   bottom: -130%;
@@ -37,15 +27,6 @@ body {
   background: #d1d1d1;
 }
 
-/* Remove Y-axis from chart */
-#date-bar-chart g.axis.y {
-  display: none;
-}
-
-#coordinate-scatter g.axis {
-  display: none;
-}
-
 button {
   background: #8ad2d3;
   font: 700 11px/30px Arial;
@@ -57,20 +38,3 @@ button {
   margin: 15px 5px 0 0;
 }
 
-#toggle-dots {
-  transition: color 0.3s;
-  float: left;
-  color: #e1e1e1;
-  font-size: 30px;
-  cursor: pointer;
-  padding: 6px 0px;
-}
-
-#toggle-dots:hover {
-  color: #ffffff;
-}
-
-g.station_dots {
-  transition: opacity 0.5s;
-  opacity: 1.0;
-}
