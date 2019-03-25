@@ -23,3 +23,23 @@
 	font-size: 1.5rem;
 	color: rgba(70,70,70,0.8);
 }
+
+/*-- Scale the font-size of chart titles depending on 
+resolution so that everything fits on one line. Needs 
+to be reconfigured if titles change or if div size
+breakpoints change for charts. --*/
+@media (min-width: 576px) { .navbar-chart .navbar-brand {
+	font-size: 0.95rem;
+}}
+
+@media (min-width: 768px) { .navbar-chart .navbar-brand {
+	font-size: 1.15rem;
+}}
+
+@media (min-width: 992px) { .navbar-chart .navbar-brand {
+	font-size: 1rem;
+}}
+
+@media (min-width: 1200px) { .navbar-chart .navbar-brand {
+	font-size: 1.15rem;
+}}
