@@ -58,25 +58,25 @@ button {
 }
 
 #info-box-1 {
-  height: 150px;
+  height: 130px;
   background-color: #2ac8bc;
 	border-radius: 5px;
 }
 
 #info-box-2 {
-  height: 150px;
+  height: 130px;
   background-color: #2ac862;
 	border-radius: 5px;
 }
 
 #info-box-3 {
-  height: 150px;
+  height: 130px;
   background-color: #0cb1e6;
 	border-radius: 5px;
 }
 
 #info-box-4 {
-  height: 150px;
+  height: 130px;
   background-color: #e09950;
 	border-radius: 5px;
 }
@@ -335,10 +335,31 @@ g.station_dots {
 }
 
 .card-shadow {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /*box-shadow: -4px 5px 8px rgba(0,0,0,0.05);*/
 }
 
 .chart-card {
   background-color: #ffffff;
   border-radius: 5px;
+}
+
+.navbar-chart {
+  background-color: #bbbbbb;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.navbar-chart .navbar-brand,
+.navbar-custom .navbar-text {
+  color: rgba(70,70,70,.8);
+}
+
+.navbar-chart .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+.chart-settings-btn {
+  font-size: 1.5rem;
+  color: rgba(70,70,70,0.8);
 }

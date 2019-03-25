@@ -246,7 +246,6 @@ function drawChart(data) {
 			Blue = medium activity
 			Green = high activity
 			***************************************************************/
-			
 
 			var width = $("#map-chart").width();
 			var height = 400;
@@ -313,7 +312,7 @@ function drawChart(data) {
 			date_bar_chart
 				//.width(700)
 				.width($('#date-bar-chart').width())
-				.height(150)
+				.height(140)
 				.x(d3.scaleTime().domain([start, end]))
 				.round(d3.timeDay.round)
 				.xUnits(d3.timeDays)
@@ -331,7 +330,7 @@ function drawChart(data) {
 			bike_id_chart
 				//.width(400)
 				.width($("#bike-id-chart").width())
-				.height(250)
+				.height(240)
 				.group(bike_id_group)
 				.dimension(bike_id_dimension)
 				// Not possible to remove x-axis for this chart via css for whatever reason.
@@ -351,7 +350,7 @@ function drawChart(data) {
 			pie_chart
 				//.width(250)
 				.width($("#pie-chart").width())
-				.height(250)
+				.height(240)
 				.dimension(genderDimension)
 				.group(genderGroup)
 				.on('renderlet', function(chart) {
@@ -487,7 +486,7 @@ function drawChart(data) {
 			var map_chart_element = document.getElementById("map-chart");
 			if(map_chart_element)
 			{
-				map_chart_element.style.border = "1px solid black";
+				//map_chart_element.style.border = "1px solid black";
 			}
 
 			var t2 = performance.now();
