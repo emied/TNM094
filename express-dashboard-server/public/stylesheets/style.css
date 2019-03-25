@@ -57,47 +57,18 @@ button {
   margin: 15px 5px 0 0;
 }
 
-#info-box-1 {
+.info-box {
   height: 130px;
-  background-color: #2ac8bc;
-	border-radius: 5px;
-}
-
-#info-box-2 {
-  height: 130px;
-  background-color: #2ac862;
-	border-radius: 5px;
-}
-
-#info-box-3 {
-  height: 130px;
-  background-color: #0cb1e6;
-	border-radius: 5px;
-}
-
-#info-box-4 {
-  height: 130px;
-  background-color: #e09950;
-	border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* warning boxes (red) */
 #warning-box-1 {
-  width: 250px;
-  height: 150px;
   background-color: #e60000;
-  margin: 15px 15px 15px 15px;
-  float: left;
-	border-radius: 5px;
 }
 
 #warning-box-2 {
-  width: 250px;
-  height: 150px;
   background-color: #ff4d4d;
-  margin: 15px 15px 15px 15px;
-  float: left;
-	border-radius: 5px;
 }
 
 

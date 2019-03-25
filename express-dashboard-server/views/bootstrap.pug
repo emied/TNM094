@@ -4,6 +4,8 @@ include dashboard-mixins
 
 block content
 
+	- var info_box_colors = {'1':'#2ac8bc', '2':'#2ac862', '3':'#0cb1e6', '4':'#e09950'};
+
 	nav#sidebar
 		p stuff
 
@@ -33,9 +35,9 @@ block content
 		a#data-load(style="display: none")
 		#decimate-slider(style="display: none")
 		.row
-			each x in [1, 2, 3, 4]
+			each color, name in info_box_colors
 				.col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
-					div(id='info-box-' + x).text-center.w-100.card-shadow
+					div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-5.col-lg-5.p-2.m-0
 				+chart-card('map-chart', 'Geographical Distribution')
@@ -50,7 +52,7 @@ block content
 						+chart-card('pie-chart', 'Gender Distribution')
 					.container-fluid.col-xs-12.col-sm-7.col-md-7.col-lg-7.p-2.m-0
 						+chart-card('bike-id-chart', 'Farthest Traveled Bikes')
-						
+
 	script(src='javascripts/draw-chart.js')
 	script(src='javascripts/startup-data-request.js')
 	script(src='javascripts/filter-menu.js')
