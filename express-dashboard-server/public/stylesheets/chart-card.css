@@ -1,0 +1,25 @@
+.chart-card {
+	background-color: #ffffff;
+	border-radius: 5px;
+}
+
+.navbar-chart {
+	background-color: #bbbbbb;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.navbar-chart .navbar-brand,
+.navbar-custom .navbar-text {
+	color: rgba(70,70,70,.8);
+}
+
+.navbar-chart .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+	color: #ffffff;
+}
+
+.chart-settings-btn {
+	font-size: 1.5rem;
+	color: rgba(70,70,70,0.8);
+}

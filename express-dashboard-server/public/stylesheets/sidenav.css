@@ -1,0 +1,17 @@
+#sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 90px;
+  background: rgba(0, 0, 0, 0.9); 
+  white-space: nowrap;
+}
+
+#sidenav.active {
+    width: 250px;
+}
