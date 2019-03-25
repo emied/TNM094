@@ -6,30 +6,8 @@ block content
 
 	- var info_box_colors = {'1':'#2ac8bc', '2':'#2ac862', '3':'#0cb1e6', '4':'#e09950'};
 
-	nav#sidebar
-		p stuff
-
-	nav#topmenu.navbar.navbar-expand-lg.navbar-custom.p-1
-		a#toggle-sidemenu.togglerbtn.m-0
-			span.toggle-icon.fas.fa-bars
-		a.navbar-brand.mx-lg-5.m-0(href='#') #{title}
-		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topmenu', aria-controls='collapsed-topmenu')
-			span.toggle-icon.fas.fa-bars
-		#collapsed-topmenu.collapse.navbar-collapse
-			ul.navbar-nav.mr-auto
-				li.nav-item.active.d-flex.justify-content-center
-					a.nav-link(href='#') View 1
-				li.nav-item.d-flex.justify-content-center
-					a.nav-link(href='#') View 2
-				li.nav-item.d-flex.justify-content-center
-					a.nav-link(href='#') View 3
-				li.nav-item.d-flex.justify-content-center
-					a.nav-link.fas.fa-bullhorn(href='#')
-						sup#superscript-warnings  (5)
-			form.form-inline.d-flex.justify-content-center
-				.input-group-prepend
-					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
-				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
+	+sidenav
+	+topnav('View 1')
 	
 	.container-fluid.px-4
 		a#data-load(style="display: none")
@@ -57,8 +35,6 @@ block content
 	script(src='javascripts/startup-data-request.js')
 	script(src='javascripts/filter-menu.js')
 	script(src='javascripts/sidemenu.js')
-
-
 
 	script.
 		startupDataRequest();

@@ -10,3 +10,27 @@ mixin chart-card(chart_id, title)
 					else
 						a.dropdown-item(href='#') No settings provided
 		div(id=chart_id).col-12.p-2
+
+mixin topnav(active_view)
+	nav#topmenu.navbar.navbar-expand-lg.navbar-custom.p-1
+		a#toggle-sidemenu.togglerbtn.m-0
+			span.toggle-icon.fas.fa-bars
+		a.navbar-brand.mx-lg-5.m-0(href='#') #{title}
+		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topmenu', aria-controls='collapsed-topmenu')
+			span.toggle-icon.fas.fa-bars
+		#collapsed-topmenu.collapse.navbar-collapse
+			ul.navbar-nav.mr-auto
+				each view in ['View 1', 'View 2', 'View 3']
+					li(class=active_view == view ? 'active' : '', href='#').nav-item.d-flex.justify-content-center
+						a.nav-link(href='#') #{view}
+				li(class=active_view == 'Warning' ? 'active' : '', href='#').nav-item.d-flex.justify-content-center
+					a.nav-link.fas.fa-bullhorn(href='#')
+						sup#superscript-warnings  (5)
+			form.form-inline.d-flex.justify-content-center
+				.input-group-prepend
+					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
+				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
+
+mixin sidenav
+	nav#sidebar
+		p stuff
