@@ -5,7 +5,7 @@ npm install
 ```
 in this folder. 
 
-Download [bike_data.zip](https://drive.google.com/open?id=125cEqpvCVlzPbjgcyUOiryEa14pA0326) and unzip it in the *data/source* folder. [Data explanation](data/README.md).
+Download [data.zip](https://drive.google.com/open?id=1ofiJXLB7rKSfIZRdghXOba-4cLw4r_oC) and unzip it in the *data/source* folder. [Data explanation](data/README.md).
 
 To automatically restart the server when changes are made, install *nodemon* using:
 ``` 

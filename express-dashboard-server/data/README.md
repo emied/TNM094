@@ -7,7 +7,7 @@ Our dataset uses data from 2018 and has been modified with [reduction-code/clean
 We also use ZIP code geojson data from [DataSF opendata](https://datasf.org/opendata/).<br/>
 ZIP codes for each station was extracted with [reduction-code/add-station-zip-codes](reduction-code/add-station-zip-codes.js)<br/>
 
-Modified data can be downloaded here: [bike_data.zip](https://drive.google.com/open?id=125cEqpvCVlzPbjgcyUOiryEa14pA0326). Unzip to *data/source* directory.  
+Modified data can be downloaded here: [data.zip](https://drive.google.com/open?id=1ofiJXLB7rKSfIZRdghXOba-4cLw4r_oC). Unzip to *data/source* directory.  
 ### fordgobike_complete_all.csv
 
 | Value		   | Unit      | Example Value | Explanation | 
