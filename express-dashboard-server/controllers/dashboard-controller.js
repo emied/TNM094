@@ -4,23 +4,23 @@ Returns range of decimated historic data
 exports.dashboard = function(req, res) {
 	var { data, view } = req.query;
 
-  var title = "Dashboard: " + data.charAt(0).toUpperCase() + data.slice(1) + " View " + view;
+  var title = data.charAt(0).toUpperCase() + data.slice(1) + " Dashboard";
 
   if(data == "bike" && view == 1)
   {
-    res.render('bikes/bike-view1', { title: title });
+    res.render('bike-dashboard/view-1', { title: title });
   }
   else if (data == "bike" && view == 2)
   {
-    res.render('bikes/bike-view2', { title: title });
+    res.render('bike-dashboard/view-2', { title: title });
   }
   else if (data == "bike" && view == 3)
   {
-    res.render('bikes/bike-view3', { title: title });
+    res.render('bike-dashboard/view-3', { title: title });
   }
-	else if (data = "bike" && view == 4)
+	else if (data = "bike" && view == "warning")
   {
-    res.render('bikes/bike-warning', { title: title });
+    res.render('bike-dashboard/view-warning', { title: title });
   }
 
   else

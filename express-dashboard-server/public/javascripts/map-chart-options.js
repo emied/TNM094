@@ -11,3 +11,10 @@ function toggleStationDots()
 	show_dots = !show_dots;
 	d3.selectAll("g.station_dots").style("opacity", +show_dots);
 }
+
+var show_route = true;
+function toggleBikeRoute()
+{
+	show_route = !show_route;
+	d3.selectAll("g.bike_id_path").style("opacity", +show_route);
+}
