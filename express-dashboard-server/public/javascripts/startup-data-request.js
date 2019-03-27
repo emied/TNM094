@@ -1,5 +1,10 @@
 var data_load_text = document.getElementById('data-load');
 
+var bike_dashboard;
+window.onresize = function(event) {
+	bike_dashboard.resize();
+};
+
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
 	var start = "2018-11-03";
@@ -44,6 +49,9 @@ function startupDataRequest() {
 			data_load_text.innerHTML += " No data satisfies the request."
 			return;
 		}
-		drawChart(data);
+		
+		//drawChart(data);
+
+		bike_dashboard = new BikeDashboard(data);
 	}
 }

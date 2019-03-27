@@ -23,6 +23,8 @@ class GenderChart
 			.height(240)
 			.dimension(this.dimension)
 			.group(this.group);
+
+		this.chart.render();
 	}
 
 	resize()
