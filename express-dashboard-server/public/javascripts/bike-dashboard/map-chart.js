@@ -31,10 +31,7 @@ class MapChart
 			.width(this.width)
 			.height(this.height)
 			.colors(d3.scaleLinear().domain([0, mid_zip, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
-		
-			// This value is weird
-			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; })
-		
+			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; }) // This value is weird
 			.projection(this.projection)
 			.overlayGeoJson(this.map_data["features"], "zip_code", function (d) {
 				return d.properties.zip_code;
