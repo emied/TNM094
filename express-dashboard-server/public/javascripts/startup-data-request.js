@@ -52,6 +52,10 @@ function startupDataRequest() {
 		
 		//drawChart(data);
 
-		bike_dashboard = new BikeDashboard(data);
+		d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
+			d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
+				bike_dashboard = new BikeDashboard(data, map_data, station_data);
+			});
+		});
 	}
 }
