@@ -12,6 +12,7 @@ class BikeDashboard
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, 'info-box-1');
 		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, 'info-box-2');
 		this.unique_bikes_display = new UniqueBikesDisplay(this.cross_filter, 'info-box-3');
+		this.avg_duration_display = new AvgDurationDisplay(this.cross_filter, 'info-box-4');
 	}
 
 	resize()
