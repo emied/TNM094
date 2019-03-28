@@ -23,7 +23,7 @@ class AvgSpeedDisplay
 				return {
 					count: 0,
 					sum_speed: 0.0
-				}; 
+				};
 			}
 		);
 

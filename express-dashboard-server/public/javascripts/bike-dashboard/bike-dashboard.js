@@ -10,6 +10,7 @@ class BikeDashboard
 		this.map_chart = new MapChart(this.cross_filter, 'map-chart', map_data, this.bike_stations);
 
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, 'info-box-1');
+		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, 'info-box-2');
 	}
 
 	resize()
