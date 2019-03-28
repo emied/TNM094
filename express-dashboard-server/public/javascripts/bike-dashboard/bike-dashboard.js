@@ -8,6 +8,8 @@ class BikeDashboard
 		this.gender_chart = new GenderChart(this.cross_filter, 'pie-chart');
 		this.date_chart = new DateChart(this.cross_filter, 'date-bar-chart');
 		this.map_chart = new MapChart(this.cross_filter, 'map-chart', map_data, this.bike_stations);
+
+		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, 'info-box-1');
 	}
 
 	resize()

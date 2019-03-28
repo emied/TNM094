@@ -23,7 +23,7 @@ class MapChart
 		min_zip = Math.pow(min_zip, 1/8);
 		mid_zip = Math.pow(mid_zip, 1/8);
 		
-		this.calculate_projection();
+		this.calculateProjection();
 		
 		this.chart
 			.dimension(this.dimension)
@@ -43,7 +43,7 @@ class MapChart
 		this.chart.render();
 	}
 
-	calculate_projection()
+	calculateProjection()
 	{
 		var center = d3.geoCentroid(this.map_data)
 		var scale  = 100;
@@ -71,7 +71,7 @@ class MapChart
 	{
 		this.width = $(this.container_id).width();
 
-		this.calculate_projection();
+		this.calculateProjection();
 
 		this.chart
 			.width(this.width)
