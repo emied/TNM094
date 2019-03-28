@@ -26,6 +26,7 @@ mixin topnav(active_view)
 				li(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
 					a.nav-link.fas.fa-bullhorn(href='dashboard?data=bike&view=warning')
 						sup#superscript-warnings  (5)
+			a.qmark.fas.fa-question.mx-2(href='dashboard?data=bike&view=help')
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend
 					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
