@@ -1,4 +1,3 @@
-
 class AvgSpeedDisplay
 {
 	constructor(cross_filter, container_id)

@@ -1,11 +1,15 @@
 class MapChart
 {
-	constructor(cross_filter, container_id, map_data, bike_stations)
+	constructor(cross_filter, container_id, map_data, bike_stations, data, selected_bike_id)
 	{
 		this.map_data = map_data;
 
+		this.cross_filter = cross_filter;
+
 		this.container_id = '#' + container_id;
 		this.chart = dc.geoChoroplethChart(this.container_id);
+
+		this.bike_stations = bike_stations;
 		
 		this.dimension = cross_filter.dimension(function(d) {
 			return bike_stations.get(d.start_id).zip;
@@ -20,7 +24,6 @@ class MapChart
 		var mid_zip = min_zip + (max_zip - min_zip) / 2.0;
 		
 		max_zip = Math.pow(max_zip, 1/8);
-		min_zip = Math.pow(min_zip, 1/8);
 		mid_zip = Math.pow(mid_zip, 1/8);
 		
 		this.calculateProjection();
@@ -40,31 +43,15 @@ class MapChart
 				return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 			});
 
+		/****************************************************************
+		Awkward method of adding the custom event driven render functions 
+		as class methods with some kind of access to members in the 'this'
+		scope. Might be a better way with '.apply()' or '.call()'.
+		****************************************************************/
+		this.drawStationDots();
+		this.drawBikeRoute(data, selected_bike_id);
+
 		this.chart.render();
-	}
-
-	calculateProjection()
-	{
-		var center = d3.geoCentroid(this.map_data)
-		var scale  = 100;
-		var offset = [this.width/2, this.height/2];
-
-		this.projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-		
-		var path = d3.geoPath().projection(this.projection);
-
-		// Temporary offset and scale to zoom in on interesting region.
-		// The code would do this automatically if no-bike-station-zones are removed.
-		var t_of = [-65, 65];
-		var t_sc = 1.45; 
-		
-		var bounds  = path.bounds(this.map_data);
-		var hscale  = scale*this.width  / (bounds[1][0] - bounds[0][0]);
-		var vscale  = scale*this.height / (bounds[1][1] - bounds[0][1]);
-		var scale   = (hscale < vscale) ? hscale : vscale;
-		var offset  = [this.width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], this.height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
-		
-		this.projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 	}
 
 	resize()
@@ -81,5 +68,147 @@ class MapChart
 		this.chart.render();
 
 		this.chart.transitionDuration(750);
+	}
+
+	calculateProjection()
+	{
+		var center = d3.geoCentroid(this.map_data);
+		var scale  = 100;
+		var offset = [this.width/2, this.height/2];
+
+		this.projection = d3.geoMercator().scale(scale).center(center).translate(offset);
+		
+		var path = d3.geoPath().projection(this.projection);
+
+		// // Temporary offset and scale to zoom in on interesting region.
+		// // The code would do this automatically if no-bike-station-zones are removed.
+		var t_of = [-65, 65];
+		var t_sc = 1.45; 
+		
+		var bounds  = path.bounds(this.map_data);
+		var hscale  = scale*this.width  / (bounds[1][0] - bounds[0][0]);
+		var vscale  = scale*this.height / (bounds[1][1] - bounds[0][1]);
+		var scale   = (hscale < vscale) ? hscale : vscale;
+		var offset  = [this.width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], this.height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
+		
+		this.projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
+	}
+
+	drawStationDots()
+	{
+		var bike_stations = this.bike_stations;
+		var projection = this.projection;
+
+		this.chart.on("pretransition", function(_chart) {
+
+			var svg = _chart.svg();
+
+			var group = svg.selectAll("g.station_dots");
+
+			// Create SVG circle elements for all stations.
+			// This is only done once when the page first loads.
+			if (group.empty()) {
+
+				group = svg.append("g").classed("station_dots", true);
+
+				var additional_nodes = group.selectAll("circle").data(Array.from(bike_stations), function(x) { return x[0]; });
+
+				additional_nodes.enter()
+					.append("circle")
+					.attr("x", 0)
+					.attr("y", 0)
+					.attr("r", 0)
+					.attr("transform", function(d){ var v = projection([d[1].lon, d[1].lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+					.style("opacity", 1.0)
+					.style("fill", "white")
+					.style("stroke", "black")
+					.style("stroke-width", "0.1%")
+
+				additional_nodes.exit().remove();
+			}
+
+			// Find stations selected with current crossfilter
+			var filtered_stations = new Map();
+			_chart.dimension().top(Infinity).map(function(d) {
+				var station = bike_stations.get(d.start_id);
+				if(station)
+				{
+					filtered_stations.set(d.start_id, station);
+				}
+			});
+
+			// Loop through all SVG circle elements and set radius
+			// to 3 or 0 depending on if the station should be visible
+			// or not according to the filtered stations.
+			// Also uses a variable transition duration to make
+			// the radius animate in and out at different speeds.
+			group.selectAll("circle").each(function(d, i) {
+				if(filtered_stations.get(d[0]))
+				{
+					d3.select(this)
+						.transition().attr("r", 3.5).duration(i*10)
+				}
+				else
+				{
+					d3.select(this)
+						.transition().attr("r", 0).duration(i*10)
+				}
+			});
+		})
+	}
+
+	drawBikeRoute(data, selected_bike_id)
+	{
+		var bike_stations = this.bike_stations;
+		var projection = this.projection;
+
+		this.chart.on("renderlet", function(_chart) {
+			var svg = _chart.svg();
+			//svg.selectAll("g.bike_id_path").remove();
+
+			var group = svg.selectAll("g.bike_id_path");
+
+			if (group.empty()) {
+				var bike_id_path = [];
+				data.forEach( d => {
+					if(d.bike_id == selected_bike_id)
+					{
+						var start_station = bike_stations.get(d.start_id);
+						var end_station = bike_stations.get(d.end_id);
+
+						if(start_station && end_station)
+						{
+							var s = projection([parseFloat(start_station.lon), parseFloat(start_station.lat)]);
+							var e = projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
+							bike_id_path.push({x: s[0], y: s[1]});
+							bike_id_path.push({x: e[0], y: e[1]});
+						}
+					}
+				});
+
+				group = svg.append("g").classed("bike_id_path", true);
+
+				var lineFunction = d3.line()
+					.x(function(d) { return d.x; })
+					.y(function(d) { return d.y; })
+					.curve(d3.curveLinear);
+
+				var path = group.append("path")
+					.attr("d", lineFunction(bike_id_path))
+					.attr("stroke", "white")
+					.attr("stroke-width", 0.5)
+					.attr("fill", "none");
+
+				var totalLength = path.node().getTotalLength();
+
+				path
+					.attr("stroke-dasharray", totalLength + " " + totalLength)
+					.attr("stroke-dashoffset", totalLength)
+					.transition()
+						.duration(totalLength)
+						.ease(d3.easeCubicIn)
+						.attr("stroke-dashoffset", 0);
+			}
+		})
 	}
 }

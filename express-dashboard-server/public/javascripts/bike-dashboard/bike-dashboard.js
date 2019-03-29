@@ -2,12 +2,13 @@ class BikeDashboard
 {
 	constructor(data, map_data, station_data)
 	{
-		this.cross_filter = crossfilter(this.processData(data, station_data));
+		this.data = this.processData(data, station_data);
+		this.cross_filter = crossfilter(this.data);
 
 		this.bike_id_chart = new BikeIdChart(this.cross_filter, 'bike-id-chart');
 		this.gender_chart = new GenderChart(this.cross_filter, 'pie-chart');
 		this.date_chart = new DateChart(this.cross_filter, 'date-bar-chart');
-		this.map_chart = new MapChart(this.cross_filter, 'map-chart', map_data, this.bike_stations);
+		this.map_chart = new MapChart(this.cross_filter, 'map-chart', map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
 
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, 'info-box-1');
 		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, 'info-box-2');
