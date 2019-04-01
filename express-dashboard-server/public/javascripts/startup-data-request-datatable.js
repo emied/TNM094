@@ -44,6 +44,6 @@ function startupDataRequest() {
 			data_load_text.innerHTML += " No data satisfies the request."
 			return;
 		}
-		drawChart(data);
+		drawList(data);
 	}
 }
