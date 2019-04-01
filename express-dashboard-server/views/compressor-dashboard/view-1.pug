@@ -1,0 +1,40 @@
+extends ../layout
+
+include ../bike-dashboard/mixins
+
+block content
+  
+  - var info_box_colors = {'1':'#2ac8bc', '2':'#2ac862', '3':'#0cb1e6', '4':'#e09950'};
+  
+  +sidenav
+  +topnav('1')
+  
+  .container-fluid.px-4
+    .row
+      each color, name in info_box_colors
+         .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
+            div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
+    .row
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+        +chart-card('line-chart-compressor', 'Line Chart flow')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+        +chart-card('line-chart-pressure', 'Line chart oil pressure')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+        +chart-card('line-chart-humidity', 'Line chart humidity')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+        +chart-card('line-chart-bearing-vibration', 'Line chart bearing vibration')
+      .container-fluid.col-xs-6col-sm-6.col-md-6.col-lg-6.p-2.m-0
+        +chart-card('line-chart-oil-temp', 'Line chart oil temperature')
+      .container-fluid.col-xs-6col-sm-6.col-md-6.col-lg-6.p-2.m-0
+        +chart-card('line-chart-amb-temp', 'Line chart ambient temperature')
+      
+  
+  
+	
+  script(src='javascripts/draw-charts-compressor.js')
+  script(src='javascripts/startup-data-request-compressor.js')
+  script(src='javascripts/sidenav.js')
+  script(src='javascripts/map-chart-options.js')
+
+  script.
+    startupDataRequest();
