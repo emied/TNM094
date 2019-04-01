@@ -1,8 +1,8 @@
 class DateChart
 {
-	constructor(cross_filter, container_id)
+	constructor(cross_filter, container_id, height)
 	{
-		this.container_id = '#' + container_id;
+		this.container_id = container_id;
 		this.chart = dc.barChart(this.container_id);
 
 		this.dimension = cross_filter.dimension(function(d) {
@@ -17,7 +17,7 @@ class DateChart
 
 		this.chart
 			.width($(this.container_id).width())
-			.height(140)
+			.height(height)
 			.x(d3.scaleTime().domain([start, end]))
 			.round(d3.timeDay.round)
 			.xUnits(d3.timeDays)
@@ -27,7 +27,7 @@ class DateChart
 			.elasticX(false)
 			.dimension(this.dimension)
 			.group(this.group)
-			.colorAccessor(function(d) { return d.key; })
+			.colorAccessor(d => { return d.key; })
 			.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
 		this.chart.render();

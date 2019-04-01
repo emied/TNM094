@@ -1,8 +1,8 @@
 class GenderChart 
 {
-	constructor(cross_filter, container_id)
+	constructor(cross_filter, container_id, height)
 	{
-		this.container_id = '#' + container_id;
+		this.container_id = container_id;
 		this.chart = dc.pieChart(this.container_id);
 
 		this.dimension = cross_filter.dimension(function(d) {
@@ -20,7 +20,7 @@ class GenderChart
 
 		this.chart
 			.width($(this.container_id).width())
-			.height(240)
+			.height(height)
 			.dimension(this.dimension)
 			.group(this.group);
 

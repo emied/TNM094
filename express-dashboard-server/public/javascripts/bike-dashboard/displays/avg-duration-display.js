@@ -2,7 +2,7 @@ class AvgDurationDisplay
 {
 	constructor(cross_filter, container_id)
 	{
-		this.container_id = '#' + container_id;
+		this.container_id = container_id;
 		this.display = dc.numberDisplay(this.container_id);
 
 		this.group = cross_filter.groupAll().reduce(

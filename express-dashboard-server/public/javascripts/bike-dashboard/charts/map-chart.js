@@ -1,12 +1,10 @@
 class MapChart
 {
-	constructor(cross_filter, container_id, map_data, bike_stations, data, selected_bike_id)
+	constructor(cross_filter, container_id, height, map_data, bike_stations, data, selected_bike_id)
 	{
 		this.map_data = map_data;
 
-		this.cross_filter = cross_filter;
-
-		this.container_id = '#' + container_id;
+		this.container_id = container_id;
 		this.chart = dc.geoChoroplethChart(this.container_id);
 
 		this.bike_stations = bike_stations;
@@ -17,7 +15,7 @@ class MapChart
 		this.group = this.dimension.group().reduceCount();
 		
 		this.width = $(this.container_id).width();
-		this.height = 400;
+		this.height = height;
 		
 		var max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 		var min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
@@ -96,11 +94,9 @@ class MapChart
 
 	drawStationDots()
 	{
-		var bike_stations = this.bike_stations;
-		var projection = this.projection;
+		var map_chart = this;
 
 		this.chart.on("pretransition", function(_chart) {
-
 			var svg = _chart.svg();
 
 			var group = svg.selectAll("g.station_dots");
@@ -111,14 +107,14 @@ class MapChart
 
 				group = svg.append("g").classed("station_dots", true);
 
-				var additional_nodes = group.selectAll("circle").data(Array.from(bike_stations), function(x) { return x[0]; });
+				var additional_nodes = group.selectAll("circle").data(Array.from(map_chart.bike_stations), function(x) { return x[0]; });
 
 				additional_nodes.enter()
 					.append("circle")
 					.attr("x", 0)
 					.attr("y", 0)
 					.attr("r", 0)
-					.attr("transform", function(d){ var v = projection([d[1].lon, d[1].lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
+					.attr("transform", function(d){ var v = map_chart.projection([d[1].lon, d[1].lat]); return "translate(" + v[0] + "," + v[1] + ")"; })
 					.style("opacity", 1.0)
 					.style("fill", "white")
 					.style("stroke", "black")
@@ -130,7 +126,7 @@ class MapChart
 			// Find stations selected with current crossfilter
 			var filtered_stations = new Map();
 			_chart.dimension().top(Infinity).map(function(d) {
-				var station = bike_stations.get(d.start_id);
+				var station = map_chart.bike_stations.get(d.start_id);
 				if(station)
 				{
 					filtered_stations.set(d.start_id, station);
@@ -159,12 +155,10 @@ class MapChart
 
 	drawBikeRoute(data, selected_bike_id)
 	{
-		var bike_stations = this.bike_stations;
-		var projection = this.projection;
+		var map_chart = this;
 
 		this.chart.on("renderlet", function(_chart) {
 			var svg = _chart.svg();
-			//svg.selectAll("g.bike_id_path").remove();
 
 			var group = svg.selectAll("g.bike_id_path");
 
@@ -173,13 +167,13 @@ class MapChart
 				data.forEach( d => {
 					if(d.bike_id == selected_bike_id)
 					{
-						var start_station = bike_stations.get(d.start_id);
-						var end_station = bike_stations.get(d.end_id);
+						var start_station = map_chart.bike_stations.get(d.start_id);
+						var end_station = map_chart.bike_stations.get(d.end_id);
 
 						if(start_station && end_station)
 						{
-							var s = projection([parseFloat(start_station.lon), parseFloat(start_station.lat)]);
-							var e = projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
+							var s = map_chart.projection([parseFloat(start_station.lon), parseFloat(start_station.lat)]);
+							var e = map_chart.projection([parseFloat(end_station.lon), parseFloat(end_station.lat)]);
 							bike_id_path.push({x: s[0], y: s[1]});
 							bike_id_path.push({x: e[0], y: e[1]});
 						}

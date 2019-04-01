@@ -1,3 +1,4 @@
+
 class BikeDashboard
 {
 	constructor(data, map_data, station_data)
@@ -5,15 +6,15 @@ class BikeDashboard
 		this.data = this.processData(data, station_data);
 		this.cross_filter = crossfilter(this.data);
 
-		this.bike_id_chart = new BikeIdChart(this.cross_filter, 'bike-id-chart');
-		this.gender_chart = new GenderChart(this.cross_filter, 'pie-chart');
-		this.date_chart = new DateChart(this.cross_filter, 'date-bar-chart');
-		this.map_chart = new MapChart(this.cross_filter, 'map-chart', map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
+		this.bike_id_chart = new BikeIdChart(this.cross_filter, '#bike-id-chart', 240);
+		this.gender_chart = new GenderChart(this.cross_filter, '#pie-chart', 240);
+		this.date_chart = new DateChart(this.cross_filter, '#date-bar-chart', 140);
+		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 400, map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
 
-		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, 'info-box-1');
-		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, 'info-box-2');
-		this.unique_bikes_display = new UniqueBikesDisplay(this.cross_filter, 'info-box-3');
-		this.avg_duration_display = new AvgDurationDisplay(this.cross_filter, 'info-box-4');
+		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, '#info-box-1');
+		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, '#info-box-2');
+		this.unique_bikes_display = new UniqueBikesDisplay(this.cross_filter, '#info-box-3');
+		this.avg_duration_display = new AvgDurationDisplay(this.cross_filter, '#info-box-4');
 	}
 
 	resize()
@@ -35,16 +36,7 @@ class BikeDashboard
 		 Since we only use geo data with ZIP codes from SF currently,
 		 every bike ride outside SF will be removed (Bay Area, San Jose)
 
-		 This is pretty processing intensive. It's basically a tradeoff 
-		 between bandwidth and processing (less data needs to be sent
-		 but more processing needs to be done on that data). There
-		 might me a better solution.
-
-		 Update: 
-		 This gives a 600% performance improvement compared to
-		 the old method (at decimate=8). 
-
-		 Now bike_stations.get(station id).zip (for example) is used 
+		 bike_stations.get(station id).zip (for example) is used 
 		 to get specific data of a station.
 		**********************************************************/
 		this.bike_stations = new Map();

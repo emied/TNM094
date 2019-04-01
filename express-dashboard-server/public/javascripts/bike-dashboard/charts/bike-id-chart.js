@@ -1,15 +1,15 @@
 class BikeIdChart
 {
-	constructor(cross_filter, container_id)
+	constructor(cross_filter, container_id, height)
 	{
-		this.container_id = '#' + container_id;
+		this.container_id = container_id;
 		this.chart = dc.rowChart(this.container_id);
 		this.dimension = cross_filter.dimension( d => { return d.bike_id; });
 		this.group = this.dimension.group().reduceSum( d => { return d.distance; });
 
 		this.chart
 			.width($(this.container_id).width())
-			.height(240)
+			.height(height)
 			.group(this.group)
 			.dimension(this.dimension)
 			.margins({left: 30, top: 10, right: 50, bottom: -1}) // hide axes
