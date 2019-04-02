@@ -39,22 +39,22 @@ function drawChart(data) {
 			// Filter out stations that we haven't assigned ZIP codes to yet
 			bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
-			/********************************************************** 
+			/**********************************************************
 			 For each bike ride, find the ZIP code of its start station
 			 and remove data entry if none can be found.
 			 Since we only use geo data with ZIP codes from SF currently,
 			 every bike ride outside SF will be removed (Bay Area, San Jose)
 
-			 This is pretty processing intensive. It's basically a tradeoff 
+			 This is pretty processing intensive. It's basically a tradeoff
 			 between bandwidth and processing (less data needs to be sent
 			 but more processing needs to be done on that data). There
 			 might me a better solution.
 
-			 Update: 
+			 Update:
 			 This gives a 600% performance improvement compared to
-			 the old method (at decimate=8). 
+			 the old method (at decimate=8).
 
-			 Now bike_stations.get(station id).zip (for example) is used 
+			 Now bike_stations.get(station id).zip (for example) is used
 			 to get specific data of a station.
 			**********************************************************/
 
@@ -68,13 +68,13 @@ function drawChart(data) {
 			// Filter out bike ride entries that starts in a station w/o ZIP code
 			data = data.filter(d => { return bike_stations.get(d.start_id)});
 
-			/********************************************** 
+			/**********************************************
 			Function that draws circles at station coordinates
 			on the map chart. Called by the map chart each time
 			it re-renders (i.e. when crossfilter changes).
 			**********************************************/
 			//var projection; // this gets set further down in the map chart section.
-			function drawStationDots(_chart, selection) 
+			function drawStationDots(_chart, selection)
 			{
 				drawBikeRoute(_chart, selection);
 
@@ -134,7 +134,7 @@ function drawChart(data) {
 			}
 
 			var bike_id_group;
-			function drawBikeRoute(_chart, selection) 
+			function drawBikeRoute(_chart, selection)
 			{
 
 				var svg = _chart.svg();
@@ -191,7 +191,7 @@ function drawChart(data) {
 			}
 
 			var cross_filter = crossfilter(data);
-		
+
 			var count_chart = dc.dataCount("#count-chart");
 
 			/**********************************
@@ -207,7 +207,7 @@ function drawChart(data) {
 
 			var start = new Date(day_dimension.bottom(1)[0].start_time);
 			var end = new Date(day_dimension.top(1)[0].start_time);
-			
+
 			/**********************************
 				Bike id row chart
 			***********************************/
@@ -216,7 +216,7 @@ function drawChart(data) {
 				return d.bike_id;
 			});
 			bike_id_group = bike_id_dimension.group().reduceSum( d => { return d.distance; });
-			
+
 			/*************
 				Pie chart
 			*************/
@@ -232,16 +232,16 @@ function drawChart(data) {
 				}
 				else
 					test = "Other"
-		
+
 				return test;
 			});
 			var genderGroup = genderDimension.group().reduceCount();
 
 			/**************************************************************
-			Map choropleth chart over ZIP code regions in SF. 
+			Map choropleth chart over ZIP code regions in SF.
 
 			Color corresponds to the amount of bike rides that start in the region.
-		
+
 			Gray = no bike rides (probably because there's no stations in region)
 			Blue = medium activity
 			Green = high activity
@@ -254,25 +254,25 @@ function drawChart(data) {
 				return bike_stations.get(d.start_id).zip;
 			});
 			var zip_group = zip_dimension.group().reduceCount();
-			
+
 			var center = d3.geoCentroid(map_data)
 			var scale  = 100;
 			var offset = [width/2, height/2];
 			projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-			
+
 			var path = d3.geoPath().projection(projection);
 
 			// Temporary offset and scale to zoom in on interesting region.
 			// The code would do this automatically if no-bike-station-zones are removed.
 			var t_of = [-65, 65];
-			var t_sc = 1.45; 
-			
+			var t_sc = 1.45;
+
 			var bounds  = path.bounds(map_data);
 			var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
 			var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
 			var scale   = (hscale < vscale) ? hscale : vscale;
 			var offset  = [width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
-			
+
 			projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 			path = path.projection(projection);
 
@@ -308,7 +308,7 @@ function drawChart(data) {
 				.title(function (p) {
 					return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
 				});
-		
+
 			date_bar_chart
 				//.width(700)
 				.width($('#date-bar-chart').width())
@@ -326,7 +326,7 @@ function drawChart(data) {
 					return d.key;
 				})
 				.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
-		
+
 			bike_id_chart
 				//.width(400)
 				.width($("#bike-id-chart").width())
@@ -335,7 +335,7 @@ function drawChart(data) {
 				.dimension(bike_id_dimension)
 				// Not possible to remove x-axis for this chart via css for whatever reason.
 				// This works but it's ugly
-				.margins({left: 30, top: 10, right: 50, bottom: -1}) 
+				.margins({left: 30, top: 10, right: 50, bottom: -1})
 				.rowsCap(5)
 				.othersGrouper(false)
 				.label(function(d) {
@@ -346,7 +346,7 @@ function drawChart(data) {
 				})
 				.elasticX(true)
 				.xAxis().ticks(3);
-		
+
 			pie_chart
 				//.width(250)
 				.width($("#pie-chart").width())
@@ -358,7 +358,7 @@ function drawChart(data) {
 						console.log('click!', d);
 					});
 				});
-		
+
 			count_chart
 				.dimension(cross_filter)
 				.group(cross_filter.groupAll());
@@ -381,11 +381,11 @@ function drawChart(data) {
 
 					return p;
 				},
-				function () { 
+				function () {
 					return {
 						count: 0,
 						sum_speed: 0.0
-					}; 
+					};
 				}
 			);
 
@@ -414,26 +414,26 @@ function drawChart(data) {
 			var unique_bikes_display = dc.numberDisplay("#info-box-3");
 
 			var unique_bikes_group = cross_filter.groupAll().reduce(
-				function(p, v) { 
+				function(p, v) {
 					const count = p.bikes.get(v.bike_id) ||  0;
 					p.bikes.set(v.bike_id, count + 1);
 					return p;
 				},
 
-				function(p, v) { 
+				function(p, v) {
 					const count = p.bikes.get(v.bike_id);
-					if (count === 1) 
+					if (count === 1)
 					{
 						p.bikes.delete(v.bike_id);
-					} 
-					else 
+					}
+					else
 					{
 						p.bikes.set(v.bike_id, count - 1);
 					}
 					return p;
 				},
 
-				function() { 
+				function() {
 					return { bikes: new Map() };
 				}
 			);
@@ -462,11 +462,11 @@ function drawChart(data) {
 
 					return p;
 				},
-				function () { 
+				function () {
 					return {
 						count: 0,
 						sum_duration: 0.0
-					}; 
+					};
 				}
 			);
 
@@ -475,14 +475,14 @@ function drawChart(data) {
 				.valueAccessor(d => { return d.count ? (d.sum_duration / (d.count)) : 0 })
 				.html({some: "<h4 class='info-box-text'><br>Average Trip Duration</h4><h5 class='info-box-text'>%number sec</h5>"})
 				.group(avg_duration_group);
-			
+
 			dc.renderAll();
 
 			// Super ugly solution but prevents this from showing before chart is loaded.
 			//document.getElementById('t1').innerHTML = " bike rides out of ";
 			//document.getElementById('t2').innerHTML = " selected. | ";
 			//document.getElementById('t3').innerHTML = " Reset All";
-			
+
 			var map_chart_element = document.getElementById("map-chart");
 			if(map_chart_element)
 			{
@@ -508,25 +508,25 @@ function resizeCharts() {
 
 	var width = $("#map-chart").width();
 	var height = 400;
-	
+
 	var center = d3.geoCentroid(m_data)
 	var scale  = 100;
 	var offset = [width/2, height/2];
 	projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-	
+
 	var path = d3.geoPath().projection(projection);
 
 	// Temporary offset and scale to zoom in on interesting region.
 	// The code would do this automatically if no-bike-station-zones are removed.
 	var t_of = [-65, 65];
-	var t_sc = 1.45; 
-	
+	var t_sc = 1.45;
+
 	var bounds  = path.bounds(m_data);
 	var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
 	var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
 	var scale   = (hscale < vscale) ? hscale : vscale;
 	var offset  = [width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
-	
+
 	projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 
 	map_chart
