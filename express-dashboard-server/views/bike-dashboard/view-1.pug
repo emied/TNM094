@@ -19,8 +19,8 @@ block content
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-5.p-2.m-0
 				+chart-card('map-chart', 'Geographical Distribution')
-					a.fas.fa-map-marker-alt.dropdown-item(onclick='toggleStationDots()')
-					a.fas.fa-route.dropdown-item(onclick='toggleBikeRoute()')
+					a.fas.fa-map-marker-alt.dropdown-item(onclick='bike_dashboard.map_chart.toggleStationDots()')
+					a.fas.fa-route.dropdown-item(onclick='bike_dashboard.map_chart.toggleBikeRoute()')
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-7
 				.row
 					.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
@@ -31,11 +31,9 @@ block content
 					.container-fluid.col-xs-12.col-sm-7.col-md-7.col-lg-7.p-2.m-0
 						+chart-card('bike-id-chart', 'Farthest Traveled Bikes')
 
-	script(src='javascripts/draw-chart.js')
-	script(src='javascripts/startup-data-request.js')
-	script(src='javascripts/filter-menu.js')
-	script(src='javascripts/sidenav.js')
-	script(src='javascripts/map-chart-options.js')
-
 	script.
-		startupDataRequest();
+		var bike_dashboard;
+
+	script(src='javascripts/startup-data-request.js', type='module')
+	script(src='javascripts/filter-menu.js', type='module')
+	script(src='javascripts/sidenav.js')
