@@ -31,9 +31,7 @@
     color: rgba(255,255,255,.5);
 }
 /* change the color of active or hovered links */
-.navbar-custom .nav-item.active .nav-link,
-.navbar-custom .nav-item:hover .nav-link,
-.qmark:hover {
+.navbar-custom .nav-item.active .nav-link {
     color: #ffffff;
     text-decoration: none;
 }
