@@ -1,5 +1,3 @@
-import { BikeDashboard } from './bike-dashboard/bike-dashboard.js';
-
 var data_load_text = document.getElementById('data-load');
 data_load_text.innerHTML = "Status: Waiting for request.";
 
@@ -16,7 +14,7 @@ $(function filter() {
   $('input[name="daterange"]').daterangepicker({
     opens: 'right'
   }, function(start, end, label) {
-    
+
     var dataset = 'bike';
     start = start.format('YYYY-MM-DD');
     end = end.format('YYYY-MM-DD');
@@ -60,11 +58,7 @@ $(function filter() {
         return;
       }
 
-      d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
-        d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
-          bike_dashboard = new BikeDashboard(data, map_data, station_data);
-        });
-      });
+      drawList(data);
     }
   });
 });

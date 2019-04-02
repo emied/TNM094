@@ -1,10 +1,4 @@
-import { BikeDashboard } from './bike-dashboard/bike-dashboard.js';
-
 var data_load_text = document.getElementById('data-load');
-
-window.onresize = function(event) {
-	bike_dashboard.resize();
-};
 
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
@@ -50,13 +44,6 @@ function startupDataRequest() {
 			data_load_text.innerHTML += " No data satisfies the request."
 			return;
 		}
-
-		d3.csv('/api/get_file?name=bike_stations.csv').then(function(station_data) {
-			d3.json('/api/get_file?name=san-francisco-zip-codes.geojson').then(function(map_data) {
-				bike_dashboard = new BikeDashboard(data, map_data, station_data);
-			});
-		});
+		drawList(data);
 	}
 }
-
-startupDataRequest();

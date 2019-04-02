@@ -22,11 +22,10 @@ exports.dashboard = function(req, res) {
   {
     res.render('bike-dashboard/view-warning', { title: title });
   }
-	else if (data = "bike" && view == "help")
-  {
-    res.render('bike-dashboard/view-help', { title: title });
-  }
-
+	else if(data = "compressor" && view == 1)
+	{
+		res.render('compressor-dashboard/view-1')
+	}
 
   else
   {

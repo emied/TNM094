@@ -27,13 +27,21 @@
 
 /* change the link color */
 .navbar-custom .navbar-nav .nav-link,
-.qmark {
+.nav-war {
     color: rgba(255,255,255,.5);
 }
+
 /* change the color of active or hovered links */
-.navbar-custom .nav-item.active .nav-link {
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link,
+.nav-war {
     color: #ffffff;
     text-decoration: none;
+}
+
+.nav-war {
+  margin-top: 5px;
+  font-size: 20px;
 }
 
 .toggle-icon {
