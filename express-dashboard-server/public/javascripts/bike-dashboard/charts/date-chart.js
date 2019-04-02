@@ -1,4 +1,4 @@
-class DateChart
+export class DateChart
 {
 	constructor(cross_filter, container_id, height)
 	{

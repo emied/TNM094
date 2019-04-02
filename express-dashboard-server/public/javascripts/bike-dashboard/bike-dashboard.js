@@ -1,5 +1,14 @@
+import { BikeIdChart } from './charts/bike-id-chart.js';
+import { GenderChart } from './charts/gender-chart.js';
+import { DateChart } from './charts/date-chart.js';
+import { MapChart } from './charts/map-chart.js';
 
-class BikeDashboard
+import { AvgSpeedDisplay } from './displays/avg-speed-display.js';
+import { TotalDistanceDisplay } from './displays/total-distance-display.js';
+import { UniqueBikesDisplay } from './displays/unique-bikes-display.js';
+import { AvgDurationDisplay } from './displays/avg-duration-display.js';
+
+export class BikeDashboard
 {
 	constructor(data, map_data, station_data)
 	{

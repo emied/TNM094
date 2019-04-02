@@ -1,4 +1,4 @@
-class GenderChart 
+export class GenderChart 
 {
 	constructor(cross_filter, container_id, height)
 	{

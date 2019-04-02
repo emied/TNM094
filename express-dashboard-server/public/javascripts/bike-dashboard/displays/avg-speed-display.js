@@ -1,4 +1,4 @@
-class AvgSpeedDisplay
+export class AvgSpeedDisplay
 {
 	constructor(cross_filter, container_id)
 	{

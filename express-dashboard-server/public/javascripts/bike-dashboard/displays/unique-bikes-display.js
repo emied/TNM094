@@ -1,4 +1,4 @@
-class UniqueBikesDisplay
+export class UniqueBikesDisplay
 {
 	constructor(cross_filter, container_id)
 	{

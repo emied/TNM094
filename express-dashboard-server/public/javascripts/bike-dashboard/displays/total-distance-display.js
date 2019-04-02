@@ -1,4 +1,4 @@
-class TotalDistanceDisplay
+export class TotalDistanceDisplay
 {
 	constructor(cross_filter, container_id)
 	{

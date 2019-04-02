@@ -1,4 +1,4 @@
-class AvgDurationDisplay
+export class AvgDurationDisplay
 {
 	constructor(cross_filter, container_id)
 	{

@@ -1,4 +1,4 @@
-class BikeIdChart
+export class BikeIdChart
 {
 	constructor(cross_filter, container_id, height)
 	{

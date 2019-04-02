@@ -1,4 +1,4 @@
-class MapChart
+export class MapChart
 {
 	constructor(cross_filter, container_id, height, map_data, bike_stations, data, selected_bike_id)
 	{
@@ -48,6 +48,9 @@ class MapChart
 		****************************************************************/
 		this.drawStationDots();
 		this.drawBikeRoute(data, selected_bike_id);
+
+		this.show_dots = true;
+		this.show_route = true;
 
 		this.chart.render();
 	}
@@ -204,5 +207,17 @@ class MapChart
 						.attr("stroke-dashoffset", 0);
 			}
 		})
+	}
+
+	toggleStationDots()
+	{
+		this.show_dots = !this.show_dots;
+		d3.selectAll("g.station_dots").style("opacity", +this.show_dots);
+	}
+
+	toggleBikeRoute()
+	{
+		this.show_route = !this.show_route;
+		d3.selectAll("g.bike_id_path").style("opacity", +this.show_route);
 	}
 }
