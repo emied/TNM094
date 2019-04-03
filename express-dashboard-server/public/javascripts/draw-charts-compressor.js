@@ -80,8 +80,8 @@ function drawChartCompressor(data)
       --p.count;
       p.sum_humidity-= +v.humidity;
       p.avg_humidity = p.count ? (p.sum_humidity/p.count) : 0;
-
       return p;
+
     },
 
     function(){
@@ -89,6 +89,7 @@ function drawChartCompressor(data)
         count: 0,
         sum_humidity: 0.0,
         avg_humidity: 0.0
+
       }
     }
 
