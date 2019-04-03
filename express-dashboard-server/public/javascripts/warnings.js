@@ -23,6 +23,7 @@ function warnings(data) {
 
     if(deviation > 0.2) {
       warningArray[counter] = data[i];
+      warningArray[counter].deviation = (deviation*100).toFixed(3);
       ++counter;
     }
   }
@@ -30,7 +31,9 @@ function warnings(data) {
   const dataTable = $('#warnings').DataTable({
     data: warningArray,
     aoColumns: [
-      { title: 'Humidity', mData: 'humidity' }
+      { title: 'Humidity', mData: 'humidity' },
+      { title: 'Time', mData: 'start_time' },
+      { title: 'Deviation from average value (%)', mData: 'deviation' }
     ]
 
   });
