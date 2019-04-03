@@ -380,6 +380,11 @@ function drawChartCompressor(data)
             .group(avg_oil_temp_display_group);
 
 
+
+
+          /// find standard deviation
+
+
   dc.renderAll();
 
 

@@ -36,30 +36,3 @@ function drawList(data) {
 
 
 }
-/* function drawList(data) {
-
-  var cross_filter = crossfilter(data);
-
-  var bike_id_dimension = cross_filter.dimension(function(d) {
-    if (d.bike_id)
-
-    return d.bike_id;
-  });
-
-
-
-  bike_id_table
-    .dimension(bike_id_dimension)
-    .group(function(d) {
-      return d.bike_id;
-    })
-    .columns(['bike_id', 'distance'])
-    .order(d3.descending);
-
-
-
-  dc.renderAll();
-
-}
-
-*/

@@ -440,7 +440,7 @@ function drawChart(data) {
 
 			unique_bikes_display
 				.formatNumber(d3.format(".0f"))
-				.html({some: "<h4 class='info-box-text'><br>Unique Bikes Used</h4><h5 class='info-box-text'>%number</h5>"})
+				.html({some: "<h4 class='info-box-text'><br>Unique Bikes Used</h4><h5 class='info-box-text'>%number </h5>"})
 				.group(unique_bikes_group)
 				.valueAccessor( d => { return d.bikes.size } );
 

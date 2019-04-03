@@ -8,10 +8,20 @@
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 90px;
-  background: rgba(0, 0, 0, 0.9); 
+  background: rgba(0, 0, 0, 0.9);
   white-space: nowrap;
 }
 
 #sidenav.active {
     width: 250px;
+}
+
+#sidenav a{
+  color: white;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 25px;
+  opacity: 0.8;
+}
+#sidenav a:hover{
+  opacity: 1;
 }
