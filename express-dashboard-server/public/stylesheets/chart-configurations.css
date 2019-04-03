@@ -5,7 +5,7 @@ g.station_dots {
 
 g.bike_id_path {
   transition: opacity 0.5s;
-  opacity: 1.0;
+  opacity: 0.0;
 }
 
 /* Remove Y-axis from chart */

@@ -108,5 +108,5 @@ io.on("connection", socket => {
 		setTimeout(function() { emitData(socket); loop();  }, interval);
 	}());
 
-  socket.on("disconnect", () => console.log("Client disconnected"));
+  socket.on("disconnect", () => { console.log("Client disconnected"); global.current_index = 1190042; });
 });

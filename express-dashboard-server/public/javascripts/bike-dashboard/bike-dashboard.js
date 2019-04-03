@@ -2,6 +2,7 @@ import { BikeIdChart } from './charts/bike-id-chart.js';
 import { GenderChart } from './charts/gender-chart.js';
 import { DateChart } from './charts/date-chart.js';
 import { SecondsChart } from './charts/seconds-chart.js';
+import { MinutesChart } from './charts/minutes-chart.js';
 import { MapChart } from './charts/map-chart.js';
 
 import { AvgSpeedDisplay } from './displays/avg-speed-display.js';
@@ -19,13 +20,16 @@ export class BikeDashboard
 		this.bike_id_chart = new BikeIdChart(this.cross_filter, '#bike-id-chart', 240);
 		this.gender_chart = new GenderChart(this.cross_filter, '#pie-chart', 240);
 		//this.date_chart = new DateChart(this.cross_filter, '#date-bar-chart', 140);
-		this.date_chart = new SecondsChart(this.cross_filter, '#date-bar-chart', 140); // second resolution instead of day for real-time
+		//this.date_chart = new SecondsChart(this.cross_filter, '#date-bar-chart', 140);
+		this.date_chart = new MinutesChart(this.cross_filter, '#date-bar-chart', 140);
 		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 400, map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
 
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, '#info-box-1');
 		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, '#info-box-2');
 		this.unique_bikes_display = new UniqueBikesDisplay(this.cross_filter, '#info-box-3');
 		this.avg_duration_display = new AvgDurationDisplay(this.cross_filter, '#info-box-4');
+
+		this.last_draw = performance.now();
 	}
 
 	resize()
@@ -38,6 +42,9 @@ export class BikeDashboard
 
 	redraw()
 	{
+		if(performance.now() - this.last_draw < 500) { return; }
+		this.last_draw = performance.now(); 
+
 		this.bike_id_chart.redraw();
 		this.gender_chart.redraw();
 		this.date_chart.redraw();
@@ -79,6 +86,7 @@ export class BikeDashboard
 		if(this.bike_stations.get(data.start_id))
 		{
 			this.cross_filter.add([data]);
+			this.redraw();
 		}
 	}
 }
