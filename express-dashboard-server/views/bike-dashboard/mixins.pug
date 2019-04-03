@@ -23,8 +23,8 @@ mixin topnav(active_view)
 				each view in ['1', '2', '3']
 					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
 						a.nav-link(href='dashboard?data=bike&view=' + view) View #{view}
-				li(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
-					a.nav-war.fas.fa-exclamation-triangle(href='dashboard?data=bike&view=warning')
+				li#warning-link(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
+					a.nav-link.fas.fa-exclamation-triangle(href='dashboard?data=bike&view=warning')
 						sup#superscript-warnings  (5)
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend

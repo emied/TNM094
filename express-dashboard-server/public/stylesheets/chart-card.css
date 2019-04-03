@@ -22,6 +22,7 @@
 .chart-settings-btn {
 	font-size: 1.5rem;
 	color: rgba(70,70,70,0.8);
+	cursor: pointer;
 }
 
 /*-- Scale the font-size of chart titles depending on 
