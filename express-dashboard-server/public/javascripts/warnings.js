@@ -1,13 +1,18 @@
-function getWarnings(data)
-{
-  var cross_filter = crossfilter(data);
-  var minute_dimension = cross_filter.dimension(function(d) {
-    var minute = new Date(d.start_time);
-    minute.setHours(minute.getHours(), minute.getMinutes(), 0, 0);
-    return minute;
+function warnings(data) {
+
+  console.log(data.length);
+
+  for(i = 0; i < data.length; i++) {
+
+  }
+
+  const dataTable = $('#warnings').DataTable({
+    data: data,
+    aoColumns: [
+      { title: 'Humidity', mData: 'humidity' }
+    ]
 
   });
 
-  var standard_dev_humidity = 
 
 }
