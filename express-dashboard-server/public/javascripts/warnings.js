@@ -6,13 +6,5 @@ function warnings(data) {
 
   }
 
-  const dataTable = $('#warnings').DataTable({
-    data: data,
-    aoColumns: [
-      { title: 'Humidity', mData: 'humidity' }
-    ]
-
-  });
-
 
 }

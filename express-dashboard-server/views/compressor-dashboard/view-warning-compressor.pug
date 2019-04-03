@@ -1,0 +1,18 @@
+extends ../layout
+
+include ../bike-dashboard/mixins
+
+block content
+
+	+sidenav
+	+topnav('warning')
+	p gg
+
+	script(src='javascripts/warnings.js')
+	
+	script(src='javascripts/startup-data-request-warning.js')
+  
+	script(src='javascripts/sidenav.js')
+
+	script.
+		startupDataRequest();
