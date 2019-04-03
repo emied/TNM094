@@ -66,7 +66,7 @@ export class MapChart
 			.projection(this.projection)
 			.transitionDuration(0);
 
-		this.chart.render();
+		this.chart.redraw();
 
 		this.chart.transitionDuration(750);
 	}

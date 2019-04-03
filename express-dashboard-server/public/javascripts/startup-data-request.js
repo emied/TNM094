@@ -8,7 +8,7 @@ window.onresize = function(event) {
 
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
-	var start = "2018-09-19 08:55:50";
+	var start = "2018-09-19 08:55:40";
 	var end = "2018-09-19 08:56:00";
 	var decimate = 1; // decimate value should be set depending on device
 
