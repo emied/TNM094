@@ -34,4 +34,9 @@ export class AvgDurationDisplay
 
 		this.display.render();
 	}
+
+	redraw()
+	{
+		this.display.redraw();
+	}
 }

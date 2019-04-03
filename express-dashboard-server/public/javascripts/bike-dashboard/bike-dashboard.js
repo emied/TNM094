@@ -34,6 +34,19 @@ export class BikeDashboard
 		this.map_chart.resize();
 	}
 
+	redraw()
+	{
+		this.bike_id_chart.redraw();
+		this.gender_chart.redraw();
+		this.date_chart.redraw();
+		this.map_chart.redraw();
+
+		this.avg_speed_display.redraw();
+		this.total_distance_display.redraw();
+		this.unique_bikes_display.redraw(); 
+		this.avg_duration_display.redraw(); 
+	}
+
 	processData(data, station_data)
 	{
 		// Filter out stations that we haven't assigned ZIP codes to yet
@@ -57,5 +70,13 @@ export class BikeDashboard
 
 		// Filter out bike ride entries that starts in a station w/o ZIP code
 		return data.filter(d => { return this.bike_stations.get(d.start_id)});
+	}
+
+	addDataEntry(data)
+	{
+		if(this.bike_stations.get(data.start_id))
+		{
+			this.cross_filter.add([data]);
+		}
 	}
 }

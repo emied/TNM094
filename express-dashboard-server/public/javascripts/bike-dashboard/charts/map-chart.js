@@ -71,6 +71,21 @@ export class MapChart
 		this.chart.transitionDuration(750);
 	}
 
+	redraw()
+	{
+		var max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		var min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		var mid_zip = min_zip + (max_zip - min_zip) / 2.0;
+		
+		max_zip = Math.pow(max_zip, 1/8);
+		mid_zip = Math.pow(mid_zip, 1/8);
+
+		this.chart
+			.colors(d3.scaleLinear().domain([0, mid_zip, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
+
+		this.chart.redraw();
+	}
+
 	calculateProjection()
 	{
 		var center = d3.geoCentroid(this.map_data);

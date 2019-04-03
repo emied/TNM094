@@ -15,4 +15,9 @@ export class TotalDistanceDisplay
 
 		this.display.render();
 	}
+
+	redraw()
+	{
+		this.display.redraw();
+	}
 }

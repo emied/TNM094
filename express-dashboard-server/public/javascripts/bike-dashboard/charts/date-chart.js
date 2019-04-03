@@ -43,4 +43,9 @@ export class DateChart
 
 		this.chart.transitionDuration(750);
 	}
+
+	redraw()
+	{
+		this.chart.redraw();
+	}
 }

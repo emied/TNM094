@@ -33,4 +33,9 @@ export class BikeIdChart
 
 		this.chart.transitionDuration(750);
 	}
+
+	redraw()
+	{
+		this.chart.redraw();
+	}
 }

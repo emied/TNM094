@@ -34,4 +34,9 @@ export class AvgSpeedDisplay
 
 		this.display.render();
 	}
+
+	redraw()
+	{
+		this.display.redraw();
+	}
 }

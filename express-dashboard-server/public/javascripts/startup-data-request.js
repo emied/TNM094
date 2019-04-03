@@ -63,7 +63,6 @@ startupDataRequest();
 
 const socket = io();
 socket.on("data", data => {
-	console.log(data);
-	bike_dashboard.cross_filter.add([data]);
-	dc.redrawAll();
+	bike_dashboard.addDataEntry(data);
+	bike_dashboard.redraw();
 });
