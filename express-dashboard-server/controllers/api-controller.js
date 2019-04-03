@@ -98,6 +98,9 @@ exports.data_range = function(req, res) {
 
 	// Accumulate all data entries that satisfies the request and store in result.
 	// Will only work for data sorted by start_time in ascending order, check data/datasets.js.
+	console.log(start);
+	console.log(end);
+
 	var result = [];
 	for ( ; i < data.length; i += decimate)
 	{

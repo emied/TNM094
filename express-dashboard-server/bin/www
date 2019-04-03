@@ -88,3 +88,25 @@ function onListening() {
 		: 'port ' + addr.port;
 	debug('Listening on ' + bind);
 }
+
+/* socket.io test */
+global.current_index = 1190042; //2018-09-19 08:56:00
+
+const io = require('socket.io')(server);
+const datasets = require('../data/datasets');
+
+const getApiAndEmit = async socket => {
+	socket.emit("data", datasets['bike'][global.current_index]);
+};
+
+io.on("connection", socket => {
+	console.log("New client connected");
+
+	(function loop() {
+		var interval = new Date(datasets['bike'][global.current_index + 1].start_time) - new Date(datasets['bike'][global.current_index].start_time);
+		global.current_index++;
+		setTimeout(function() { getApiAndEmit(socket); loop();  }, interval);
+	}());
+
+  socket.on("disconnect", () => console.log("Client disconnected"));
+});
