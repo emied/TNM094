@@ -24,7 +24,7 @@ exports.dashboard = function(req, res) {
   }
 	else if(data = "compressor" && view == 1)
 	{
-		res.render('compressor-dashboard/view-1')
+		res.render('compressor-dashboard/view-1', { title: title });
 	}
 
   else

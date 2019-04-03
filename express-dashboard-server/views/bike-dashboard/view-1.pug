@@ -19,8 +19,8 @@ block content
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-5.p-2.m-0
 				+chart-card('map-chart', 'Geographical Distribution')
-					a#toggle-station-dots.fas.fa-map-marker-alt.dropdown-item
-					a#toggle-bike-route.fas.fa-route.dropdown-item
+					a.fas.fa-map-marker-alt.dropdown-item(onclick='bike_dashboard.map_chart.toggleStationDots()')
+					a.fas.fa-route.dropdown-item(onclick='bike_dashboard.map_chart.toggleBikeRoute()')
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-7
 				.row
 					.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
