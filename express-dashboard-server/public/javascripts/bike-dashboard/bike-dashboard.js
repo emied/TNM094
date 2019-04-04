@@ -83,9 +83,11 @@ export class BikeDashboard
 
 	addDataEntry(data)
 	{
-		if(this.bike_stations.get(data.start_id))
+		var new_data = data.filter(d => {return this.bike_stations.get(d.start_id)});
+
+		if(new_data.length)
 		{
-			this.cross_filter.add([data]);
+			this.cross_filter.add(new_data);
 			this.redraw();
 		}
 	}

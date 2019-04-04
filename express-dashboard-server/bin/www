@@ -90,23 +90,70 @@ function onListening() {
 }
 
 /* socket.io test */
-global.current_index = 1190042; //2018-09-19 08:56:00
+// global.current_index = 1190042; //2018-09-19 08:56:00
+
+// const io = require('socket.io')(server);
+// const datasets = require('../data/datasets');
+
+// const emitData = async socket => {
+// 	socket.emit("data", datasets['bike'][global.current_index]);
+// };
+
+// io.on("connection", socket => {
+// 	console.log("New client connected");
+
+// 	(function loop() {
+// 		var interval = new Date(datasets['bike'][global.current_index + 1].start_time) - new Date(datasets['bike'][global.current_index].start_time);
+// 		global.current_index++;
+// 		setTimeout(function() { emitData(socket); loop();  }, interval);
+// 	}());
+
+//   socket.on("disconnect", () => { console.log("Client disconnected"); global.current_index = 1190042; });
+// });
+
+global.current_index = 1190043;
+global.data_start_time = new Date('2018-09-19 08:56:03');
+global.server_start_time = new Date();
+global.data_current_time = new Date(global.data_start_time);
 
 const io = require('socket.io')(server);
 const datasets = require('../data/datasets');
 
 const emitData = async socket => {
-	socket.emit("data", datasets['bike'][global.current_index]);
+	var data = datasets['bike'];
+
+	global.data_current_time = new Date(global.data_start_time.valueOf() + (new Date() - global.server_start_time));
+
+	var new_data = [];
+	for( ; global.current_index < data.length; global.current_index++)
+	{
+		var date = new Date(data[global.current_index].start_time);
+
+		if(date <= global.data_current_time)
+		{
+			new_data.push(data[global.current_index]);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	if(new_data.length)
+	{
+		socket.emit("data", new_data);
+	}
 };
 
+let interval;
 io.on("connection", socket => {
 	console.log("New client connected");
 
-	(function loop() {
-		var interval = new Date(datasets['bike'][global.current_index + 1].start_time) - new Date(datasets['bike'][global.current_index].start_time);
-		global.current_index++;
-		setTimeout(function() { emitData(socket); loop();  }, interval);
-	}());
+	if(interval) {
+		clearInterval(interval);
+	}
 
-  socket.on("disconnect", () => { console.log("Client disconnected"); global.current_index = 1190042; });
+	interval = setInterval(() => emitData(socket), 1000);
+
+  socket.on("disconnect", () => { console.log("Client disconnected")});
 });
