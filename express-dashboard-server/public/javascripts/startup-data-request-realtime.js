@@ -6,7 +6,7 @@ window.onresize = function(event) {
 
 function startupDataRequest() {
 	var dataset = 'bike';
-	var interval = 3*60*1000; // 3 minutes
+	var interval = 60*60*1000; // 60 minutes
 
 	fetch('./api/data_latest_range?dataset=' + dataset + '&interval=' + interval)
 		.then(response => { 
@@ -26,6 +26,6 @@ startupDataRequest();
 const socket = io();
 socket.on("data", data => {
 	if(bike_dashboard) {
-		bike_dashboard.addDataEntry(data);
+		bike_dashboard.addData(data);
 	} 
 });

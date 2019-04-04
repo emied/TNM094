@@ -70,11 +70,11 @@ export class MapChart
 
 	redraw()
 	{
-		var new_max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		var new_min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		this.max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		this.min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 
-		this.max_zip = new_max_zip > this.max_zip ? new_max_zip : this.max_zip;
-		this.min_zip = new_min_zip < this.min_zip ? new_min_zip : this.min_zip;
+		//this.max_zip = new_max_zip > this.max_zip ? new_max_zip : this.max_zip;
+		//this.min_zip = new_min_zip < this.min_zip ? new_min_zip : this.min_zip;
 
 		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
 

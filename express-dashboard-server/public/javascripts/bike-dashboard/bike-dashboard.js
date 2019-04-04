@@ -17,11 +17,11 @@ export class BikeDashboard
 		this.data = this.processData(data, station_data);
 		this.cross_filter = crossfilter(this.data);
 
+		this.date_range = { start: new Date(this.data[this.data.length - 1].start_time), end: new Date(this.data[0].start_time) };
+
 		this.bike_id_chart = new BikeIdChart(this.cross_filter, '#bike-id-chart', 240);
 		this.gender_chart = new GenderChart(this.cross_filter, '#pie-chart', 240);
-		//this.date_chart = new DateChart(this.cross_filter, '#date-bar-chart', 140);
-		//this.date_chart = new SecondsChart(this.cross_filter, '#date-bar-chart', 140);
-		this.date_chart = new MinutesChart(this.cross_filter, '#date-bar-chart', 140);
+		this.date_chart = new MinutesChart(this.cross_filter, '#date-bar-chart', 140, this.date_range);
 		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 400, map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
 
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, '#info-box-1');
@@ -43,6 +43,7 @@ export class BikeDashboard
 	redraw()
 	{
 		if(performance.now() - this.last_draw < 500) { return; }
+
 		this.last_draw = performance.now(); 
 
 		this.bike_id_chart.redraw();
@@ -53,7 +54,7 @@ export class BikeDashboard
 		this.avg_speed_display.redraw();
 		this.total_distance_display.redraw();
 		this.unique_bikes_display.redraw(); 
-		this.avg_duration_display.redraw(); 
+		this.avg_duration_display.redraw();
 	}
 
 	processData(data, station_data)
@@ -81,12 +82,48 @@ export class BikeDashboard
 		return data.filter(d => { return this.bike_stations.get(d.start_id)});
 	}
 
-	addDataEntry(data)
+	addData(data)
 	{
 		var new_data = data.filter(d => {return this.bike_stations.get(d.start_id)});
 
 		if(new_data.length)
 		{
+			var bike_chart_filters = this.bike_id_chart.chart.filters();
+			var gender_chart_filters = this.gender_chart.chart.filters();
+			var date_chart_filters = this.date_chart.chart.filters();
+			var map_chart_filters = this.map_chart.chart.filters();
+
+			this.bike_id_chart.chart.filters(null);
+			this.gender_chart.chart.filters(null);
+			this.date_chart.chart.filters(null);
+			this.map_chart.chart.filters(null);
+
+			this.date_range.end = new Date(new_data[new_data.length - 1].start_time);
+			var date_cutoff = new Date(this.date_range.end.valueOf() - 60*60*1000);
+
+			var new_start_date = new Date(this.date_range.end);
+
+			this.cross_filter.remove(d => { 
+				var date = new Date(d.start_time);
+				if(date < date_cutoff){
+					return true;
+				}
+				else if(date < new_start_date){
+					new_start_date = date;
+				}
+				return false;
+			});
+			this.date_range.start = new_start_date;
+
+			this.bike_id_chart.chart.filters([bike_chart_filters]);
+			this.gender_chart.chart.filters([gender_chart_filters]);
+			this.date_chart.chart.filters([date_chart_filters]);
+			this.map_chart.chart.filters([map_chart_filters]);
+
+			if(date_chart_filters.length && date_chart_filters[0][0] < this.date_range.start) {
+				this.date_chart.chart.filterAll();
+			}
+
 			this.cross_filter.add(new_data);
 			this.redraw();
 		}

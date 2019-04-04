@@ -1,9 +1,10 @@
 export class MinutesChart
 {
-	constructor(cross_filter, container_id, height)
+	constructor(cross_filter, container_id, height, date_range)
 	{
 		this.container_id = container_id;
 		this.chart = dc.barChart(this.container_id);
+		this.date_range = date_range;
 
 		this.dimension = cross_filter.dimension(function(d) {
 				var date = new Date(d.start_time);
@@ -13,13 +14,13 @@ export class MinutesChart
 		});
 		this.group = this.dimension.group().reduceCount();
 
-		this.start = new Date(this.dimension.bottom(1)[0].start_time);
-		this.end = new Date(this.dimension.top(1)[0].start_time);
+		//this.start = new Date(this.dimension.bottom(1)[0].start_time);
+		//this.end = new Date(this.dimension.top(1)[0].start_time);
 
 		this.chart
 			.width($(this.container_id).width())
 			.height(height)
-			.x(d3.scaleTime().domain([this.start, this.end]))
+			.x(d3.scaleTime().domain([this.date_range.start, this.date_range.end]))
 			.xUnits(d3.timeMinutes)
 			.margins({left: 10, top: 10, right: 10, bottom: 30}) // Compensate for removed y-axis
 			.yAxisLabel("")
@@ -31,7 +32,7 @@ export class MinutesChart
 			.dimension(this.dimension)
 			.group(this.group)
 			.colorAccessor(d => { return d.key; })
-			.colors(d3.scaleTime().domain([this.start, this.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
 		this.chart.render();
 	}
@@ -49,15 +50,15 @@ export class MinutesChart
 
 	redraw()
 	{
-		var new_start = new Date(this.dimension.bottom(1)[0].start_time);
-		var new_end = new Date(this.dimension.top(1)[0].start_time);
+		//this.start = new Date(this.dimension.bottom(1)[0].start_time);
+		//this.end = new Date(this.dimension.top(1)[0].start_time);
 
-		this.start = new_start < this.start ? new_start : this.start;
-		this.end = new_end > this.end ? new_end : this.end;
+		//this.start = new_start < this.start ? new_start : this.start;
+		//this.end = new_end > this.end ? new_end : this.end;
 
 		this.chart
 			//.x(d3.scaleTime().domain([this.start, this.end]))
-			.colors(d3.scaleTime().domain([this.start, this.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
 
 		this.chart.redraw();
 	}
