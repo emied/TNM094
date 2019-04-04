@@ -112,9 +112,9 @@ function onListening() {
 // });
 
 global.current_index = 1190043;
-global.data_start_time = new Date('2018-09-19 08:56:03');
-global.server_start_time = new Date();
-global.data_current_time = new Date(global.data_start_time);
+const data_start_time = new Date('2018-09-19 08:56:03');
+const server_start_time = new Date();
+global.data_current_time = new Date(data_start_time);
 
 const io = require('socket.io')(server);
 const datasets = require('../data/datasets');
@@ -122,7 +122,7 @@ const datasets = require('../data/datasets');
 const emitData = async socket => {
 	var data = datasets['bike'];
 
-	global.data_current_time = new Date(global.data_start_time.valueOf() + (new Date() - global.server_start_time));
+	global.data_current_time = new Date(data_start_time.valueOf() + (new Date() - server_start_time));
 
 	var new_data = [];
 	for( ; global.current_index < data.length; global.current_index++)
