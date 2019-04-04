@@ -17,12 +17,9 @@ export class MapChart
 		this.width = $(this.container_id).width();
 		this.height = height;
 		
-		var max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		var min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		var mid_zip = min_zip + (max_zip - min_zip) / 2.0;
-		
-		max_zip = Math.pow(max_zip, 1/8);
-		mid_zip = Math.pow(mid_zip, 1/8);
+		this.max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		this.min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
 		
 		this.calculateProjection();
 		
@@ -31,7 +28,7 @@ export class MapChart
 			.group(this.group)
 			.width(this.width)
 			.height(this.height)
-			.colors(d3.scaleLinear().domain([0, mid_zip, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
+			.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(this.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
 			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; }) // This value is weird
 			.projection(this.projection)
 			.overlayGeoJson(this.map_data["features"], "zip_code", function (d) {
@@ -73,15 +70,16 @@ export class MapChart
 
 	redraw()
 	{
-		var max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		var min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		var mid_zip = min_zip + (max_zip - min_zip) / 2.0;
-		
-		max_zip = Math.pow(max_zip, 1/8);
-		mid_zip = Math.pow(mid_zip, 1/8);
+		var new_max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+		var new_min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
+
+		this.max_zip = new_max_zip > this.max_zip ? new_max_zip : this.max_zip;
+		this.min_zip = new_min_zip < this.min_zip ? new_min_zip : this.min_zip;
+
+		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
 
 		this.chart
-			.colors(d3.scaleLinear().domain([0, mid_zip, max_zip]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
+			.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(this.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
 
 		this.chart.redraw();
 	}

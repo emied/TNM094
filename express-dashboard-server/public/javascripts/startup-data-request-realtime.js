@@ -6,7 +6,7 @@ window.onresize = function(event) {
 
 function startupDataRequest() {
 	var dataset = 'bike';
-	var interval = 1*60*1000; // 5 minutes
+	var interval = 3*60*1000; // 3 minutes
 
 	fetch('./api/data_latest_range?dataset=' + dataset + '&interval=' + interval)
 		.then(response => { 

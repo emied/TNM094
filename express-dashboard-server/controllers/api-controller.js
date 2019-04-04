@@ -140,6 +140,10 @@ exports.data_latest_range = function(req, res) {
 		{
 			result.push(data[i]);
 		}
+		else
+		{
+			break;
+		}
 	}
 	res.json(result);
 }
