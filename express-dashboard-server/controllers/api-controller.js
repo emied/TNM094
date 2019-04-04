@@ -127,10 +127,10 @@ the last week'. Usefull for initial data
 request when using real-time data.
 ***************************************/
 exports.data_latest_range = function(req, res) {
-	var { dataset, time_interval } = req.query;
+	var { dataset, interval } = req.query;
 
 	var data = datasets[dataset];
-	var start = new Date(global.data_current_time.valueOf() - time_interval);
+	var start = new Date(global.data_current_time.valueOf() - interval);
 
 	var result = [];
 	for (var i = global.current_index; i >= 0; i--)

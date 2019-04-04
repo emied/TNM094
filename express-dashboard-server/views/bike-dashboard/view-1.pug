@@ -24,7 +24,7 @@ block content
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-7
 				.row
 					.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
-						+chart-card('date-bar-chart', 'Date Distribution')
+						+chart-card('date-bar-chart', 'Time Distribution')
 				.row
 					.container-fluid.col-xs-12.col-sm-5.col-md-5.col-lg-5.p-2.m-0
 						+chart-card('pie-chart', 'Gender Distribution')
@@ -35,6 +35,6 @@ block content
 	script.
 		var bike_dashboard;
 
-	script(src='javascripts/startup-data-request.js', type='module')
+	script(src='javascripts/startup-data-request-realtime.js', type='module')
 	script(src='javascripts/filter-menu.js', type='module')
 	script(src='javascripts/sidenav.js')
