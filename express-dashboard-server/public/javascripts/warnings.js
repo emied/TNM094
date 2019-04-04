@@ -10,28 +10,35 @@ function warnings(data) {
   }
 
   var avg_humidity = sum_humidity/data.length;
-  console.log(avg_humidity);
+
   var counter = 0;
   var warningArray = new Array();
 
 
+
   for(i = 0; i < data.length; i++) {
     var value = parseFloat(data[i].humidity);
-
+    var flow_string = parseFloat(data[i].flow);
     var diff_value = Math.abs(avg_humidity - value);
     var deviation = diff_value/avg_humidity;
 
     if(deviation > 0.2) {
       warningArray[counter] = data[i];
       warningArray[counter].deviation = (deviation*100).toFixed(3);
+
+      var humidityArrayString = new Array(deviation.lenght).fill("hum");
       ++counter;
+      console.log(humidityArrayString);
+      console.log(deviation);
+
     }
+
   }
 
   const dataTable = $('#warnings').DataTable({
     data: warningArray,
     aoColumns: [
-      { title: 'Humidity', mData: 'humidity' },
+      { title: 'Humidity (%)', mData: 'humidity'},
       { title: 'Time', mData: 'start_time' },
       { title: 'Deviation from average value (%)', mData: 'deviation' }
     ]
