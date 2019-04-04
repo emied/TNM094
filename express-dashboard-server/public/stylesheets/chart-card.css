@@ -19,6 +19,14 @@
 	color: #ffffff;
 }
 
+.navbar-chart .dropdown-item {
+	cursor: pointer;
+}
+
+.custom-brush-handle {
+	display: none;
+}
+
 .chart-settings-btn {
 	font-size: 1.5rem;
 	color: rgba(70,70,70,0.8);
