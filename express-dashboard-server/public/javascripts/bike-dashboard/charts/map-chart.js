@@ -113,6 +113,13 @@ export class MapChart
 		var map_chart = this;
 
 		this.chart.on("pretransition", function(_chart) {
+
+			map_chart.max_zip = Math.max.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
+			map_chart.min_zip = Math.min.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
+			var mid_zip = map_chart.min_zip + (map_chart.max_zip - map_chart.min_zip) / 2.0;
+
+			map_chart.chart.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(map_chart.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
+
 			var svg = _chart.svg();
 
 			var group = svg.selectAll("g.station_dots");
