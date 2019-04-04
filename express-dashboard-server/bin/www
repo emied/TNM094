@@ -93,10 +93,13 @@ function onListening() {
  * Real-time data with socket.io
  */
 
-global.current_index = 1190043;
-const data_start_time = new Date('2018-09-19 08:56:03');
+//global.current_index = 1190043;
+//const data_start_time = new Date('2018-09-19 08:56:03');
+global.current_index = 1189592;
+const data_start_time = new Date('2018-09-19 08:30:00');
+
 const server_start_time = new Date();
-const timescale = 30.0;
+const timescale = 60.0;
 global.data_current_time = new Date(data_start_time);
 
 const io = require('socket.io')(server);

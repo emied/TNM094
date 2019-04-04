@@ -99,7 +99,7 @@ export class BikeDashboard
 			this.map_chart.chart.filters(null);
 
 			this.date_range.end = new Date(new_data[new_data.length - 1].start_time);
-			var date_cutoff = new Date(this.date_range.end.valueOf() - 60*60*1000);
+			var date_cutoff = new Date(this.date_range.end.valueOf() - 30*60*1000);
 
 			var new_start_date = new Date(this.date_range.end);
 
