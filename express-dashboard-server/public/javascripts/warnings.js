@@ -40,10 +40,29 @@ function warnings(data) {
     aoColumns: [
       { title: 'Humidity (%)', mData: 'humidity'},
       { title: 'Time', mData: 'start_time' },
-      { title: 'Deviation from average value (%)', mData: 'deviation' }
-    ]
+      { title: 'Deviation from average value (%)', mData: 'deviation' },
 
+      { mRender: function(data, type, full) {
+        return '<a class="btn btn-danger btn-sm">' + 'Delete warning' + '</a>';
+      }}
+
+    ]
   });
+
+  $('#button_id').click( function () {
+    console.log("HEJ");
+    dataTable.row('.active').remove();
+  });
+
+
+  $(".btn").bind( "click", function(event) {
+    console.log("HEJ");
+    var target_row = $(this).closest("tr").get(0); // this line did the trick
+    console.log(target_row);
+    target_row.remove();
+
+});
+
 
 
 }
