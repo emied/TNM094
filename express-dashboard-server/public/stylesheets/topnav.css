@@ -57,7 +57,8 @@
 #superscript-warnings {
   vertical-align: top;
   position: relative;
-  top: -2px;
+  top: 0px;
+  left: -6px;
   font-size: 10px;
   color:#ff3838;
 }

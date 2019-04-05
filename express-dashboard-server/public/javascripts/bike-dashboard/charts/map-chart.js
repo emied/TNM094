@@ -27,6 +27,7 @@ export class MapChart
 			.dimension(this.dimension)
 			.group(this.group)
 			.width(this.width)
+			.legend(dc.legend().x(this.width - 55).y(60).itemHeight(18).gap(1))
 			.height(this.height)
 			.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(this.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
 			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; }) // This value is weird
@@ -37,6 +38,21 @@ export class MapChart
 			.title(function (p) {
 				return null;
 			});
+
+		this.chart.legendables = function() {
+			var items, seen = [];
+    	items = this.data().filter(x => seen[x.value] ? false : (seen[x.value] = true));
+    	items = items.sort((a,b) => a.value < b.value ? 1 : -1);
+
+			var chart = this;
+      return items.map(function(d) {
+      	return { 
+					chart: chart,
+					name: d.value,
+					color: chart.colors()(Math.pow(d.value, 1/8)) 
+				}; 
+			}) 
+    };
 
 		/****************************************************************
 		Awkward method of adding the custom event driven render functions 
@@ -61,6 +77,7 @@ export class MapChart
 		this.chart
 			.width(this.width)
 			.projection(this.projection)
+			.legend(dc.legend().x(this.width - 55).y(60).itemHeight(18).gap(1))
 			.transitionDuration(0);
 
 		this.chart.render();
