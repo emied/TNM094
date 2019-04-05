@@ -18,7 +18,7 @@ block content
 					div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-5.p-2.m-0
-				+chart-card('map-chart', 'Geographical Distribution')
+				+chart-card('map-chart', 'Geographical Distribution', 'map-hover-info')
 					a.dropdown-item(onclick='bike_dashboard.map_chart.chart.filterAll()') Clear Filter
 					a.fas.fa-map-marker-alt.dropdown-item(onclick='bike_dashboard.map_chart.toggleStationDots()')
 					a.fas.fa-route.dropdown-item(onclick='bike_dashboard.map_chart.toggleBikeRoute()')

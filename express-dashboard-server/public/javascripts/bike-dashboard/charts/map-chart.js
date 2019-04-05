@@ -241,3 +241,4 @@ export class MapChart
 		d3.selectAll("g.bike_id_path").style("opacity", +this.show_route);
 	}
 }
+

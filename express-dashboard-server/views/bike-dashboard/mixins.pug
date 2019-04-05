@@ -1,4 +1,4 @@
-mixin chart-card(chart_id, title)
+mixin chart-card(chart_id, title, info)
 	.chart-card.card-shadow.container-fluid.col-12.m-0.p-0.h-100
 		nav.navbar.navbar-chart.p-1
 			a.navbar-brand.mx-2(href='#Separate ' + title + ' View') #{title}
@@ -10,6 +10,8 @@ mixin chart-card(chart_id, title)
 					else
 						a.dropdown-item(href='#') No settings provided
 		div(id=chart_id).col-12.p-2
+		if info
+			a.mx-2(id=info)
 
 mixin topnav(active_view)
 	nav#topnav.navbar.navbar-expand-lg.navbar-custom.p-1
