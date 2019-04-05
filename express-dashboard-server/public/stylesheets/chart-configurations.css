@@ -1,11 +1,13 @@
 g.station_dots {
   transition: opacity 0.5s;
   opacity: 1.0;
+  pointer-events: none;
 }
 
 g.bike_id_path {
   transition: opacity 0.5s;
   opacity: 0.0;
+  pointer-events: none;
 }
 
 /* Remove Y-axis from chart */

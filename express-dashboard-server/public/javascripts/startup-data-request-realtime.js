@@ -10,14 +10,16 @@ function afterLoad() {
 		bike_dashboard.resize();
 	};
 
-	$("g.zip_code").hover(
-		function(){
-			$('#map-hover-info').text($(this).find('text').text());
-		},
-		function(){
-			$('#map-hover-info').text('');
-		}
-	);
+	$('#map-hover-info').html('<a>&nbsp</a><br><a>&nbsp</a>');
+
+	$('#map-chart').on("mouseenter", "g.zip_code", function(e) {
+		var text = $(this).find('text').text().split('.');
+		$('#map-hover-info').html('<a>ZIP code: ' + text[0] + '</a><br><a>Bike rides: ' + text[1] + '</a>');
+	});
+
+	$('#map-chart').on("mouseleave", "g.zip_code", function(e) {
+		$('#map-hover-info').html('<a>&nbsp</a><br><a>&nbsp</a>');
+	});
 }
 
 function startupDataRequest() {

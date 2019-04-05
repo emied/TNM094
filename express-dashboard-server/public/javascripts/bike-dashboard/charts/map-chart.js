@@ -126,7 +126,7 @@ export class MapChart
 				}
 
 				var value = current.get('a' + d.properties.zip_code);
-				region.select('text').text("ZIP code: " + d.properties.zip_code + ". Bike rides: " + (value ? value : '0'));
+				region.select('text').text(d.properties.zip_code + '.' + (value ? value : '0'));
 			})
 
 			/* Rescale map colors */
