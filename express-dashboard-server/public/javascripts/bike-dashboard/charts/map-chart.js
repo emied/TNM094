@@ -10,7 +10,7 @@ export class MapChart
 		this.bike_stations = bike_stations;
 		
 		this.dimension = cross_filter.dimension(function(d) {
-			return bike_stations.get(d.start_id).zip;
+			return 'a' + bike_stations.get(d.start_id).zip;
 		});
 		this.group = this.dimension.group().reduceCount();
 		
@@ -32,10 +32,10 @@ export class MapChart
 			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; }) // This value is weird
 			.projection(this.projection)
 			.overlayGeoJson(this.map_data["features"], "zip_code", function (d) {
-				return d.properties.zip_code;
+				return 'a' + d.properties.zip_code;
 			})
 			.title(function (p) {
-				return "ZIP code: " + p.key + ". Bike rides: " + (p.value ? p.value : "0");
+				return null;
 			});
 
 		/****************************************************************
@@ -114,12 +114,29 @@ export class MapChart
 
 		this.chart.on("pretransition", function(_chart) {
 
+			/* Add text attribute to map regions with info */
+			var current = new Map();
+			_chart.data().forEach(d => { current.set(d.key, d.value); })
+
+			map_chart.map_data.features.forEach( d => {
+				var region = _chart.select('g.zip_code.' + 'a' + d.properties.zip_code);
+				if(region.select('text').empty())
+				{
+					region.append('text');
+				}
+
+				var value = current.get('a' + d.properties.zip_code);
+				region.select('text').text("ZIP code: " + d.properties.zip_code + ". Bike rides: " + (value ? value : '0'));
+			})
+
+			/* Rescale map colors */
 			map_chart.max_zip = Math.max.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
 			map_chart.min_zip = Math.min.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
 			var mid_zip = map_chart.min_zip + (map_chart.max_zip - map_chart.min_zip) / 2.0;
 
 			map_chart.chart.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(map_chart.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
 
+			/* The actual drawStationDots */
 			var svg = _chart.svg();
 
 			var group = svg.selectAll("g.station_dots");

@@ -12,7 +12,7 @@ function afterLoad() {
 
 	$("g.zip_code").hover(
 		function(){
-			$('#map-hover-info').text($(this).find('title').text());
+			$('#map-hover-info').text($(this).find('text').text());
 		},
 		function(){
 			$('#map-hover-info').text('');
