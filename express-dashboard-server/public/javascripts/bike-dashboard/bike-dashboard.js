@@ -22,7 +22,7 @@ export class BikeDashboard
 		this.bike_id_chart = new BikeIdChart(this.cross_filter, '#bike-id-chart', 240);
 		this.gender_chart = new GenderChart(this.cross_filter, '#pie-chart', 240);
 		this.date_chart = new MinutesChart(this.cross_filter, '#date-bar-chart', 140, this.date_range);
-		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 400, map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key);
+		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 415, map_data, this.bike_stations, this.data, this.bike_id_chart.group.top(1)[0].key, this.new_data);
 
 		this.avg_speed_display = new AvgSpeedDisplay(this.cross_filter, '#info-box-1');
 		this.total_distance_display = new TotalDistanceDisplay(this.cross_filter, '#info-box-2');
@@ -40,7 +40,7 @@ export class BikeDashboard
 		this.map_chart.resize();
 	}
 
-	redraw()
+	redraw(new_data)
 	{
 		if(performance.now() - this.last_draw < 500) { return; }
 
@@ -49,7 +49,7 @@ export class BikeDashboard
 		this.bike_id_chart.redraw();
 		this.gender_chart.redraw();
 		this.date_chart.redraw();
-		this.map_chart.redraw();
+		this.map_chart.redraw(new_data);
 
 		this.avg_speed_display.redraw();
 		this.total_distance_display.redraw();
@@ -125,7 +125,7 @@ export class BikeDashboard
 			}
 
 			this.cross_filter.add(new_data);
-			this.redraw();
+			this.redraw(new_data);
 		}
 	}
 }

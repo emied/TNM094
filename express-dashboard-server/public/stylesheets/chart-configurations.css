@@ -4,10 +4,27 @@ g.station_dots {
   pointer-events: none;
 }
 
+g.station_dots circle {
+  /*transition: stroke-width 1s, fill 1s;*/
+}
+
+#map-hover-info a.first {
+  float: left; 
+  width: 180px;
+}
+
+#map-hover-info a {
+  font-family: monospace;
+}
+
 g.bike_id_path {
   transition: opacity 0.5s;
   opacity: 0.0;
   pointer-events: none;
+}
+
+ g.layer0 g.zip_code path {
+  transition: stroke-width .75s, stroke .75s;
 }
 
 /* Remove Y-axis from chart */

@@ -20,6 +20,8 @@ export class MapChart
 		this.max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 		this.min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
+
+		this.cf = d => Math.pow(d, 1/2);
 		
 		this.calculateProjection();
 		
@@ -27,29 +29,27 @@ export class MapChart
 			.dimension(this.dimension)
 			.group(this.group)
 			.width(this.width)
-			.legend(dc.legend().x(this.width - 55).y(60).itemHeight(18).gap(1))
+			.legend(dc.legend().x(this.width - 60).y(60).itemHeight(18).gap(1))
 			.height(this.height)
-			.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(this.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
-			.colorAccessor(function(d) { return d ? Math.pow(d, 1/8) : 0; }) // This value is weird
+			.colors(d3.scaleLinear().domain([0, this.cf(mid_zip), this.cf(this.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
+			.colorAccessor( d => { return d ? this.cf(d) : 0; }) // This value is weird
 			.projection(this.projection)
 			.overlayGeoJson(this.map_data["features"], "zip_code", function (d) {
 				return 'a' + d.properties.zip_code;
 			})
-			.title(function (p) {
-				return null;
-			});
-
+			.title(() => { return null; });
+		
 		this.chart.legendables = function() {
 			var items, seen = [];
-    	items = this.data().filter(x => seen[x.value] ? false : (seen[x.value] = true));
-    	items = items.sort((a,b) => a.value < b.value ? 1 : -1);
+    	items = this.data().filter(x => { return seen[x.value] ? false : (seen[x.value] = true) });
+    	items = items.sort((a,b) => { return b.value - a.value });
 
 			var chart = this;
-      return items.map(function(d) {
+      return items.map( d => {
       	return { 
 					chart: chart,
 					name: d.value,
-					color: chart.colors()(Math.pow(d.value, 1/8)) 
+					color: chart.getColor(d.value)
 				}; 
 			}) 
     };
@@ -64,6 +64,7 @@ export class MapChart
 
 		this.show_dots = true;
 		this.show_route = true;
+		this.show_used_stations = true;
 
 		this.chart.render();
 	}
@@ -77,7 +78,7 @@ export class MapChart
 		this.chart
 			.width(this.width)
 			.projection(this.projection)
-			.legend(dc.legend().x(this.width - 55).y(60).itemHeight(18).gap(1))
+			.legend(dc.legend().x(this.width - 60).y(60).itemHeight(18).gap(1))
 			.transitionDuration(0);
 
 		this.chart.render();
@@ -85,19 +86,9 @@ export class MapChart
 		this.chart.transitionDuration(750);
 	}
 
-	redraw()
+	redraw(new_data)
 	{
-		this.max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-		this.min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
-
-		//this.max_zip = new_max_zip > this.max_zip ? new_max_zip : this.max_zip;
-		//this.min_zip = new_min_zip < this.min_zip ? new_min_zip : this.min_zip;
-
-		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
-
-		this.chart
-			.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(this.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
-
+		this.new_data = new_data;
 		this.chart.redraw();
 	}
 
@@ -114,7 +105,7 @@ export class MapChart
 		// // Temporary offset and scale to zoom in on interesting region.
 		// // The code would do this automatically if no-bike-station-zones are removed.
 		var t_of = [-65, 65];
-		var t_sc = 1.45; 
+		var t_sc = 1.45;
 		
 		var bounds  = path.bounds(this.map_data);
 		var hscale  = scale*this.width  / (bounds[1][0] - bounds[0][0]);
@@ -127,31 +118,43 @@ export class MapChart
 
 	drawStationDots()
 	{
+		/* Shallow copy of 'this' so that it 
+		can be used in the chart.on(...) scope */
 		var map_chart = this;
 
-		this.chart.on("pretransition", function(_chart) {
+		this.chart.on("preRedraw", function(_chart) {
+			/* Rescale map colors */
+			map_chart.max_zip = Math.max.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
+			map_chart.min_zip = Math.min.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
+			var mid_zip = map_chart.min_zip + (map_chart.max_zip - map_chart.min_zip) / 2.0;
+			map_chart.chart.colors(d3.scaleLinear().domain([0, map_chart.cf(mid_zip), map_chart.cf(map_chart.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
+		});
 
+		this.chart.on("pretransition", function(_chart) {
 			/* Add text attribute to map regions with info */
+
 			var current = new Map();
 			_chart.data().forEach(d => { current.set(d.key, d.value); })
 
 			map_chart.map_data.features.forEach( d => {
 				var region = _chart.select('g.zip_code.' + 'a' + d.properties.zip_code);
-				if(region.select('text').empty())
+				if(region.select('region-info').empty())
 				{
-					region.append('text');
+					region.append('region-info');
 				}
 
 				var value = current.get('a' + d.properties.zip_code);
-				region.select('text').text(d.properties.zip_code + '.' + (value ? value : '0'));
+				var text = d.properties.zip_code + ',' + (value ? value : '0') + ',' + d.properties.pop2010 + ',' +  (+d.properties.sqmi*2.58998811).toFixed(2);
+				region.select('region-info').text(text);
+
+				//Add/remove gray border depending on if region has bike-rides.
+				if(value) {
+					region.style("stroke", '#707070').style("stroke-width", "0.08%");
+				}
+				else {
+					region.style("stroke-width", '0');
+				}
 			})
-
-			/* Rescale map colors */
-			map_chart.max_zip = Math.max.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
-			map_chart.min_zip = Math.min.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
-			var mid_zip = map_chart.min_zip + (map_chart.max_zip - map_chart.min_zip) / 2.0;
-
-			map_chart.chart.colors(d3.scaleLinear().domain([0, Math.pow(mid_zip, 1/8), Math.pow(map_chart.max_zip, 1/8)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
 
 			/* The actual drawStationDots */
 			var svg = _chart.svg();
@@ -190,16 +193,47 @@ export class MapChart
 				}
 			});
 
+			var used_stations = new Map();
+			if(map_chart.show_used_stations && map_chart.new_data)
+			{
+				map_chart.new_data.forEach( d => {
+					var station = map_chart.bike_stations.get(d.start_id);
+					if(station)
+					{
+						used_stations.set(d.start_id, station);
+					}
+				});
+			}
+
 			// Loop through all SVG circle elements and set radius
 			// to 3 or 0 depending on if the station should be visible
 			// or not according to the filtered stations.
 			// Also uses a variable transition duration to make
 			// the radius animate in and out at different speeds.
+
+			var new_count = 0;
+			//const color = '#ff775f';
+			const color = '#ff957d'
+			const f = x => { return Math.pow((x/used_stations.size), 1/2)*550 };
+
 			group.selectAll("circle").each(function(d, i) {
 				if(filtered_stations.get(d[0]))
 				{
-					d3.select(this)
-						.transition().attr("r", 3.5).duration(i*10)
+					if(used_stations.get(d[0]))
+					{
+						new_count++;
+						var t0 = d3.select(this).raise().transition().duration(f(new_count)).ease(d3.easeQuadInOut);
+						t0.attr("r", 6).style("fill", color).style("stroke-width", "0.15%");
+						var t1 = t0.transition().duration(f(new_count)).ease(d3.easeQuadInOut);
+						t1.attr("r", 3.5).style("fill", "white").style("stroke-width", "0.1%");
+					}
+					else
+					{
+						d3.select(this)
+							.style("stroke-width", "0.1%")
+							.style("fill", "white")
+							.transition().attr("r", 3.5).duration(i*10)
+					}
 				}
 				else
 				{
@@ -274,5 +308,9 @@ export class MapChart
 		this.show_route = !this.show_route;
 		d3.selectAll("g.bike_id_path").style("opacity", +this.show_route);
 	}
-}
 
+	toggleShowNewStations()
+	{
+		this.show_used_stations = !this.show_used_stations;
+	}
+}

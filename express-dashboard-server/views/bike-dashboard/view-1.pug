@@ -19,21 +19,22 @@ block content
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-5.p-2.m-0
 				+chart-card('map-chart', 'Geographical Distribution', 'map-hover-info')
-					a.dropdown-item(onclick='bike_dashboard.map_chart.chart.filterAll();dc.redrawAll()') Clear Filter
+					a.dropdown-item(onclick='bike_dashboard.map_chart.chart.filterAll();dc.redrawAll()') Reset Filter
+					a.dropdown-item(onclick='bike_dashboard.map_chart.toggleShowNewStations()') Toggle Used Stations Highlight
 					a.fas.fa-map-marker-alt.dropdown-item(onclick='bike_dashboard.map_chart.toggleStationDots()')
 					a.fas.fa-route.dropdown-item(onclick='bike_dashboard.map_chart.toggleBikeRoute()')
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-7
 				.row
 					.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
 						+chart-card('date-bar-chart', 'Time Distribution')
-							a.dropdown-item(onclick='bike_dashboard.date_chart.chart.filterAll();dc.redrawAll()') Clear Filter
+							a.dropdown-item(onclick='bike_dashboard.date_chart.chart.filterAll();dc.redrawAll()') Reset Filter
 				.row
 					.container-fluid.col-xs-12.col-sm-5.col-md-5.col-lg-5.p-2.m-0
 						+chart-card('pie-chart', 'Gender Distribution')
-							a.dropdown-item(onclick='bike_dashboard.gender_chart.chart.filterAll();dc.redrawAll()') Clear Filter
+							a.dropdown-item(onclick='bike_dashboard.gender_chart.chart.filterAll();dc.redrawAll()') Reset Filter
 					.container-fluid.col-xs-12.col-sm-7.col-md-7.col-lg-7.p-2.m-0
 						+chart-card('bike-id-chart', 'Farthest Traveled Bikes')
-							a.dropdown-item(onclick='bike_dashboard.bike_id_chart.chart.filterAll();dc.redrawAll()') Clear Filter
+							a.dropdown-item(onclick='bike_dashboard.bike_id_chart.chart.filterAll();dc.redrawAll()') Reset Filter
 
 	//- Ideally only a single app.js script would be called here as the client entry point.
 	script.

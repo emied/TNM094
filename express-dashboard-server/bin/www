@@ -95,8 +95,10 @@ function onListening() {
 
 //global.current_index = 1190043;
 //const data_start_time = new Date('2018-09-19 08:56:03');
-global.current_index = 1189592;
-const data_start_time = new Date('2018-09-19 08:30:00');
+//global.current_index = 1189592;
+//const data_start_time = new Date('2018-09-19 08:30:00');
+global.current_index = 1154185;
+const data_start_time = new Date('2018-09-13 07:40:03');
 
 const server_start_time = new Date();
 const timescale = 60.0;
