@@ -35,8 +35,18 @@ function afterLoad() {
 		$('#map-hover-info').html('<a>&nbsp</a><br><a>&nbsp</a>');
 		clearInterval(interval);
 	});
-
 }
+
+// Web storage API
+// localStorage, sessionStorage
+// localStorage.setItem('data','hej');
+// localStorage.getItem('data')
+// ~ 5.2 MB on my chrome browser
+// ~ 177 bytes per bike data entry <=> ~ 29 378 data entries limit
+// about 0.67 MB needed for SF map data <=> ~ 25 000 data entries limit
+
+// localStorage.setItem('data',JSON.stringify(bike_dashboard.cross_filter.all()))
+// JSON.parse(localStorage.getItem('data'))
 
 function startupDataRequest() {
 	var dataset = 'bike';
@@ -52,4 +62,7 @@ function startupDataRequest() {
 	});
 }
 
-startupDataRequest();
+$(document).ready(() => {
+	startupDataRequest();
+});
+

@@ -134,6 +134,7 @@ export class BikeDashboard
 			}
 
 			this.cross_filter.add(new_data);
+
 			this.redraw(new_data);
 		}
 	}

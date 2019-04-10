@@ -26,6 +26,10 @@ exports.dashboard = function(req, res) {
 	{
 		res.render('compressor-dashboard/view-1', { title: title });
 	}
+	else if(data = "compressor" && view == "warning-compressor")
+	{
+		res.render('compressor-dashboard/view-warning-compressor')
+	}
 
   else
   {

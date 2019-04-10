@@ -24,6 +24,8 @@ export class MapChart
 		this.cf = d => Math.pow(d, 1/2);
 		
 		this.calculateProjection();
+
+		// d3.scaleSequential(d3.interpolateYlOrRd).domain([0, this.cf(this.max_zip)])
 		
 		this.chart
 			.dimension(this.dimension)
@@ -193,6 +195,7 @@ export class MapChart
 				}
 			});
 
+			// Find recently active stations (from the latest streamed data).
 			var used_stations = new Map();
 			if(map_chart.show_used_stations && map_chart.new_data)
 			{
