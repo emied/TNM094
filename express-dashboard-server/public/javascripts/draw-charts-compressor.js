@@ -80,8 +80,8 @@ function drawChartCompressor(data)
       --p.count;
       p.sum_humidity-= +v.humidity;
       p.avg_humidity = p.count ? (p.sum_humidity/p.count) : 0;
-
       return p;
+
     },
 
     function(){
@@ -89,6 +89,7 @@ function drawChartCompressor(data)
         count: 0,
         sum_humidity: 0.0,
         avg_humidity: 0.0
+
       }
     }
 
@@ -378,6 +379,11 @@ function drawChartCompressor(data)
             .valueAccessor(d => { return d.count ? (d.sum_oil_temp_display / (d.count)) : 0 })
             .html({some: "<h4 class='info-box-text'><br>Average Oil Temperature</h4><h5 class='info-box-text'>%number °C</h5>"})
             .group(avg_oil_temp_display_group);
+
+
+
+
+          /// find standard deviation
 
 
   dc.renderAll();
