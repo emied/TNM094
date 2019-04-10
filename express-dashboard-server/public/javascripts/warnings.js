@@ -32,7 +32,6 @@ function warnings(data) {
       console.log(deviation);
 
     }
-
   }
 
   const dataTable = $('#warnings').DataTable({
