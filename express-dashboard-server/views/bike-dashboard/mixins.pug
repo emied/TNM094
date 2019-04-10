@@ -1,4 +1,4 @@
-mixin chart-card(chart_id, title)
+mixin chart-card(chart_id, title, info)
 	.chart-card.card-shadow.container-fluid.col-12.m-0.p-0.h-100
 		nav.navbar.navbar-chart.p-1
 			a.navbar-brand.mx-2(href='#Separate ' + title + ' View') #{title}
@@ -10,6 +10,8 @@ mixin chart-card(chart_id, title)
 					else
 						a.dropdown-item(href='#') No settings provided
 		div(id=chart_id).col-12.p-2
+		if info
+			.px-3(id=info)
 
 mixin topnav(active_view)
 	nav#topnav.navbar.navbar-expand-lg.navbar-custom.p-1
@@ -23,8 +25,8 @@ mixin topnav(active_view)
 				each view in ['1', '2', '3']
 					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
 						a.nav-link(href='dashboard?data=bike&view=' + view) View #{view}
-				li(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
-					a.nav-link.fas.fa-bullhorn(href='dashboard?data=bike&view=warning')
+				li#warning-link(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
+					a.nav-link.fas.fa-exclamation-triangle(href='dashboard?data=bike&view=warning')
 						sup#superscript-warnings  (5)
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend

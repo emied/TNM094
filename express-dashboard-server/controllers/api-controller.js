@@ -120,6 +120,35 @@ exports.data_range = function(req, res) {
 };
 
 /***************************************
+Returns range of historic data up until
+the current internal time. I.e. it can
+handle requests like 'send all data for 
+the last week'. Usefull for initial data
+request when using real-time data.
+***************************************/
+exports.data_latest_range = function(req, res) {
+	var { dataset, interval } = req.query;
+
+	var data = datasets[dataset];
+	var start = new Date(global.data_current_time.valueOf() - interval);
+
+	var result = [];
+	for (var i = global.current_index; i >= 0; i--)
+	{
+		var date = new Date(data[i].start_time);
+		if(date >= start)
+		{
+			result.push(data[i]);
+		}
+		else
+		{
+			break;
+		}
+	}
+	res.json(result);
+}
+
+/***************************************
 Returns specified data file.
 Really unsafe, implement validation.
 ***************************************/
