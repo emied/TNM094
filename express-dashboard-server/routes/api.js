@@ -52,6 +52,12 @@ router.get('/data_range/test', function(req, res, next) {
 });
 
 /************************************************************************************************
+Defines what should happen when http://localhost:3000/api/data_latest_range is requested with method GET.
+Returns latest data for a time interval back in time.
+************************************************************************************************/
+router.get('/data_latest_range', api_controller.data_latest_range);
+
+/************************************************************************************************
 Defines what should happen when http://localhost:3000/api/get_file is requested with method GET.
 Returns specified data file depending on parameters in query string.
 ************************************************************************************************/
