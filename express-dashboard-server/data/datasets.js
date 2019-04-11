@@ -30,10 +30,13 @@ var debug = require('debug')('dashboard:datasets');
 debug('Loading datasets')
 
 var datasets = {};
+var sweden_geojson;
 
 try {
 	datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 	datasets['compressor'] = d3.csvParse(fs.readFileSync('data/source/compressor.csv', 'utf8'));
+
+	sweden_geojson = JSON.parse(fs.readFileSync('data/source/sweden.json', 'utf8'));
 } catch (err) {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
@@ -80,10 +83,17 @@ const formatDate = (date) => {
   return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
+var randomPointsOnPolygon = require('random-points-on-polygon');
+
+var coordinates = randomPointsOnPolygon(NUM_COMPRESSORS, sweden_geojson.features[0]);
+
 var ret_comp = [];
-datasets['compressors'].forEach( c => {
+datasets['compressors'].forEach( (c) => {
+	var coord = coordinates[c.id].geometry.coordinates;
 	var obj = {
 		id: c.id,
+		lat: coord[0],
+		lon: coord[1],
 		start_time: [],
 		flow: [],
 		bearing_vibration: [],
@@ -106,6 +116,8 @@ datasets['compressors'].forEach( c => {
 	}
 	ret_comp.push(obj);
 });
+
+console.log(ret_comp[0])
 
 /*
 This could be called here:
