@@ -65,6 +65,6 @@ of all values/signals in the datasets
 will be needed for API requests.
 *************************************/
 
-console.log('Loaded datasets: ' + Object.keys(datasets));
+debug('Loaded datasets: ' + Object.keys(datasets));
 
 module.exports = datasets;
