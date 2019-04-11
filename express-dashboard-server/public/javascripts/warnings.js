@@ -14,15 +14,13 @@ function warnings(data) {
   var counter = 0;
   var warningArray = new Array();
 
-
-
   for(i = 0; i < data.length; i++) {
     var value = parseFloat(data[i].humidity);
     var flow_string = parseFloat(data[i].flow);
     var diff_value = Math.abs(avg_humidity - value);
     var deviation = diff_value/avg_humidity;
 
-    if(deviation > 0.2) {
+    if(deviation > 0.1) {
       warningArray[counter] = data[i];
       warningArray[counter].deviation = (deviation*100).toFixed(3);
 

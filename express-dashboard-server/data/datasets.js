@@ -38,6 +38,33 @@ try {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
 
+const NUM_COMPRESSORS = 7000;
+
+const START_TIME_DEVIATION = 1000*60*60*24; // 1 Day
+const FLOW_DEVIATION = 1000.0;
+const BEARING_VIBRATION_DEVIATION = 1.0;
+const OIL_PRESSURE_DEVIATION = 0.5;
+const OIL_TEMP_DEVIATION = 5; // Should probably depend on ambient temp as well
+const AMBIENT_TEMP_DEVIATION = 20; // Should probably depend on lat/lon coordinates
+const HUMIDITY_DEVIATION = 2; // To avoid going over 100%, should probably be bigger
+
+const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
+const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
+
+datasets['compressors-variation'] = [];
+for(var i = 0; i < NUM_COMPRESSORS; i++)
+{
+	datasets['compressors-variation'].push({
+		start_time_offset: Math.round(random_in_range(-START_TIME_DEVIATION, 0.0)), // only negative deviation
+		flow_offset: random_in_deviation(FLOW_DEVIATION),
+		bearing_vibration_offset: random_in_deviation(BEARING_VIBRATION_DEVIATION),
+		oil_pressure_offset: random_in_deviation(OIL_PRESSURE_DEVIATION),
+		oil_temp_offset: random_in_deviation(OIL_TEMP_DEVIATION),
+		ambient_temp_offset: random_in_deviation(AMBIENT_TEMP_DEVIATION),
+		humidity_offset: random_in_deviation(HUMIDITY_DEVIATION)
+	})
+}
+
 /*
 This could be called here:
 require('../data/reduction-code/addStationZipCodes').addStationZipCodes();
