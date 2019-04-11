@@ -28,10 +28,6 @@ export class OilPressureChart{
     this.chart.render();
   	}
 
-    redraw()
-    {
-      this.chart.redraw();
-
     resize(){
       this.chart
         .width($(this.container_id).width())
@@ -40,8 +36,8 @@ export class OilPressureChart{
       this.chart.render();
 
       this.chart.transitionDuration(750);
-
     }
+
     redraw(){
       this.chart.redraw();
     }
