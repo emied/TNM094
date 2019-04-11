@@ -1,9 +1,9 @@
 export function reduceAddAvg(attr) {
   return function(p,v) {
-  ++p.count
-  p.sum += parseFloat(v[attr]);
-  p.avg = p.sum/p.count;
-  return p;
+    ++p.count
+    p.sum += parseFloat(v[attr]);
+    p.avg = p.sum/p.count;
+    return p;
   };
 }
 

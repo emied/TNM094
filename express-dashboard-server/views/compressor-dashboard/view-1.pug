@@ -28,7 +28,9 @@ block content
       .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-amb-temp', 'Line chart ambient temperature')
 
-          
+  script.
+    var compressor;
+         
   script(src='javascripts/startup-data-request-compressor.js', type='module')
   script(src='javascripts/sidenav.js')
   
