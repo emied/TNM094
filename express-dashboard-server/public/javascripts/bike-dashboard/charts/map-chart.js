@@ -8,25 +8,25 @@ export class MapChart
 		this.chart = dc.geoChoroplethChart(this.container_id);
 
 		this.bike_stations = bike_stations;
-		
+
 		this.dimension = cross_filter.dimension(function(d) {
 			return 'a' + bike_stations.get(d.start_id).zip;
 		});
 		this.group = this.dimension.group().reduceCount();
-		
+
 		this.width = $(this.container_id).width();
 		this.height = height;
-		
+
 		this.max_zip = Math.max.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 		this.min_zip = Math.min.apply(Math, this.group.all().map(function(o) { return parseFloat(o.value); }));
 		var mid_zip = this.min_zip + (this.max_zip - this.min_zip) / 2.0;
 
 		this.cf = d => Math.pow(d, 1/2);
-		
+
 		this.calculateProjection();
 
 		// d3.scaleSequential(d3.interpolateYlOrRd).domain([0, this.cf(this.max_zip)])
-		
+
 		this.chart
 			.dimension(this.dimension)
 			.group(this.group)
@@ -40,7 +40,7 @@ export class MapChart
 				return 'a' + d.properties.zip_code;
 			})
 			.title(() => { return null; });
-		
+
 		this.chart.legendables = function() {
 			var items, seen = [];
     	items = this.data().filter(x => { return seen[x.value] ? false : (seen[x.value] = true) });
@@ -48,16 +48,16 @@ export class MapChart
 
 			var chart = this;
       return items.map( d => {
-      	return { 
+      	return {
 					chart: chart,
 					name: d.value,
 					color: chart.getColor(d.value)
-				}; 
-			}) 
+				};
+			})
     };
 
 		/****************************************************************
-		Awkward method of adding the custom event driven render functions 
+		Awkward method of adding the custom event driven render functions
 		as class methods with some kind of access to members in the 'this'
 		scope. Might be a better way with '.apply()' or '.call()'.
 		****************************************************************/
@@ -101,26 +101,26 @@ export class MapChart
 		var offset = [this.width/2, this.height/2];
 
 		this.projection = d3.geoMercator().scale(scale).center(center).translate(offset);
-		
+
 		var path = d3.geoPath().projection(this.projection);
 
 		// // Temporary offset and scale to zoom in on interesting region.
 		// // The code would do this automatically if no-bike-station-zones are removed.
 		var t_of = [-65, 65];
 		var t_sc = 1.45;
-		
+
 		var bounds  = path.bounds(this.map_data);
 		var hscale  = scale*this.width  / (bounds[1][0] - bounds[0][0]);
 		var vscale  = scale*this.height / (bounds[1][1] - bounds[0][1]);
 		var scale   = (hscale < vscale) ? hscale : vscale;
 		var offset  = [this.width - (bounds[0][0] + bounds[1][0])/2 + t_of[0], this.height - (bounds[0][1] + bounds[1][1])/2 + t_of[1]];
-		
+
 		this.projection = d3.geoMercator().center(center).scale(scale*t_sc).translate(offset);
 	}
 
 	drawStationDots()
 	{
-		/* Shallow copy of 'this' so that it 
+		/* Shallow copy of 'this' so that it
 		can be used in the chart.on(...) scope */
 		var map_chart = this;
 

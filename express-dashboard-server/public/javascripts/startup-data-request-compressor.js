@@ -7,7 +7,6 @@ function startupDataRequest() {
 	var end = "2019-03-28";
 	var decimate = 1; // decimate value should be set depending on device
 
-	console.log("BRA");
 
 	// Request data from server using our API.
 	var requestURL = '/api/data_range?dataset=' + dataset + '&start=' + start + "&end=" + end + "&decimate=" + decimate.toString();
