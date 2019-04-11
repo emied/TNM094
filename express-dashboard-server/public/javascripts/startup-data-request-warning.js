@@ -1,5 +1,5 @@
 function startupDataRequest() {
-	var dataset = 'compressor1'; // should be set depending on dashboard/options
+	var dataset = 'compressor'; // should be set depending on dashboard/options
 	var start = "2018-03-20";
 	var end = "2019-03-28";
 	var decimate = 1; // decimate value should be set depending on device
