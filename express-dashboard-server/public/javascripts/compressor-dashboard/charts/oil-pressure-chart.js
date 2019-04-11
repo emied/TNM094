@@ -1,7 +1,7 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
 
 export class OilPressureChart{
-  constructor(cross_filter, container_id, height){
+  constructor(cross_filter, container_id, height, start, end){
     this.container_id = container_id;
     this.chart = dc.lineChart(this.container_id);
 
@@ -18,11 +18,16 @@ export class OilPressureChart{
 			.height(height)
 			.group(this.group)
 			.dimension(this.dimension)
-			.margins({left: 50, top: 20, right: 20, bottom: 0}) // hide axes
-      .x(d3.scaleTime().domain([new Date(2018, 0, 0), new Date(2020, 0, 0)]))
+			.margins({left: 50, top: 20, right: 20, bottom: 20}) // hide axes
+      .x(d3.scaleTime().domain([start, end]))
 			.yAxisLabel("Oil Temp (°C)")
-			.elasticX(true)
+      .xUnits(d3.timeDay)
+      .brushOn(false)
+      .mouseZoomable(true)
+      .zoomScale([1, 100])
+      .zoomOutRestrict(true)
       .elasticY(true)
+      .renderVerticalGridLines(true)
 			.valueAccessor(d => { return d.value.avg; })
 
     this.chart.render();
