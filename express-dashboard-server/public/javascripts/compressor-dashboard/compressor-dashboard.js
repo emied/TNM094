@@ -17,7 +17,7 @@ export class CompressorDashboard {
     this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3');
     this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4');
 
-    this.oil_pressure_chart = new OilPressureChart(this.cross_filter, '#line-chart-pressure', 200, start, end);
+    this.oil_pressure_chart = new OilPressureChart(this.cross_filter, '#line-chart-pressure', 300, start, end);
   }
 
   resize()
