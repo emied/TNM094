@@ -32,6 +32,8 @@ export class OilPressureChart
     this.chart.render();
   	}
 
+    
+
     redraw()
     {
       this.chart.redraw();
