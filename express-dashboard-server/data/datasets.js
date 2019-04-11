@@ -35,7 +35,6 @@ var sweden_geojson;
 try {
 	datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 	datasets['compressor'] = d3.csvParse(fs.readFileSync('data/source/compressor.csv', 'utf8'));
-
 	sweden_geojson = JSON.parse(fs.readFileSync('data/source/sweden.json', 'utf8'));
 } catch (err) {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
@@ -43,23 +42,28 @@ try {
 
 const NUM_COMPRESSORS = 100;
 
-const START_TIME_DEVIATION = 1000*60*60*24; // 1 Day
+const START_TIME_DEVIATION = 1000*60*60*24;
 const FLOW_DEVIATION = 1000.0;
 const BEARING_VIBRATION_DEVIATION = 1.0;
 const OIL_PRESSURE_DEVIATION = 0.5;
-const OIL_TEMP_DEVIATION = 5; // Should probably depend on ambient temp as well
-const AMBIENT_TEMP_DEVIATION = 20; // Should probably depend on lat/lon coordinates
-const HUMIDITY_DEVIATION = 2; // To avoid going over 100%, should probably be bigger
+const OIL_TEMP_DEVIATION = 5;
+const AMBIENT_TEMP_DEVIATION = 20;
+const HUMIDITY_DEVIATION = 2;
 
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
+var coordinates = require('random-points-on-polygon')(NUM_COMPRESSORS, sweden_geojson.features[0]);
+
 datasets['compressors'] = [];
 for(var i = 0; i < NUM_COMPRESSORS; i++)
 {
+	var coord = coordinates[i].geometry.coordinates;
 	datasets['compressors'].push({
 		id: i,
-		start_time_offset: Math.round(random_in_range(-START_TIME_DEVIATION, 0.0)), // only negative deviation
+		lat: coord[0],
+		lon: coord[1],
+		start_time_offset: Math.round(random_in_range(-START_TIME_DEVIATION, 0.0)),
 		flow_offset: random_in_deviation(FLOW_DEVIATION),
 		bearing_vibration_offset: random_in_deviation(BEARING_VIBRATION_DEVIATION),
 		oil_pressure_offset: random_in_deviation(OIL_PRESSURE_DEVIATION),
@@ -83,17 +87,12 @@ const formatDate = (date) => {
   return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
-var randomPointsOnPolygon = require('random-points-on-polygon');
-
-var coordinates = randomPointsOnPolygon(NUM_COMPRESSORS, sweden_geojson.features[0]);
-
 var ret_comp = [];
 datasets['compressors'].forEach( (c) => {
-	var coord = coordinates[c.id].geometry.coordinates;
 	var obj = {
 		id: c.id,
-		lat: coord[0],
-		lon: coord[1],
+		lat: c.lat,
+		lon: c.lon,
 		start_time: [],
 		flow: [],
 		bearing_vibration: [],
@@ -116,8 +115,6 @@ datasets['compressors'].forEach( (c) => {
 	}
 	ret_comp.push(obj);
 });
-
-console.log(ret_comp[0])
 
 /*
 This could be called here:
