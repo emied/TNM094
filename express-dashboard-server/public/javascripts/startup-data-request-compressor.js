@@ -1,8 +1,13 @@
+
+import { CompressorDashboard } from './compressor-dashboard/compressor-dashboard.js';
+
 function startupDataRequest() {
 	var dataset = 'compressor'; // should be set depending on dashboard/options
 	var start = "2018-03-20";
 	var end = "2019-03-28";
 	var decimate = 1; // decimate value should be set depending on device
+
+	console.log("BRA");
 
 	// Request data from server using our API.
 	var requestURL = '/api/data_range?dataset=' + dataset + '&start=' + start + "&end=" + end + "&decimate=" + decimate.toString();
@@ -22,8 +27,15 @@ function startupDataRequest() {
 
 		if(data.length == 0)
 		{
+			data_load_text.innerHTML += " No data satisfies the request."
 			return;
 		}
-		drawChartCompressor(data);
+
+		var comp = new CompressorDashboard(data);
+
 	}
 }
+
+$(document).ready(() => {
+	startupDataRequest();
+});

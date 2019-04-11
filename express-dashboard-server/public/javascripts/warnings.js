@@ -49,13 +49,11 @@ function warnings(data) {
   });
 
   $('#button_id').click( function () {
-    console.log("HEJ");
     dataTable.row('.active').remove();
   });
 
 
   $(".btn").bind( "click", function(event) {
-    console.log("HEJ");
     var target_row = $(this).closest("tr").get(0); // this line did the trick
     console.log(target_row);
     target_row.remove();
