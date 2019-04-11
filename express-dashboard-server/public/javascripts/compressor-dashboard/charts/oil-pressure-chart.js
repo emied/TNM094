@@ -1,9 +1,7 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
 
-export class OilPressureChart
-{
-  constructor(cross_filter, container_id, height)
-  {
+export class OilPressureChart{
+  constructor(cross_filter, container_id, height){
     this.container_id = container_id;
     this.chart = dc.lineChart(this.container_id);
 
@@ -12,9 +10,8 @@ export class OilPressureChart
       minute.setHours(minute.getHours(), minute.getMinutes(), 0, 0);
       return minute;
     });
+
     this.group = this.dimension.group().reduce(reduceAddAvg("oil_pressure"), reduceRemoveAvg("oil_pressure"), reduceInitAvg);
-
-
 
     this.chart
 			.width($(this.container_id).width())
@@ -28,15 +25,24 @@ export class OilPressureChart
       .elasticY(true)
 			.valueAccessor(d => { return d.value.avg; })
 
-
     this.chart.render();
   	}
-
-    
 
     redraw()
     {
       this.chart.redraw();
-    }
 
+    resize(){
+      this.chart
+        .width($(this.container_id).width())
+        .transitionDuration(0);
+
+      this.chart.render();
+
+      this.chart.transitionDuration(750);
+
+    }
+    redraw(){
+      this.chart.redraw();
+    }
 }
