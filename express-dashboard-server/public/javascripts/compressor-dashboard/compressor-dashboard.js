@@ -15,6 +15,10 @@ export class CompressorDashboard {
     this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4');
 
     this.oil_pressure_chart = new OilPressureChart(this.cross_filter, '#line-chart-pressure')
+  }
 
+  resize()
+  {
+    this.oil_pressure_chart.resize();
   }
 }

@@ -1,4 +1,3 @@
-
 export function reduceAddAvg(attr) {
   return function(p,v) {
   ++p.count

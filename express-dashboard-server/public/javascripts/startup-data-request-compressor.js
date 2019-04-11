@@ -17,21 +17,22 @@ function startupDataRequest() {
 
 	request.onload = function() {
 		// Check and display errors. There's probably a better way but this is just for testing.
-		if (request.status != 200)
-		{
+		if (request.status != 200) {
 			return;
 		}
 
 		var data = request.response;
 
-		if(data.length == 0)
-		{
+		if(data.length == 0) {
 			data_load_text.innerHTML += " No data satisfies the request."
 			return;
 		}
 
-		var comp = new CompressorDashboard(data);
+		var compressor = new CompressorDashboard(data);
 
+		window.onresize = function(event) {
+			compressor.resize();
+		};
 	}
 }
 
