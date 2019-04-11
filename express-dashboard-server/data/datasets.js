@@ -38,7 +38,7 @@ try {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
 
-const NUM_COMPRESSORS = 7000;
+const NUM_COMPRESSORS = 100;
 
 const START_TIME_DEVIATION = 1000*60*60*24; // 1 Day
 const FLOW_DEVIATION = 1000.0;
@@ -51,10 +51,11 @@ const HUMIDITY_DEVIATION = 2; // To avoid going over 100%, should probably be bi
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
-datasets['compressors-variation'] = [];
+datasets['compressors'] = [];
 for(var i = 0; i < NUM_COMPRESSORS; i++)
 {
-	datasets['compressors-variation'].push({
+	datasets['compressors'].push({
+		id: i,
 		start_time_offset: Math.round(random_in_range(-START_TIME_DEVIATION, 0.0)), // only negative deviation
 		flow_offset: random_in_deviation(FLOW_DEVIATION),
 		bearing_vibration_offset: random_in_deviation(BEARING_VIBRATION_DEVIATION),
@@ -64,6 +65,47 @@ for(var i = 0; i < NUM_COMPRESSORS; i++)
 		humidity_offset: random_in_deviation(HUMIDITY_DEVIATION)
 	})
 }
+
+
+const formatDate = (date) => {
+	const zeroPad = (n) =>  n > 9 ? n : '0' + n;
+
+	var year = date.getFullYear(),
+	month = zeroPad(date.getMonth() + 1),
+	day = zeroPad(date.getDate()),
+	hour = zeroPad(date.getHours()),
+	minute = zeroPad(date.getMinutes()),
+	second = zeroPad(date.getSeconds());
+
+  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+
+var ret_comp = [];
+datasets['compressors'].forEach( c => {
+	var obj = {
+		id: c.id,
+		start_time: [],
+		flow: [],
+		bearing_vibration: [],
+		oil_pressure: [],
+		oil_temp: [],
+		ambient_temp: [],
+		humidity: []
+	};
+
+	for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
+		var v = datasets['compressor'][i];
+
+		obj.start_time.push(formatDate(new Date((new Date(v.start_time).valueOf() + c.start_time_offset))));
+		obj.flow.push(+v.flow + c.flow_offset);
+		obj.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
+		obj.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);
+		obj.oil_temp.push(+v.oil_temp + c.oil_temp_offset);
+		obj.ambient_temp.push(+v.ambient_temp + c.ambient_temp_offset);
+		obj.humidity.push(+v.humidity + c.humidity_offset);
+	}
+	ret_comp.push(obj);
+});
 
 /*
 This could be called here:

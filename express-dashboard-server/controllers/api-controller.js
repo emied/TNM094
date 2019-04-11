@@ -86,7 +86,7 @@ exports.data_range = function(req, res) {
 	// Get the requested parameters from the query
 	var { dataset, start, end, decimate } = req.query;
 
-	var data = datasets[dataset]; // Use requested dataset
+	data = datasets[dataset]; // Use requested dataset
 
 	// Improve performance when getting data from the most interesting time interval.
 	// An index table for each day, week and month is probably a good idea.
