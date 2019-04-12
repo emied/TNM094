@@ -40,6 +40,25 @@ try {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
 
+const formatDate = (date) => {
+	const zeroPad = (n) =>  n > 9 ? n : '0' + n;
+
+	var year = date.getFullYear(),
+	month = zeroPad(date.getMonth() + 1),
+	day = zeroPad(date.getDate()),
+	hour = zeroPad(date.getHours()),
+	minute = zeroPad(date.getMinutes()),
+	second = zeroPad(date.getSeconds());
+
+  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+}
+
+
+var first = new Date(datasets['compressor'][0].start_time);
+datasets['compressor'].map( d => {
+	d.start_time = formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
+})
+
 const C = require('./constants.js').COMPRESSORS;
 var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.features[0]);
 
@@ -62,19 +81,6 @@ for(var i = 0; i < C.NUM; i++)
 		ambient_temp_offset: random_in_deviation(C.AMBIENT_TEMP_DEVIATION),
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION)
 	})
-}
-
-const formatDate = (date) => {
-	const zeroPad = (n) =>  n > 9 ? n : '0' + n;
-
-	var year = date.getFullYear(),
-	month = zeroPad(date.getMonth() + 1),
-	day = zeroPad(date.getDate()),
-	hour = zeroPad(date.getHours()),
-	minute = zeroPad(date.getMinutes()),
-	second = zeroPad(date.getSeconds());
-
-  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 
 var ret_comp = [];
