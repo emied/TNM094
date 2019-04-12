@@ -24,7 +24,6 @@ export class OilPressureChart{
       .y(d3.scaleLinear().domain([1.3, 2.2]))
       .centerBar(true)
       .renderVerticalGridLines(true)
-      //.renderHorizontalGridLines(true)
       .xUnits(d3.timeMonth)
       .valueAccessor(d => { return d.value.avg; })
       .render();
