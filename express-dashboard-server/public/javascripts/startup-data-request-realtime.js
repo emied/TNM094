@@ -25,7 +25,7 @@ function afterLoad() {
 	}
 
 	// TODO: call when bike_dashboard triggers new data event instead of using interval
-	var interval; 
+	var interval;
 	$('#map-chart').on("mouseenter", "g.zip_code", function(e) {
 		regionInfo(this);
 		interval = setInterval(() => { if(this) { regionInfo(this); } }, 500);
@@ -65,4 +65,3 @@ function startupDataRequest() {
 $(document).ready(() => {
 	startupDataRequest();
 });
-

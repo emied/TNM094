@@ -154,4 +154,5 @@ Really unsafe, implement validation.
 ***************************************/
 exports.get_file = function(req, res) {
 	res.download('data/source/' + req.query.name);
+	
 }

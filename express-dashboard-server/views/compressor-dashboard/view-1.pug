@@ -15,22 +15,24 @@ block content
          .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
             div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
     .row
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-compressor', 'Flow')
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-pressure', 'Oil Pressure')
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-humidity', 'Humidity')
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-bearing-vibration', 'Bearing Vibration')
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-oil-temp', 'Oil Temperature')
-      .container-fluid.col-xs-12.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
         +chart-card('line-chart-amb-temp', 'Line chart ambient temperature')
-	
-  script(src='javascripts/draw-charts-compressor.js')
-  script(src='javascripts/startup-data-request-compressor.js')
-  script(src='javascripts/sidenav.js')
 
   script.
-    startupDataRequest();
+    var compressor;
+         
+  script(src='javascripts/startup-data-request-compressor.js', type='module')
+  script(src='javascripts/sidenav.js')
+  
+  
+  
