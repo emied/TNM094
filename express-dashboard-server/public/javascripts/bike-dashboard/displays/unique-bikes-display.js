@@ -38,4 +38,9 @@ export class UniqueBikesDisplay
 
 		this.display.render();
 	}
+
+	redraw()
+	{
+		this.display.redraw();
+	}
 }

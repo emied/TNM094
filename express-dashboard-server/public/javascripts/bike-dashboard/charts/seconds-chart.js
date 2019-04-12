@@ -1,4 +1,4 @@
-export class DateChart
+export class SecondsChart
 {
 	constructor(cross_filter, container_id, height)
 	{
@@ -7,7 +7,7 @@ export class DateChart
 
 		this.dimension = cross_filter.dimension(function(d) {
 				var date = new Date(d.start_time);
-				date.setHours(0, 0, 0, 0);
+				date.setMilliseconds(0);
 				return date;
 		});
 		this.group = this.dimension.group().reduceCount();
@@ -15,12 +15,17 @@ export class DateChart
 		var start = new Date(this.dimension.bottom(1)[0].start_time);
 		var end = new Date(this.dimension.top(1)[0].start_time);
 
+		var time_interval = end.valueOf() - start.valueOf();
+
+		start = new Date(start.valueOf() - time_interval*0.05)
+		end = new Date(end.valueOf() + time_interval*0.05)
+
 		this.chart
 			.width($(this.container_id).width())
 			.height(height)
 			.x(d3.scaleTime().domain([start, end]))
-			.round(d3.timeDay.round)
-			.xUnits(d3.timeDays)
+			.round(d3.timeSecond.round)
+			.xUnits(d3.timeSeconds)
 			.margins({left: 10, top: 10, right: 10, bottom: 30}) // Compensate for removed y-axis
 			.yAxisLabel("")
 			.elasticY(true)
@@ -48,6 +53,11 @@ export class DateChart
 	{
 		var start = new Date(this.dimension.bottom(1)[0].start_time);
 		var end = new Date(this.dimension.top(1)[0].start_time);
+
+		var time_interval = end.valueOf() - start.valueOf();
+
+		start = new Date(start.valueOf() - time_interval*0.05)
+		end = new Date(end.valueOf() + time_interval*0.05)
 
 		this.chart
 			.x(d3.scaleTime().domain([start, end]))

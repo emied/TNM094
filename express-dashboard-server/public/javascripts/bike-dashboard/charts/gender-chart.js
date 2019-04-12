@@ -37,4 +37,9 @@ export class GenderChart
 
 		this.chart.transitionDuration(750);
 	}
+
+	redraw()
+	{
+		this.chart.redraw();
+	}
 }

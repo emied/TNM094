@@ -88,3 +88,58 @@ function onListening() {
 		: 'port ' + addr.port;
 	debug('Listening on ' + bind);
 }
+
+/**
+ * Real-time data with socket.io
+ */
+
+//global.current_index = 1190043;
+//const data_start_time = new Date('2018-09-19 08:56:03');
+//global.current_index = 1189592;
+//const data_start_time = new Date('2018-09-19 08:30:00');
+global.current_index = 1154185;
+const data_start_time = new Date('2018-09-13 07:40:03');
+
+const server_start_time = new Date();
+const timescale = 60.0;
+global.data_current_time = new Date(data_start_time);
+
+const io = require('socket.io')(server);
+const datasets = require('../data/datasets');
+
+const emitData = async socket => {
+	var data = datasets['bike'];
+
+	global.data_current_time = new Date(data_start_time.valueOf() + timescale*(new Date() - server_start_time));
+
+	var new_data = [];
+	for( ; global.current_index < data.length; global.current_index++)
+	{
+		var date = new Date(data[global.current_index].start_time);
+
+		if(date <= global.data_current_time) {
+			new_data.push(data[global.current_index]);
+		}
+		else {
+			break;
+		}
+	}
+
+	if(new_data.length)
+	{
+		socket.emit("data", new_data);
+	}
+};
+
+let interval;
+io.on("connection", socket => {
+	console.log("New client connected");
+
+	if(interval) {
+		clearInterval(interval);
+	}
+
+	interval = setInterval(() => emitData(io.sockets), 1000);
+
+  socket.on("disconnect", () => { console.log("Client disconnected")});
+});

@@ -8,8 +8,8 @@ window.onresize = function(event) {
 
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
-	var start = "2018-11-03";
-	var end = "2018-11-16";
+	var start = "2018-09-19 08:55:00";
+	var end = "2018-09-19 08:56:00";
 	var decimate = 1; // decimate value should be set depending on device
 
 	data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
@@ -60,3 +60,10 @@ function startupDataRequest() {
 }
 
 startupDataRequest();
+
+const socket = io();
+socket.on("data", data => {
+	if(bike_dashboard) {
+		bike_dashboard.addDataEntry(data);
+	} 
+});

@@ -4,8 +4,8 @@ export class BikeIdChart
 	{
 		this.container_id = container_id;
 		this.chart = dc.rowChart(this.container_id);
-		this.dimension = cross_filter.dimension( d => { return d.bike_id; });
-		this.group = this.dimension.group().reduceSum( d => { return d.distance; });
+		this.dimension = cross_filter.dimension( d => { return +d.bike_id; });
+		this.group = this.dimension.group().reduceSum( d => { return +d.distance; });
 
 		this.chart
 			.width($(this.container_id).width())
@@ -32,5 +32,10 @@ export class BikeIdChart
 		this.chart.render();
 
 		this.chart.transitionDuration(750);
+	}
+
+	redraw()
+	{
+		this.chart.redraw();
 	}
 }

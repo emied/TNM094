@@ -7,14 +7,6 @@
   margin-left: 250px;
 }
 
-#superscript-warnings {
-  vertical-align: top;
-  position: relative;
-  top: -2px;
-  font-size: 10px;
-  color:#ff3838;
-}
-
 .navbar-custom {
   background-color: #2abac8;
 }
@@ -26,22 +18,16 @@
 }
 
 /* change the link color */
-.navbar-custom .navbar-nav .nav-link,
-.nav-war {
+.navbar-custom .navbar-nav .nav-link {
+    font-size: 1rem;
     color: rgba(255,255,255,.5);
 }
 
 /* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
-.navbar-custom .nav-item:hover .nav-link,
-.nav-war {
+.navbar-custom .nav-item:hover .nav-link {
     color: #ffffff;
     text-decoration: none;
-}
-
-.nav-war {
-  margin-top: 5px;
-  font-size: 20px;
 }
 
 .toggle-icon {
@@ -54,4 +40,26 @@
   font-size:1.25rem;
   line-height:1;
   cursor: pointer;
+}
+
+/* Use these to change warning icon colors, otherwise bootstrap functionality breaks. */
+#warning-link .nav-link {
+  color: rgb(230, 0, 0);
+}
+
+#warning-link .nav-link:hover {
+  color: rgb(255, 77, 77);
+}
+
+#warning-link.active .nav-link {
+  color: #ffffff;
+}
+
+#superscript-warnings {
+  vertical-align: top;
+  position: relative;
+  top: 0px;
+  left: -6px;
+  font-size: 10px;
+  color:#ff3838;
 }
