@@ -2,7 +2,7 @@
 export class RangeChart{
   constructor(cross_filter, container_id, start, end, dimension){
     this.container_id = container_id;
-    this.chart = dc.barChart('#range-chart')
+    this.chart = dc.barChart(this.container_id)
 
     this.group = dimension.group().reduceCount();
 

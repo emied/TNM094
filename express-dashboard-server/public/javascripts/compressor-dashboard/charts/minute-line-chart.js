@@ -6,7 +6,6 @@ export class MinuteLineChart{
     this.chart = dc.lineChart(this.container_id);
     this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
-
     this.chart
 			.width($(this.container_id).width())
 			.height(height)
@@ -23,7 +22,7 @@ export class MinuteLineChart{
       .zoomOutRestrict(true)
       .renderVerticalGridLines(true)
       .renderHorizontalGridLines(true)
-			.valueAccessor(d => {return d.value.avg; })
+			.valueAccessor(d => {return d.value.count ? d.value.sum / d.value.count : 0 })
       .render();
   	}
 
