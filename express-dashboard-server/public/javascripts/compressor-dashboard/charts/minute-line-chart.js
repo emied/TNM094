@@ -1,11 +1,15 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
 
 export class MinuteLineChart{
-  constructor(cross_filter, container_id, height, start, end, chart_label, attr, y_range, range_chart, dimension){
+  constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension){
     this.container_id = container_id;
     this.chart = dc.lineChart(this.container_id);
     this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
+    var y_range = [ 
+      Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 1.01,
+      Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 0.99
+    ];
 
     this.chart
 			.width($(this.container_id).width())
@@ -23,7 +27,7 @@ export class MinuteLineChart{
       .zoomOutRestrict(true)
       .renderVerticalGridLines(true)
       .renderHorizontalGridLines(true)
-			.valueAccessor(d => {return d.value.avg; })
+			.valueAccessor(d => {return d.value.count ? d.value.sum / d.value.count : 0 })
       .render();
   	}
 
@@ -34,8 +38,6 @@ export class MinuteLineChart{
 
       this.chart.render();
       this.chart.transitionDuration(750);
-
-
     }
 
     redraw(){
