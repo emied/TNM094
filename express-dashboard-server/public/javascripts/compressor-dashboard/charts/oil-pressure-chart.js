@@ -17,12 +17,16 @@ export class OilPressureChart{
 
     this.rangeChart
       .width($(this.container_id).width())
-      .height(70)
+      .height(90)
       .dimension(this.dimension)
       .group(this.group)
       .x(d3.scaleTime().domain([start, end]))
+      .y(d3.scaleLinear().domain([1.3, 2.2]))
       .centerBar(true)
+      .renderVerticalGridLines(true)
+      //.renderHorizontalGridLines(true)
       .xUnits(d3.timeMonth)
+      .valueAccessor(d => { return d.value.avg; })
       .render();
 
     this.chart
@@ -32,19 +36,17 @@ export class OilPressureChart{
       .rangeChart(this.rangeChart)
 			.dimension(this.dimension)
       .x(d3.scaleTime().domain([start, end]))
-      .y(d3.scaleLinear().domain([1.2, 2.1]))
+      .y(d3.scaleLinear().domain([1.3, 2.1]))
 			.yAxisLabel("Oil Temp (°C)")
       .xUnits(d3.timeDay)
       .brushOn(false)
       .mouseZoomable(true)
       .zoomScale([1, 100])
       .zoomOutRestrict(true)
-      //.elasticY(true)
       .renderVerticalGridLines(true)
       .renderHorizontalGridLines(true)
 			.valueAccessor(d => { return d.value.avg; })
-
-    this.chart.render();
+      .render();
   	}
 
     resize(){
