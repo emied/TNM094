@@ -32,7 +32,6 @@ debug('Loading datasets')
 var datasets = {};
 
 try {
-	datasets['compressor1'] = d3.csvParse(fs.readFileSync('data/source/compressor1.csv', 'utf8'));
 	datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 	datasets['compressor'] = d3.csvParse(fs.readFileSync('data/source/compressor.csv', 'utf8'));
 } catch (err) {
