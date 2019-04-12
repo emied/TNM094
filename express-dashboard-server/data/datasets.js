@@ -40,36 +40,33 @@ try {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
 
-const NUM_COMPRESSORS = 100;
+const C = require('./constants.js').COMPRESSORS;
+var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.features[0]);
 
-const START_TIME_DEVIATION = 1000*60*60*24;
-const FLOW_DEVIATION = 1000.0;
-const BEARING_VIBRATION_DEVIATION = 1.0;
-const OIL_PRESSURE_DEVIATION = 0.5;
-const OIL_TEMP_DEVIATION = 5;
-const AMBIENT_TEMP_DEVIATION = 20;
-const HUMIDITY_DEVIATION = 2;
+var coordinates2 = require('random-points-on-polygon')(C.NUM, sweden_geojson.features[0], {}, true);
+
+console.log(sweden_geojson.features[0].geometry.coordinates[0]);
+
+fs.writeFileSync('data/source/points_new.geojson', JSON.stringify(coordinates2), 'utf8');
 
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
-var coordinates = require('random-points-on-polygon')(NUM_COMPRESSORS, sweden_geojson.features[0]);
-
 datasets['compressors'] = [];
-for(var i = 0; i < NUM_COMPRESSORS; i++)
+for(var i = 0; i < C.NUM; i++)
 {
 	var coord = coordinates[i].geometry.coordinates;
 	datasets['compressors'].push({
 		id: i,
 		lat: coord[0],
 		lon: coord[1],
-		start_time_offset: Math.round(random_in_range(-START_TIME_DEVIATION, 0.0)),
-		flow_offset: random_in_deviation(FLOW_DEVIATION),
-		bearing_vibration_offset: random_in_deviation(BEARING_VIBRATION_DEVIATION),
-		oil_pressure_offset: random_in_deviation(OIL_PRESSURE_DEVIATION),
-		oil_temp_offset: random_in_deviation(OIL_TEMP_DEVIATION),
-		ambient_temp_offset: random_in_deviation(AMBIENT_TEMP_DEVIATION),
-		humidity_offset: random_in_deviation(HUMIDITY_DEVIATION)
+		start_time_offset: Math.round(random_in_range(-C.START_TIME_DEVIATION, 0.0)),
+		flow_offset: random_in_deviation(C.FLOW_DEVIATION),
+		bearing_vibration_offset: random_in_deviation(C.BEARING_VIBRATION_DEVIATION),
+		oil_pressure_offset: random_in_deviation(C.OIL_PRESSURE_DEVIATION),
+		oil_temp_offset: random_in_deviation(C.OIL_TEMP_DEVIATION),
+		ambient_temp_offset: random_in_deviation(C.AMBIENT_TEMP_DEVIATION),
+		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION)
 	})
 }
 
