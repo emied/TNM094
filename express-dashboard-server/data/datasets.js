@@ -55,7 +55,8 @@ const formatDate = (date) => {
 
 
 var first = new Date(datasets['compressor'][0].start_time);
-datasets['compressor'].map( d => {
+datasets['compressor'].map( (d, i) => {
+	// Scale start_time from 5 sec to 150 sec data frequency.
 	d.start_time = formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
 })
 
@@ -74,6 +75,7 @@ for(var i = 0; i < C.NUM; i++)
 		lat: coord[0],
 		lon: coord[1],
 		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
+		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),
 		bearing_vibration_offset: random_in_deviation(C.BEARING_VIBRATION_DEVIATION),
 		oil_pressure_offset: random_in_deviation(C.OIL_PRESSURE_DEVIATION),
@@ -99,9 +101,9 @@ datasets['compressors'].forEach( (c) => {
 	};
 
 	for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
-		var v = datasets['compressor'][i];
+		var v = datasets['compressor'][i + c.index_offset];
 
-		obj.start_time.push(formatDate(new Date((new Date(v.start_time).valueOf() + c.start_time_offset))));
+		obj.start_time.push(formatDate(new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)));
 		obj.flow.push(+v.flow + c.flow_offset);
 		obj.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
 		obj.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);

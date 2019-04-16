@@ -1,7 +1,8 @@
 module.exports = {
 	COMPRESSORS: {
 		NUM: 500,
-		START_TIME_DEVIATION: 1000*60*60*24,
+		INDEX_DEVIATION: (60*60*24)/150, // 1 day
+		START_TIME_DEVIATION: 150*1000, // 2.5 min (time between data point per compressor)
 		FLOW_DEVIATION: 1000.0,
 		BEARING_VIBRATION_DEVIATION: 1.0,
 		OIL_PRESSURE_DEVIATION: 0.5,
