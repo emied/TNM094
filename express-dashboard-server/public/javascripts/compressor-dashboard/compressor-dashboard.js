@@ -26,7 +26,7 @@ export class CompressorDashboard {
     this.range_chart = new RangeChart(this.cross_filter, '#range-chart', start, end, this.dimension)
 
     this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart.chart, this.dimension);
-
+    this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Oil Temp (°C)', 'flow', this.range_chart.chart, this.dimension);
   }
 
   resize()

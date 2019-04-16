@@ -9,6 +9,12 @@
 	border-top-right-radius: 5px;
 }
 
+#range-chart {
+	 position: -webkit-sticky;
+   position: sticky;
+   top: 0;
+}
+
 .navbar-chart .navbar-brand,
 .navbar-custom .navbar-text {
 	color: rgba(70,70,70,.8);
@@ -33,8 +39,8 @@
 	cursor: pointer;
 }
 
-/*-- Scale the font-size of chart titles depending on 
-resolution so that everything fits on one line. Needs 
+/*-- Scale the font-size of chart titles depending on
+resolution so that everything fits on one line. Needs
 to be reconfigured if titles change or if div size
 breakpoints change for charts. --*/
 @media (min-width: 576px) { .navbar-chart .navbar-brand {
