@@ -1,10 +1,9 @@
-
+import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
 export class RangeChart{
-  constructor(cross_filter, container_id, start, end, dimension){
+  constructor(cross_filter, container_id, start, end, dimension, attr){
     this.container_id = container_id;
     this.chart = dc.barChart(this.container_id)
-
-    this.group = dimension.group().reduceCount();
+    this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
     this.chart
       .width($(this.container_id).width())
@@ -13,6 +12,7 @@ export class RangeChart{
       .group(this.group)
       .x(d3.scaleTime().domain([start, end]))
       .centerBar(true)
+      .valueAccessor(d => {return d.value.count ? d.value.sum / d.value.count : 0 })
       .renderVerticalGridLines(true)
       .xUnits(d3.timeMonth)
       .render();
@@ -24,7 +24,7 @@ export class RangeChart{
         .transitionDuration(0);
 
       this.chart.render();
-      this.chart.transitionDuration(750);
+      //this.chart.transitionDuration(0);
     }
 
     redraw(){

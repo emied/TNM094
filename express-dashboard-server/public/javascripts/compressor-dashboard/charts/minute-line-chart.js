@@ -6,7 +6,7 @@ export class MinuteLineChart{
     this.chart = dc.lineChart(this.container_id);
     this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
-    var y_range = [ 
+    var y_range = [
       Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 1.01,
       Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 0.99
     ];

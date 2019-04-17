@@ -15,14 +15,16 @@ block content
          .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
             div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
     .row.justify-content-center
-      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
-        +chart-card('line-chart-pressure', 'Oil Pressure')
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')    
+    
     .row.justify-content-center
-      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
-        +chart-card('line-chart-flow', 'Oil Pressure')    
-    .row.justify-content-center
-      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
-        div(id='range-chart').col-12.p-2.card.navbar-fixed-bottom
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-pressure', 'Oil Pressure', 'range-chart-oil-pressure')
+      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-bearing-vibration', 'Bearing Vibration', 'range-chart-bearing-vibration')
           
         
           

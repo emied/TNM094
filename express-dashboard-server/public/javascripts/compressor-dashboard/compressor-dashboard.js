@@ -23,17 +23,26 @@ export class CompressorDashboard {
     this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3');
     this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4');
 
-    this.range_chart = new RangeChart(this.cross_filter, '#range-chart', start, end, this.dimension)
+    this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
+    this.range_chart_oil_temp = new RangeChart(this.cross_filter, '#range-chart-oil-temp', start, end, this.dimension, 'oil_temp');
+    this.range_chart_oil_pressure = new RangeChart(this.cross_filter, '#range-chart-oil-pressure', start, end, this.dimension, 'oil_pressure');
+    this.range_chart_bearing_vibration = new RangeChart(this.cross_filter, '#range-chart-bearing-vibration', start, end, this.dimension, 'bearing_vibration');
 
-    this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart.chart, this.dimension);
-    this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart.chart, this.dimension);
+
+    this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension);
+    this.oil_temp_chart = new MinuteLineChart(this.cross_filter, '#line-chart-temp', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart_oil_temp.chart, this.dimension);
+    this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Pressure (Bar)', 'oil_pressure', this.range_chart_oil_pressure.chart, this.dimension);
+    this.bearing_vibration_chart = new MinuteLineChart(this.cross_filter, '#line-chart-bearing-vibration', 330, start, end, 'Bearing Vibration ()', 'bearing_vibration', this.range_chart_bearing_vibration.chart, this.dimension);
 
 
   }
 
   resize()
   {
-    this.oil_pressure_chart.resize();
-    this.range_chart.resize();
+    this.oil_temp_chart.resize();
+    this.flow_chart.resize();
+    this.range_chart_flow.resize();
+    this.range_chart_oil_temp.resize();
+
   }
 }
