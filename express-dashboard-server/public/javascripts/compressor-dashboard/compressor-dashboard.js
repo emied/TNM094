@@ -15,6 +15,21 @@ export class CompressorDashboard {
       return minute;
     });
 
+    var start = new Date(data[0].start_time);
+    var end = new Date(data[data.length - 1].start_time);
+
+    this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#info-box-1');
+    this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#info-box-2');
+    this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3');
+    this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4');
+
+    this.range_chart = new RangeChart(this.cross_filter, '#range-chart', start, end, this.dimension)
+
+    this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart.chart, this.dimension);
+    this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Oil Temp (°C)', 'flow', this.range_chart.chart, this.dimension);
+
+    this.range_chart.focusCharts([this.oil_pressure_chart,this.flow_chart]);
+
     this.range_chart.focusCharts = function (chartlist) {
       if (!arguments.length) {
           return this._focusCharts;
@@ -33,21 +48,6 @@ export class CompressorDashboard {
       });
       return this;
     };
-
-    var start = new Date(data[0].start_time);
-    var end = new Date(data[data.length - 1].start_time);
-
-    this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#info-box-1');
-    this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#info-box-2');
-    this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3');
-    this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4');
-
-    this.range_chart = new RangeChart(this.cross_filter, '#range-chart', start, end, this.dimension)
-
-    this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart.chart, this.dimension);
-    this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Oil Temp (°C)', 'flow', this.range_chart.chart, this.dimension);
-
-    this.range_chart.focusCharts([this.oil_pressure_chart,this.flow_chart]);
 
   }
 
