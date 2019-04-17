@@ -34,7 +34,7 @@ export class CompressorDashboard {
       }
       this._focusCharts = chartlist; // only needed to support the getter above
         console.log(this._focusCharts);
-        this.on('filtered', function (range_chart) {
+        $(this).on('filtered', function (range_chart) {
           chartlist.forEach(function (focus_chart) {
             if (!rangesEqual(range_chart.filter(), focus_chart.filter())) {
               dc.events.trigger(function () {

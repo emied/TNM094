@@ -15,7 +15,7 @@ export class MinuteLineChart{
 			.width($(this.container_id).width())
 			.height(height)
 			.group(this.group)
-      .rangeChart(range_chart)
+      //.rangeChart(range_chart)
 			.dimension(dimension)
       .x(d3.scaleTime().domain([start, end]))
       .y(d3.scaleLinear().domain(y_range))
