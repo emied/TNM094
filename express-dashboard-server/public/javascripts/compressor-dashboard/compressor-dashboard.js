@@ -15,6 +15,25 @@ export class CompressorDashboard {
       return minute;
     });
 
+    this.range_chart.focusCharts = function (chartlist) {
+      if (!arguments.length) {
+          return this._focusCharts;
+      }
+      this._focusCharts = chartlist; // only needed to support the getter above
+        console.log(this._focusCharts);
+        this.on('filtered', function (range_chart) {
+          chartlist.forEach(function (focus_chart) {
+            if (!rangesEqual(range_chart.filter(), focus_chart.filter())) {
+              dc.events.trigger(function () {
+                console.log(this._focusCharts);
+                focus_chart.focus(range_chart.filter());
+              });
+            }
+          });
+      });
+      return this;
+    };
+
     var start = new Date(data[0].start_time);
     var end = new Date(data[data.length - 1].start_time);
 
@@ -27,7 +46,27 @@ export class CompressorDashboard {
 
     this.oil_pressure_chart = new MinuteLineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart.chart, this.dimension);
     this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Oil Temp (°C)', 'flow', this.range_chart.chart, this.dimension);
+
+    this.range_chart.focusCharts([this.oil_pressure_chart,this.flow_chart]);
+
   }
+
+  rangesEqual = function(range1, range2) {
+    if (!range1 && !range2) {
+        return true;
+    }
+    else if (!range1 || !range2) {
+        return false;
+    }
+    else if (range1.length === 0 && range2.length === 0) {
+        return true;
+    }
+    else if (range1[0].valueOf() === range2[0].valueOf() &&
+        range1[1].valueOf() === range2[1].valueOf()) {
+        return true;
+    }
+    return false;
+  };
 
   resize()
   {

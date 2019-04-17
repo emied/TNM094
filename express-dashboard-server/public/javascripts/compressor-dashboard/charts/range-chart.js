@@ -13,6 +13,7 @@ export class RangeChart{
       .group(this.group)
       .x(d3.scaleTime().domain([start, end]))
       .centerBar(true)
+      .brushOn(true)
       .renderVerticalGridLines(true)
       .xUnits(d3.timeMonth)
       .render();
