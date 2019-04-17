@@ -39,6 +39,30 @@
 	cursor: pointer;
 }
 
+#range-chart-flow svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-oil-temp svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-oil-pressure svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-bearing-vibration svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-ambient-temp svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-humidity svg g g.axis.y {
+ display: none;
+}
+
 /*-- Scale the font-size of chart titles depending on
 resolution so that everything fits on one line. Needs
 to be reconfigured if titles change or if div size
