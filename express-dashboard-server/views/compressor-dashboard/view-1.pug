@@ -10,26 +10,21 @@ block content
   +topnav('1')
   
   .container-fluid.px-4
-    .row
+    .row.justify-content-center
       each color, name in info_box_colors
          .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
             div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+    .row.justify-content-center
+      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
         +chart-card('line-chart-pressure', 'Oil Pressure')
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+    .row.justify-content-center
+      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
         +chart-card('line-chart-flow', 'Oil Pressure')    
-      //-.container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +line-chart-card('line-chart-vibration', 'Bearing Vibration', 'range-chart-vibration')
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+    .row.justify-content-center
+      .container-fluid.col-xs-11.col-sm-11.col-md-11.col-lg-11.p-2.m-0
         div(id='range-chart').col-12.p-2.card.navbar-fixed-bottom
           
         
           
   script(src='javascripts/startup-data-request-compressor.js', type='module')
   script(src='javascripts/sidenav.js')
-  
-  
-  

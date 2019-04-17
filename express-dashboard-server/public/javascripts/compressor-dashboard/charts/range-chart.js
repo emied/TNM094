@@ -8,7 +8,7 @@ export class RangeChart{
 
     this.chart
       .width($(this.container_id).width())
-      .height(90)
+      .height(70)
       .dimension(dimension)
       .group(this.group)
       .x(d3.scaleTime().domain([start, end]))
