@@ -9,10 +9,15 @@
 	border-top-right-radius: 5px;
 }
 
-#range-chart {
-	 position: -webkit-sticky;
-   position: sticky;
-   top: 0;
+.navbar-chart-compressor {
+	background-color: #6699cc;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+
+}
+.navbar-chart-compressor .navbar-brand,
+.navbar-custom .navbar-text {
+	color: white;
 }
 
 .navbar-chart .navbar-brand,
@@ -38,6 +43,7 @@
 	color: rgba(70,70,70,0.8);
 	cursor: pointer;
 }
+
 
 #range-chart-flow svg g g.axis.y {
  display: none;

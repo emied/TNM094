@@ -4,7 +4,7 @@ include ../bike-dashboard/mixins
 
 block content
   
-  - var info_box_colors = {'1':'#1ac98f', '2':'#2ac8bc', '3':'#0cb1e6', '4':'#27d882'};
+  - var info_box_colors = {'1':'#00b3b3', '2':'#00b3b3', '3':'#00b3b3', '4':'#00b3b3'};
   
   +sidenav
   +topnav('1')
@@ -15,19 +15,19 @@ block content
          .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
             div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
     .row.justify-content-center
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')    
     .row.justify-content-center
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-pressure', 'Oil Pressure', 'range-chart-oil-pressure')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-bearing-vibration', 'Bearing Vibration', 'range-chart-bearing-vibration')
-    .row.justify-content-centerBar
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+    .row.justify-content-center
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-humidity', 'Humidity', 'range-chart-humidity')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
         +range-chart-card('line-chart-ambient-temp', 'Ambient Temp', 'range-chart-ambient-temp')  
           
         
