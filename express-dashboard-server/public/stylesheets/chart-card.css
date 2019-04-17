@@ -4,20 +4,24 @@
 }
 
 .navbar-chart {
-	background-color: #bbbbbb;
+	background-color: #ffffff;
+	border-bottom: 1px solid;
+	border-color: #333333;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
 
 .navbar-chart-compressor {
-	background-color: #6699cc;
+	background-color: #ffffff;
+	border-bottom: 1px solid;
+	border-color: #333333;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 
 }
 .navbar-chart-compressor .navbar-brand,
 .navbar-custom .navbar-text {
-	color: white;
+	color: black;
 }
 
 .navbar-chart .navbar-brand,
