@@ -6,9 +6,9 @@ function afterLoad() {
 	// 	bike_dashboard.addData(data);
 	// });
 
-	// window.onresize = function(event) {
-	// 	bike_dashboard.resize();
-	// };
+	window.onresize = function(event) {
+		compressors_dashboard.resize();
+	};
 }
 
 function startupDataRequest() {
