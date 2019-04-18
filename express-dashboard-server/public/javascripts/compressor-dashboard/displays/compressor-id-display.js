@@ -10,7 +10,7 @@ export class CompressorIdDisplay {
 
     this.display
       .formatNumber(d3.format(".2f"))
-      .html({some: "<h4 class='compressor-id'><br>Compressor:" + this.compressor_id + "</h4>"})
+      .html({some: "<h4 class='compressor-id'><br>Compressor: " + this.compressor_id + "</h4><br/><h4 class='compressor-location'>Location: " + this.location + "</h4>"})
       .group(this.group);
 
 		this.display.render();
