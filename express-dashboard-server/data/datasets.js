@@ -32,11 +32,13 @@ debug('Loading datasets')
 var datasets = {};
 var compressors = [];
 var sweden_geojson;
+var sweden_lakes_geojson;
 
 try {
 	datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 	datasets['compressor'] = d3.csvParse(fs.readFileSync('data/source/compressor.csv', 'utf8'));
 	sweden_geojson = JSON.parse(fs.readFileSync('data/source/sweden.json', 'utf8'));
+	sweden_lakes_geojson = JSON.parse(fs.readFileSync('data/source/sweden_lakes.geojson', 'utf8'));
 } catch (err) {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
@@ -47,7 +49,16 @@ datasets['compressor'].map( (d, i) => {
 	require('./utility.js').formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
 })
 
+// Subtract lakes
+var s_coord = sweden_geojson.features[0].geometry.coordinates;
+sweden_lakes_geojson.features.forEach( lake => {
+ 	s_coord[s_coord.length-1].push(lake.geometry.coordinates[0])
+})
+
+fs.writeFileSync('data/source/sweden_lakes_removed.geojson', JSON.stringify(sweden_geojson), 'utf8');
+
 const C = require('./constants.js').COMPRESSORS;
+
 var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.features[0]);
 
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
