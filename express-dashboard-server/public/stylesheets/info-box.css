@@ -3,7 +3,14 @@
   border-radius: 5px;
 }
 
+.compressor-id-box {
+  border-radius: 5px;
+  background-color: white;
+}
+
+
 /*style font inside infoboxes, */
+
 h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	color: white;
@@ -15,4 +22,32 @@ h4.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
 	color: white;
+}
+
+h4.compressor-id {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 25px;
+  text-align: center;
+	color: black;
+}
+h4.compressor-location {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+  text-align: center;
+	color: black;
+}
+
+
+h4.id-avg-display {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+	color: black;
+  text-align: center;
+}
+
+h5.id-avg-display {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 20px;
+	color: black;
+  text-align: center;
 }

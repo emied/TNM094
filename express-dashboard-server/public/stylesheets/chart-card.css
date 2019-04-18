@@ -55,6 +55,7 @@
 
 #range-chart-oil-temp svg g g.axis.y {
  display: none;
+
 }
 
 #range-chart-oil-pressure svg g g.axis.y {
@@ -73,6 +74,12 @@
  display: none;
 }
 
+#line-chart-temp {
+	background-color: white;
+}
+#range-chart-oil-temp {
+	background-color: white;
+}
 /*-- Scale the font-size of chart titles depending on
 resolution so that everything fits on one line. Needs
 to be reconfigured if titles change or if div size
