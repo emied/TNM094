@@ -28,26 +28,26 @@ export class MinuteLineChart{
       .renderVerticalGridLines(true)
       .renderHorizontalGridLines(true)
 			.valueAccessor(d => {return d.value.count ? d.value.sum / d.value.count : 0 })
-      .colors( ['#2d5986', '#2d5986', '#2d5986', '#2d5986', '#2d5986'])
+      .colors( ['#333333', '#333333', '#2d5986', '#2d5986', '#2d5986'])
       .colorDomain([0,3])
       .colorAccessor( function(d,i){
         if(attr == 'flow'){
-          return 1;
+          return 0;
         }
         else if(attr == 'oil_pressure'){
           return 0;
         }
         else if(attr == 'humidity'){
-          return 2;
+          return 0;
         }
         else if(attr == 'bearing_vibration'){
-          return 3;
+          return 0;
         }
         else if(attr == 'ambient_temp'){
-          return 4;
+          return 0;
         }
         else if(attr == 'oil_temp'){
-          return 2;
+          return 0;
         }
       })
       .render();
