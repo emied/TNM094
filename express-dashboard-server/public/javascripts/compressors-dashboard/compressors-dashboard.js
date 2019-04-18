@@ -16,7 +16,7 @@ export class CompressorsDashboard
 		this.cross_filter = crossfilter(this.data);
 
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
-		//this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
+		this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
 	}
 
 	resize()
