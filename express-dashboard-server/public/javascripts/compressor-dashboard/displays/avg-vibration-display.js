@@ -2,7 +2,7 @@ import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.j
 
 export class AvgVibrationDisplay {
 
-	constructor(cross_filter, container_id) {
+	constructor(cross_filter, container_id, avg_id) {
 		this.container_id = container_id;
 		this.display = dc.numberDisplay(this.container_id);
 
@@ -11,7 +11,7 @@ export class AvgVibrationDisplay {
     this.display
       .formatNumber(d3.format(".2f"))
       .valueAccessor( d => { return d.count ? (d.sum / ((d.count))) : 0 })
-      .html({some: "<h4 class='info-box-text'><br>Average Bearing Vibration</h4><h5 class='info-box-text'>%number mm/s<sup>2</sup></h5>"})
+      .html({some: "<h4 class="+avg_id+"><br>Average Bearing Vibration</h4><h5 class="+avg_id+">%number mm/s<sup>2</sup></h5>"})
       .group(this.group);
 
 		this.display.render();

@@ -4,12 +4,14 @@
 }
 
 .compressor-id-box {
-  height: 130px;
+  height: 170px;
   border-radius: 5px;
-  background-color: pink;
+  background-color: white;
 }
 
+
 /*style font inside infoboxes, */
+
 h5.info-box-text {
 	font-family: 'Nunito Sans', sans-serif;
 	color: white;
