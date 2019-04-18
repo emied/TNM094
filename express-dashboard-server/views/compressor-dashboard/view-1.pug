@@ -3,12 +3,12 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-  
-  - var info_box_colors = {'1':'#1ac98f', '2':'#2ac8bc', '3':'#02a9c8', '4':'#27d882'};
-  
+
+  - var info_box_colors = {'1':'#008c82', '2':'#2ac8bc', '3':'#74bc6e', '4':'#2cb1dd'};
+
   +sidenav
   +topnav('1')
-  
+
   .container-fluid.px-4
     .row.justify-content-center
       each color, name in info_box_colors

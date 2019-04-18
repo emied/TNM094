@@ -17,10 +17,10 @@ export class BikeDashboard
 		// To remove the d3.schemeCategory20c warning.
 		// This scheme is identical.
 		dc.config.defaultColors([
-			"#0882aa", "#02a9c8", "#33c4df", "#0cb1e6", "#0088cc", "#71afda", "#1ac98f", "#1acbcb", "#34b288", "#34b2b2",
-			"#2ac8bc",
-			"#36baaf", "#2ac69f", "#309cc0", "#81cbe4",
-			"#27d882", "#40bf82", "#68e3a8", "#68e3c5", "#68e3e3",
+			"#008c82","#4dd6cb","#52afa0","#71edd9","#21ffdb",
+			"#2ac8bc","#2ee8d8","#90f4ec","#4dd6cb","#73c6c0",
+			"#74bc6e","#74dd6a","#57d64a","#82e079","#39a361",
+			"#2cb1dd","#4bb9dd","#47d1ff","#319bbf","#60bfe0"
 		]);
 
 	//		"#3182bd","#6baed6","#9ecae1","#c6dbef","#e6550d",

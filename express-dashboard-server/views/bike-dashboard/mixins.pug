@@ -32,6 +32,7 @@ mixin topnav(active_view)
 	nav#topnav.navbar.navbar-expand-lg.navbar-custom.p-1
 		a#toggle-sidenav.togglerbtn.m-0
 			span.toggle-icon.fas.fa-bars
+		img(src='prevas.png', alt='Logo', style='height:30px')
 		a.navbar-brand.mx-lg-5.m-0(href='#') #{title}
 		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topnav', aria-controls='collapsed-topnav')
 			span.toggle-icon.fas.fa-bars
@@ -42,7 +43,8 @@ mixin topnav(active_view)
 						a.nav-link(href='dashboard?data=bike&view=' + view) View #{view}
 				li#warning-link(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
 					a.nav-link.fas.fa-exclamation-triangle(href='dashboard?data=bike&view=warning')
-						#superscript-warnings  
+						#superscript-warnings
+			a.qmark.fas.fa-question.mx-2(href='dashboard?data=bike&view=help')
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend
 					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
@@ -53,7 +55,3 @@ mixin sidenav
 		a.nav-link(href='dashboard?data=compressor&view=1') Compressor Data
 		a.nav-link(href='dashboard?data=bike&view=1') Bike Data
 		a.nav-link(href='dashboard?data=compressor&view=warning-compressor') Warnings
-		
-
-		
-		

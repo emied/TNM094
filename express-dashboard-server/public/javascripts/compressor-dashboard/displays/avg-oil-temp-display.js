@@ -1,4 +1,4 @@
-import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
+import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class AvgOilTempDisplay {
 

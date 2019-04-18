@@ -1,4 +1,4 @@
-import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
+import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 export class RangeChart{
   constructor(cross_filter, container_id, start, end, dimension, attr){
     this.container_id = container_id;
