@@ -1,4 +1,4 @@
-import { MapChart } from './charts/map-chart.js';
+import { MapChartCluster } from './charts/map-chart-cluster.js';
 
 export class CompressorsDashboard
 {
@@ -14,7 +14,7 @@ export class CompressorsDashboard
 		this.data = data;
 		this.cross_filter = crossfilter(this.data);
 
-		this.map_chart = new MapChart(this.cross_filter, '#map-chart', 415, map_data);
+		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart', 600, map_data);
 	}
 
 	resize()
