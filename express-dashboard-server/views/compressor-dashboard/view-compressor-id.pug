@@ -17,18 +17,18 @@ block content
           .row.justify-content-center
             h4 Averages:
           .row
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2
-              div(id="avg-flow",style='background-color: grey')
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2
-              div(id="avg-oil-temp",style='background-color: grey')
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2
-              div(id="avg-vibration",style='background-color: grey')
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2
-              div(id="avg-humidity",style='background-color: grey')
             .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-oil-pressure",style='background-color: grey')
+              div(id="avg-flow")
             .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-amb-temp",style='background-color: grey')
+              div(id="avg-oil-temp")
+            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
+              div(id="avg-vibration")
+            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
+              div(id="avg-humidity")
+            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
+              div(id="avg-oil-pressure")
+            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
+              div(id="avg-amb-temp")
         .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
           +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
       
