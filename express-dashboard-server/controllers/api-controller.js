@@ -59,9 +59,23 @@ exports.validate = function(method) {
 				]
 			}
 
-		case 'compressors_range':
+		case 'get_compressor':
 			{
 				return [
+					check('id')
+						.exists()
+						.withMessage('id parameter is required.')
+						.isInt({ min: 0 })
+						.withMessage("compressor id's are integers equal to or larger than 0")
+						.custom( id => {
+							/***************************************************
+							Id's are just the array index. In the general case 
+							you would need to loop through compressors and check. 
+							***************************************************/
+							return id < require('../data/constants.js').COMPRESSORS.NUM && id >= 0;
+						})
+						.withMessage("Requested compressor id doesen't exist on server."),
+
 					check('start')
 						.exists()
 						.withMessage('start parameter is required.')
@@ -149,10 +163,29 @@ exports.data_range = function(req, res) {
 };
 
 /***************************************************
-Returns range of decimated historic compressors data
+Returns basic information about all compressors
+TODO: Maybe send some more info about operation status,
+average flow and such. Also maybe add some filtering
+options (not sure what would be suitable).
 ***************************************************/
-exports.compressors_range = function(req, res) {
+exports.get_compressors = function(req, res) {
 
+	var result = [];
+	compressors.forEach( c => {
+		result.push({
+			id: c.id,
+			lat: c.lat,
+			lon: c.lon,
+		});
+	});
+
+	res.json(result)
+};
+
+/*********************************************************************
+Returns decimated historic compressor data for specific compressor ID.
+*********************************************************************/
+exports.get_compressor = function(req, res) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
 	{
@@ -160,40 +193,39 @@ exports.compressors_range = function(req, res) {
 		return;
 	}
 
-	var { start, end, decimate } = req.query;
+	var { id, start, end, decimate } = req.query;
 
 	const formatDate = require('../data/utility.js').formatDate;
 
-	var result = [];
-	compressors.forEach( c => {
-		var obj = {
-			id: c.id,
-			lat: c.lat,
-			lon: c.lon,
-			start_time: [],
-			flow: [],
-			bearing_vibration: [],
-			oil_pressure: [],
-			oil_temp: [],
-			ambient_temp: [],
-			humidity: []
-		};
+	var c = compressors[id];
+
+	var result = { 
+		id: c.id,
+		lat: c.lat,
+		lon: c.lon,
+		start_time: [],
+		flow: [],
+		bearing_vibration: [],
+		oil_pressure: [],
+		oil_temp: [],
+		ambient_temp: [],
+		humidity: [] 
+	}
 	
-		for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
-			var v = datasets['compressor'][i + c.index_offset];
+	for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
+		var v = datasets['compressor'][i + c.index_offset];
 	
-			obj.start_time.push(formatDate(new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)));
-			obj.flow.push(+v.flow + c.flow_offset);
-			obj.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
-			obj.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);
-			obj.oil_temp.push(+v.oil_temp + c.oil_temp_offset);
-			obj.ambient_temp.push(+v.ambient_temp + c.ambient_temp_offset);
-			obj.humidity.push(+v.humidity + c.humidity_offset);
-		}
-		result.push(obj);
-	});
+		result.start_time.push(formatDate(new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)));
+		result.flow.push(+v.flow + c.flow_offset);
+		result.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
+		result.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);
+		result.oil_temp.push(+v.oil_temp + c.oil_temp_offset);
+		result.ambient_temp.push(+v.ambient_temp + c.ambient_temp_offset);
+		result.humidity.push(+v.humidity + c.humidity_offset);
+	}
+
 	res.json(result)
-};
+}
 
 /***************************************
 Returns range of historic data up until
