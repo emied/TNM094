@@ -3,7 +3,7 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-
+  //- var name = {1:'flow', 2:'oil-temp'};
 
   +sidenav
   +topnav('1')
@@ -12,23 +12,15 @@ block content
       .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0.justify-content-center    
         div(class="compressor-id-box")
           .row
-            .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.d-flex.justify-content-center
+            .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center
               div(id="compressor-id")
           .row.justify-content-center
-            h4 Averages:
-          .row
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-flow")
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-oil-temp")
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-vibration")
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-humidity")
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-oil-pressure")
-            .container-fluid.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center
-              div(id="avg-amb-temp")
+            p Averages:
+          .border-bottom
+          .row.p-2.m-0
+            each name in ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration']
+              .col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center.align-items-center.p-2
+                div(id='avg-' + name).d-flex.justify-content-center  
     .row
       .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
         +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')

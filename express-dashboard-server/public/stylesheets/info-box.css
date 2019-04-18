@@ -4,7 +4,6 @@
 }
 
 .compressor-id-box {
-  height: 270px;
   border-radius: 5px;
   background-color: white;
 }
@@ -39,14 +38,16 @@ h4.compressor-location {
 }
 
 
-h4.id-avg-flow {
+h4.id-avg-display {
   font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
 	color: black;
+  text-align: center;
 }
 
-h5.id-avg-flow {
+h5.id-avg-display {
   font-family: 'Nunito Sans', sans-serif;
 	font-size: 20px;
 	color: black;
+  text-align: center;
 }
