@@ -30,6 +30,7 @@ var debug = require('debug')('dashboard:datasets');
 debug('Loading datasets')
 
 var datasets = {};
+var compressors = [];
 var sweden_geojson;
 
 try {
@@ -40,24 +41,10 @@ try {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
 }
 
-const formatDate = (date) => {
-	const zeroPad = (n) =>  n > 9 ? n : '0' + n;
-
-	var year = date.getFullYear(),
-	month = zeroPad(date.getMonth() + 1),
-	day = zeroPad(date.getDate()),
-	hour = zeroPad(date.getHours()),
-	minute = zeroPad(date.getMinutes()),
-	second = zeroPad(date.getSeconds());
-
-  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-}
-
-
 var first = new Date(datasets['compressor'][0].start_time);
 datasets['compressor'].map( (d, i) => {
 	// Scale start_time from 5 sec to 150 sec data frequency.
-	d.start_time = formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
+	require('./utility.js').formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
 })
 
 const C = require('./constants.js').COMPRESSORS;
@@ -66,11 +53,10 @@ var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.feat
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
-datasets['compressors'] = [];
 for(var i = 0; i < C.NUM; i++)
 {
 	var coord = coordinates[i].geometry.coordinates;
-	datasets['compressors'].push({
+	compressors.push({
 		id: i,
 		lat: coord[0],
 		lon: coord[1],
@@ -84,35 +70,6 @@ for(var i = 0; i < C.NUM; i++)
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION)
 	})
 }
-
-var ret_comp = [];
-datasets['compressors'].forEach( (c) => {
-	var obj = {
-		id: c.id,
-		lat: c.lat,
-		lon: c.lon,
-		start_time: [],
-		flow: [],
-		bearing_vibration: [],
-		oil_pressure: [],
-		oil_temp: [],
-		ambient_temp: [],
-		humidity: []
-	};
-
-	for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
-		var v = datasets['compressor'][i + c.index_offset];
-
-		obj.start_time.push(formatDate(new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)));
-		obj.flow.push(+v.flow + c.flow_offset);
-		obj.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
-		obj.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);
-		obj.oil_temp.push(+v.oil_temp + c.oil_temp_offset);
-		obj.ambient_temp.push(+v.ambient_temp + c.ambient_temp_offset);
-		obj.humidity.push(+v.humidity + c.humidity_offset);
-	}
-	ret_comp.push(obj);
-});
 
 /*
 This could be called here:
@@ -142,4 +99,5 @@ will be needed for API requests.
 
 debug('Loaded datasets: ' + Object.keys(datasets));
 
-module.exports = datasets;
+exports.datasets = datasets;
+exports.compressors = compressors;

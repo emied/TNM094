@@ -11,7 +11,8 @@ req = Request, res = Response
 
 **********************************************************************/
 
-var datasets = require('../data/datasets');
+var datasets = require('../data/datasets').datasets;
+var compressors = require('../data/datasets').compressors;
 
 const { check, validationResult } = require('express-validator/check');
 
@@ -33,6 +34,34 @@ exports.validate = function(method) {
 						.custom( dataset => { return datasets.hasOwnProperty(dataset) ? dataset : Promise.reject(); })
 						.withMessage("Requested dataset doesen't exist on server."),
 
+					check('start')
+						.exists()
+						.withMessage('start parameter is required.')
+						.isISO8601({strict: true})
+						.withMessage("Invalid start date formatting, or start date can't exist (e.g. 52:th of may).")
+						.toDate(),
+
+					check('end')
+						.exists()
+						.withMessage('end parameter is required.')
+						.isISO8601({strict: true})
+						.withMessage("Invalid end date formatting, or end date can't exist (e.g. 42:th of january).")
+						.custom( (end, { req }) => { return new Date(req.query.start) < new Date(end) ? end : Promise.reject(); })
+						.withMessage("Start date needs to happen before end date.")
+						.toDate(),
+
+					check('decimate')
+						.exists()
+						.withMessage('decimate parameter is required.')
+						.isInt({ min: 1 })
+						.withMessage('decimate needs to be a positive integer.')
+						.toInt()
+				]
+			}
+
+		case 'compressors_range':
+			{
+				return [
 					check('start')
 						.exists()
 						.withMessage('start parameter is required.')
@@ -117,6 +146,53 @@ exports.data_range = function(req, res) {
 	res.json(result); // Send the accumulated data as response in JSON.
 
 	debug_range(result.length + ' entries sent');
+};
+
+/***************************************************
+Returns range of decimated historic compressors data
+***************************************************/
+exports.compressors_range = function(req, res) {
+
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+	{
+		res.status(400).json({ errors: errors.array() });
+		return;
+	}
+
+	var { start, end, decimate } = req.query;
+
+	const formatDate = require('../data/utility.js').formatDate;
+
+	var result = [];
+	compressors.forEach( c => {
+		var obj = {
+			id: c.id,
+			lat: c.lat,
+			lon: c.lon,
+			start_time: [],
+			flow: [],
+			bearing_vibration: [],
+			oil_pressure: [],
+			oil_temp: [],
+			ambient_temp: [],
+			humidity: []
+		};
+	
+		for(var i = 4300; i < 4300 + ((60*12)/2.5); i++) {
+			var v = datasets['compressor'][i + c.index_offset];
+	
+			obj.start_time.push(formatDate(new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)));
+			obj.flow.push(+v.flow + c.flow_offset);
+			obj.bearing_vibration.push(+v.bearing_vibration + c.bearing_vibration_offset);
+			obj.oil_pressure.push(+v.oil_pressure + c.oil_pressure_offset);
+			obj.oil_temp.push(+v.oil_temp + c.oil_temp_offset);
+			obj.ambient_temp.push(+v.ambient_temp + c.ambient_temp_offset);
+			obj.humidity.push(+v.humidity + c.humidity_offset);
+		}
+		result.push(obj);
+	});
+	res.json(result)
 };
 
 /***************************************

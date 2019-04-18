@@ -44,6 +44,12 @@ Returns decimated historic data depending on parameters in query string.
 router.get('/data_range', api_controller.validate('data_range'), api_controller.data_range);
 
 /************************************************************************************************
+Defines what should happen when http://localhost:3000/api/compressors_range is requested with method GET.
+Returns decimated historic compressors data depending on parameters in query string.
+************************************************************************************************/
+router.get('/compressors_range', api_controller.validate('compressors_range'), api_controller.compressors_range);
+
+/************************************************************************************************
 Defines what should happen when http://localhost:3000/api/test is requested with method GET.
 Displays test page for API.
 ************************************************************************************************/

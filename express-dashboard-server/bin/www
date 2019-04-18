@@ -105,7 +105,7 @@ const timescale = 60.0;
 global.data_current_time = new Date(data_start_time);
 
 const io = require('socket.io')(server);
-const datasets = require('../data/datasets');
+const datasets = require('../data/datasets').datasets;
 
 const emitData = async socket => {
 	var data = datasets['bike'];
