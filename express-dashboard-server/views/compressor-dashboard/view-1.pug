@@ -3,36 +3,34 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-  
-  - var info_box_colors = {'1':'#3878cf', '2':'#9e92f4', '3':'#7199e6', '4':'#a4a9ec'};
-  
+
+  - var info_box_colors = {'1':'#008c82', '2':'#2ac8bc', '3':'#74bc6e', '4':'#2cb1dd'};
+
   +sidenav
   +topnav('1')
-  
+
   .container-fluid.px-4
-    .row
+    .row.justify-content-center
       each color, name in info_box_colors
          .col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
             div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-compressor', 'Flow')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-pressure', 'Oil Pressure')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-humidity', 'Humidity')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-bearing-vibration', 'Bearing Vibration')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-oil-temp', 'Oil Temperature')
-      .container-fluid.col-xs-12.col-sm-12.col-md-6.col-lg-6.p-2.m-0
-        +chart-card('line-chart-amb-temp', 'Line chart ambient temperature')
-
-  script.
-    var compressor;
-         
+    .row.justify-content-center
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')    
+    .row.justify-content-center
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-pressure', 'Oil Pressure', 'range-chart-oil-pressure')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-bearing-vibration', 'Bearing Vibration', 'range-chart-bearing-vibration')
+    .row.justify-content-center
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-humidity', 'Humidity', 'range-chart-humidity')
+      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-6.p-2.m-0
+        +range-chart-card('line-chart-ambient-temp', 'Ambient Temp', 'range-chart-ambient-temp')  
+          
+        
+          
   script(src='javascripts/startup-data-request-compressor.js', type='module')
   script(src='javascripts/sidenav.js')
-  
-  
-  
