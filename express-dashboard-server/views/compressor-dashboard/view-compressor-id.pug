@@ -3,8 +3,7 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-  //- var name = {1:'flow', 2:'oil-temp'};
-
+  
   +sidenav
   +topnav('1')
   .container-fluid.px-4
@@ -15,7 +14,7 @@ block content
             .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center
               div(id="compressor-id")
           .row.justify-content-center
-            p Averages:
+            p(style="font-size: 18px") Averages:
           .border-bottom
           .row.p-2.m-0
             each name in ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration']
