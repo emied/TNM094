@@ -27,7 +27,7 @@ export class CompressorIdDashboard{
       var end = new Date(data[data.length - 1].start_time);
 
       this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#avg-amb-temp');
-      this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#avg-flow');
+      this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#avg-flow', 'id-avg-flow');
       this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#avg-vibration');
       this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#avg-oil-temp');
       this.compressor_id_display = new CompressorIdDisplay(this.cross_filter, '#compressor-id', 325, 'Norrköping')

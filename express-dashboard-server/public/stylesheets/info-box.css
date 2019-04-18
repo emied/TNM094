@@ -21,5 +21,16 @@ h4.compressor-id {
   font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
 	color: black;
+}
 
+h4.id-avg-flow {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 20px;
+	color: black;
+}
+
+h5.id-avg-flow {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 20px;
+	color: black;
 }
