@@ -2,7 +2,7 @@ import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.j
 
 export class AvgHumidityDisplay {
 
-	constructor(cross_filter, container_id, avg_id) {
+	constructor(cross_filter, container_id, avg_id, labelText) {
 		this.container_id = container_id;
 		this.display = dc.numberDisplay(this.container_id);
 
@@ -10,8 +10,8 @@ export class AvgHumidityDisplay {
 
     this.display
       .formatNumber(d3.format(".2f"))
-      .valueAccessor(d => { console.log(d); return d.count ? (d.sum / ((d.count))) : 0 })
-      .html({some: "<h4 class=" + avg_id + "><br>Average Humidity</h4><h5 class=" + avg_id + ">%number %</h5>"})
+      .valueAccessor(d => { return d.count ? (d.sum / ((d.count))) : 0 })
+      .html({some: "<h4 class=" + avg_id + "><br>" + labelText + " Humidity</h4><h5 class=" + avg_id + ">%number %</h5>"})
       .group(this.group);
 
 		this.display.render();

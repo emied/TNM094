@@ -28,12 +28,12 @@ export class CompressorIdDashboard{
       var start = new Date(data[0].start_time);
       var end = new Date(data[data.length - 1].start_time);
 
-      this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#avg-amb-temp', 'id-avg-flow');
-      this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#avg-flow', 'id-avg-flow');
-      this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#avg-vibration','id-avg-flow');
-      this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#avg-oil-temp', 'id-avg-flow');
-      this.avg_humidity_display = new AvgHumidityDisplay(this.cross_filter, '#avg-humidity', 'id-avg-flow');
-      this.avg_oil_pressure_display = new AvgOilPressureDisplay(this.cross_filter, '#avg-oil-pressure', 'id-avg-flow');
+      this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#avg-amb-temp', 'id-avg-flow', " ");
+      this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#avg-flow', 'id-avg-flow', " ");
+      this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#avg-vibration','id-avg-flow', " ");
+      this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#avg-oil-temp', 'id-avg-flow', " ");
+      this.avg_humidity_display = new AvgHumidityDisplay(this.cross_filter, '#avg-humidity', 'id-avg-flow', " ");
+      this.avg_oil_pressure_display = new AvgOilPressureDisplay(this.cross_filter, '#avg-oil-pressure', 'id-avg-flow', " ");
       this.compressor_id_display = new CompressorIdDisplay(this.cross_filter, '#compressor-id', 325, 'Norrköping')
 
       this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');

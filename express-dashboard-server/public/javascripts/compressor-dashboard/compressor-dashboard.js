@@ -25,10 +25,10 @@ export class CompressorDashboard {
     var start = new Date(data[0].start_time);
     var end = new Date(data[data.length - 1].start_time);
 
-    this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#info-box-1');
-    this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#info-box-2', 'info-box-text');
-    this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3', 'info-box-text');
-    this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4', 'info-box-text');
+    this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#info-box-1', 'info-box-text', 'Average ');
+    this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#info-box-2', 'info-box-text', 'Average ');
+    this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#info-box-3', 'info-box-text', 'Average ');
+    this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#info-box-4', 'info-box-text', 'Average ');
 
     this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
     this.range_chart_oil_temp = new RangeChart(this.cross_filter, '#range-chart-oil-temp', start, end, this.dimension, 'oil_temp');

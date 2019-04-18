@@ -2,7 +2,7 @@ import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.j
 
 export class AvgAmbTempDisplay {
 
-	constructor(cross_filter, container_id, avg_id) {
+	constructor(cross_filter, container_id, avg_id, labelText) {
 		this.container_id = container_id;
 		this.display = dc.numberDisplay(this.container_id);
 
@@ -11,7 +11,7 @@ export class AvgAmbTempDisplay {
     this.display
       .formatNumber(d3.format(".2f"))
       .valueAccessor(d => { return d.count ? (d.sum / ((d.count))) : 0 })
-      .html({some: "<h4 class=" + avg_id + "><br>Average Ambient Temperature</h4><h5 class=" + avg_id + ">%number °C</h5>"})
+      .html({some: "<h4 class=" + avg_id + "><br>" + labelText + " Ambient Temperature</h4><h5 class=" + avg_id + ">%number °C</h5>"})
       .group(this.group);
 
 		this.display.render();
