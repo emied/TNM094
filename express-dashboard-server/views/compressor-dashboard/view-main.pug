@@ -1,0 +1,25 @@
+extends ../layout
+
+include ../bike-dashboard/mixins
+
+block content
+
+	- var info_box_colors = {'1':'#008c82', '2':'#2ac8bc', '3':'#74bc6e', '4':'#2cb1dd'};
+
+	+sidenav
+	+topnav('2')
+
+	.container-fluid.px-4
+		.row
+			each color, name in info_box_colors
+				.col-xs-12.col-sm-6.col-md-6.col-lg-3.d-flex.justify-content-center.align-items-center.p-2
+					div(id='info-box-' + name, style='background-color:' + color).text-center.w-100.info-box.card-shadow
+		.row
+			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
+				+chart-card('map-chart', 'Geographical Distribution')
+
+	script.
+		var compressors_dashboard;
+
+	script(src='javascripts/startup-data-request-compressors.js', type='module')
+	script(src='javascripts/sidenav.js')
