@@ -28,7 +28,7 @@ function startupDataRequest() {
 			return;
 		}
 
-		var compressor = new CompressorDashboard(data);
+		var compressor = new CompressorIdDashboard(data);
 
 		window.onresize = function(event) {
 			compressor.resize();

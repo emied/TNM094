@@ -4,7 +4,7 @@ import { AvgOilTempDisplay } from './displays/avg-oil-temp-display.js';
 import { AvgAmbTempDisplay } from './displays/avg-amb-temp-display.js';
 import { MinuteLineChart } from './charts/minute-line-chart.js';
 import { RangeChart } from './charts/range-chart.js';
-import { CompressorIdDisplay } from './displays/compressor-id-displays.js';
+import { CompressorIdDisplay } from './displays/compressor-id-display.js';
 
 
 export class CompressorIdDashboard{
