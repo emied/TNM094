@@ -8,7 +8,8 @@
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 90px;
-  background: rgba(0, 0, 0, 0.9);
+  background: #262626;
+  opacity: 0.9;
   white-space: nowrap;
 }
 
