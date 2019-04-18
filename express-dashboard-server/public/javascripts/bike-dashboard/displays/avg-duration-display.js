@@ -18,18 +18,18 @@ export class AvgDurationDisplay
 
 				return p;
 			},
-			function () { 
+			function () {
 				return {
 					count: 0,
 					sum_duration: 0.0
-				}; 
+				};
 			}
 		);
 
 		this.display
 			.formatNumber(d3.format(".2f"))
-			.valueAccessor(d => { return d.count ? (d.sum_duration / (d.count)) : 0 })
-			.html({some: "<h4 class='info-box-text'><br>Average Trip Duration</h4><h5 class='info-box-text'>%number sec</h5>"})
+			.valueAccessor(d => { return d.count ? ((d.sum_duration / (d.count))/60) : 0 })
+			.html({some: "<h4 class='info-box-text'><br>Average Trip Duration</h4><h5 class='info-box-text'>%number min</h5>"})
 			.group(this.group);
 
 		this.display.render();
