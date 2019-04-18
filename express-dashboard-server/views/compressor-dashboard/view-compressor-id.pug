@@ -11,8 +11,8 @@ block content
   .container-fluid.px-4
     .row.justify-content-center
       .col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center.align-items-center.p-2
-        div(id="compressor-id-box", style='background-color: white').text-center.w-100.info-box.card-shadow
-          div(id="compressor-id").text-center
+        div(class="compressor-id-box")
+          div(id="compressor-id")
           div(id="avg-flow")
       .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0
         +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
