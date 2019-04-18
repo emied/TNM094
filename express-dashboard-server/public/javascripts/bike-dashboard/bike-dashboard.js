@@ -17,10 +17,10 @@ export class BikeDashboard
 		// To remove the d3.schemeCategory20c warning.
 		// This scheme is identical.
 		dc.config.defaultColors([
-			"#3182bd","#6baed6","#9ecae1","#c6dbef","#e6550d",
-			"#fd8d3c","#fdae6b","#fdd0a2","#31a354","#74c476",
-			"#a1d99b","#c7e9c0","#756bb1","#9e9ac8","#bcbddc",
-			"#dadaeb","#636363","#969696","#bdbdbd","#d9d9d9"
+			"#008c82","#4dd6cb","#52afa0","#71edd9","#21ffdb",
+			"#2ac8bc","#2ee8d8","#90f4ec","#4dd6cb","#73c6c0",
+			"#74bc6e","#74dd6a","#57d64a","#82e079","#39a361",
+			"#2cb1dd","#4bb9dd","#47d1ff","#319bbf","#60bfe0"
 		]);
 
 		this.data = this.processData(data, station_data);
@@ -53,7 +53,7 @@ export class BikeDashboard
 	{
 		if(performance.now() - this.last_draw < 500) { return; }
 
-		this.last_draw = performance.now(); 
+		this.last_draw = performance.now();
 
 		this.bike_id_chart.redraw();
 		this.gender_chart.redraw();
@@ -62,7 +62,7 @@ export class BikeDashboard
 
 		this.avg_speed_display.redraw();
 		this.total_distance_display.redraw();
-		this.unique_bikes_display.redraw(); 
+		this.unique_bikes_display.redraw();
 		this.avg_duration_display.redraw();
 	}
 
@@ -71,17 +71,17 @@ export class BikeDashboard
 		// Filter out stations that we haven't assigned ZIP codes to yet
 		var bike_stations_zip = station_data.filter(station => { return station.zip != ""; });
 
-		/********************************************************** 
+		/**********************************************************
 		 For each bike ride, find the ZIP code of its start station
 		 and remove data entry if none can be found.
 		 Since we only use geo data with ZIP codes from SF currently,
 		 every bike ride outside SF will be removed (Bay Area, San Jose)
 
-		 bike_stations.get(station id).zip (for example) is used 
+		 bike_stations.get(station id).zip (for example) is used
 		 to get specific data of a station.
 		**********************************************************/
 		this.bike_stations = new Map();
-		
+
 		bike_stations_zip.forEach(station => {
 			var obj = {lat: station.lat, lon: station.lon, zip: station.zip, name: station.name};
 			this.bike_stations.set(station.id, obj);
@@ -112,7 +112,7 @@ export class BikeDashboard
 
 			var new_start_date = new Date(this.date_range.end);
 
-			this.cross_filter.remove(d => { 
+			this.cross_filter.remove(d => {
 				var date = new Date(d.start_time);
 				if(date < date_cutoff){
 					return true;

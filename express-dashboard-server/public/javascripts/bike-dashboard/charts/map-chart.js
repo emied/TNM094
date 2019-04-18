@@ -33,7 +33,7 @@ export class MapChart
 			.width(this.width)
 			.legend(dc.legend().x(this.width - 60).y(60).itemHeight(18).gap(1))
 			.height(this.height)
-			.colors(d3.scaleLinear().domain([0, this.cf(mid_zip), this.cf(this.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']))
+			.colors(d3.scaleLinear().domain([0, this.cf(mid_zip), this.cf(this.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#008c82", '#74bc6e']))
 			.colorAccessor( d => { return d ? this.cf(d) : 0; }) // This value is weird
 			.projection(this.projection)
 			.overlayGeoJson(this.map_data["features"], "zip_code", function (d) {
@@ -129,7 +129,7 @@ export class MapChart
 			map_chart.max_zip = Math.max.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
 			map_chart.min_zip = Math.min.apply(Math, map_chart.group.all().map(function(o) { return parseFloat(o.value); }));
 			var mid_zip = map_chart.min_zip + (map_chart.max_zip - map_chart.min_zip) / 2.0;
-			map_chart.chart.colors(d3.scaleLinear().domain([0, map_chart.cf(mid_zip), map_chart.cf(map_chart.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#0cb1e6", '#2ac862']));
+			map_chart.chart.colors(d3.scaleLinear().domain([0, map_chart.cf(mid_zip), map_chart.cf(map_chart.max_zip)]).interpolate(d3.interpolateLab).range(['lightgray', "#008c82", '#74bc6e']));
 		});
 
 		this.chart.on("pretransition", function(_chart) {
