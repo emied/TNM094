@@ -32,7 +32,7 @@ export class MinutesChart
 			.dimension(this.dimension)
 			.group(this.group)
 			.colorAccessor(d => { return d.key; })
-			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#2ac8bc", "#0882aa"]));
 
 		this.chart.render();
 	}
@@ -58,7 +58,7 @@ export class MinutesChart
 
 		this.chart
 			//.x(d3.scaleTime().domain([this.start, this.end]))
-			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#2ac8bc", "#0882aa"]));
 
 		this.chart.redraw();
 	}

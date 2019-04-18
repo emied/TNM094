@@ -4,9 +4,24 @@
 }
 
 .navbar-chart {
-	background-color: #bbbbbb;
+	background-color: #ffffff;
+	border-bottom: 1px solid;
+	border-color: #333333;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+}
+
+.navbar-chart-compressor {
+	background-color: #ffffff;
+	border-bottom: 1px solid;
+	border-color: #333333;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+
+}
+.navbar-chart-compressor .navbar-brand,
+.navbar-custom .navbar-text {
+	color: black;
 }
 
 .navbar-chart .navbar-brand,
@@ -33,8 +48,33 @@
 	cursor: pointer;
 }
 
-/*-- Scale the font-size of chart titles depending on 
-resolution so that everything fits on one line. Needs 
+
+#range-chart-flow svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-oil-temp svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-oil-pressure svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-bearing-vibration svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-ambient-temp svg g g.axis.y {
+ display: none;
+}
+
+#range-chart-humidity svg g g.axis.y {
+ display: none;
+}
+
+/*-- Scale the font-size of chart titles depending on
+resolution so that everything fits on one line. Needs
 to be reconfigured if titles change or if div size
 breakpoints change for charts. --*/
 @media (min-width: 576px) { .navbar-chart .navbar-brand {

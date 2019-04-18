@@ -33,7 +33,7 @@ export class SecondsChart
 			.dimension(this.dimension)
 			.group(this.group)
 			.colorAccessor(d => { return d.key; })
-			.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#2ac8bc", "#0882aa"]));
 
 		this.chart.render();
 	}
@@ -61,7 +61,7 @@ export class SecondsChart
 
 		this.chart
 			.x(d3.scaleTime().domain([start, end]))
-			.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#3fb8af", "#0088cc"]));
+			.colors(d3.scaleTime().domain([start, end]).interpolate(d3.interpolateHcl).range(["#2ac8bc", "#0882aa"]));
 
 		this.chart.redraw();
 	}
