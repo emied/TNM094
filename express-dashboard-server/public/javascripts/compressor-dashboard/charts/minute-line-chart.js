@@ -1,4 +1,4 @@
-import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../avg-reduce.js';
+import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class MinuteLineChart{
   constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension){
