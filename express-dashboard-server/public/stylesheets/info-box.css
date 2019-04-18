@@ -31,10 +31,17 @@ h4.compressor-id {
   text-align: center;
 	color: black;
 }
+h4.compressor-location {
+  font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+  text-align: center;
+	color: black;
+}
+
 
 h4.id-avg-flow {
   font-family: 'Nunito Sans', sans-serif;
-	font-size: 20px;
+	font-size: 15px;
 	color: black;
 }
 
