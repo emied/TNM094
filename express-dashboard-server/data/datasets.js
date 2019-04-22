@@ -46,7 +46,7 @@ try {
 var first = new Date(datasets['compressor'][0].start_time);
 datasets['compressor'].map( (d, i) => {
 	// Scale start_time from 5 sec to 150 sec data frequency.
-	require('./utility.js').formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
+	d.start_time = require('./utility.js').formatDate(new Date(first.valueOf() + (new Date(d.start_time).valueOf() - first.valueOf())*30));
 })
 
 // Subtract lakes

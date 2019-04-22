@@ -1,6 +1,6 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
-export class MinuteLineChart{
+export class LineChart {
   constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension){
     this.container_id = container_id;
     this.chart = dc.lineChart(this.container_id);

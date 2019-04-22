@@ -4,7 +4,7 @@ import { CompressorIdDashboard } from './compressor-dashboard/compressor-id-dash
 function startupDataRequest() {
 	var id = 100; 
 	var start = "2018-03-20";
-	var end = "2019-03-28";
+	var end = "2020-03-28";
 	var decimate = 1;
 
 	d3.json('api/get_compressor?id=' + id + '&start=' + start + '&end=' + end + '&decimate=' + decimate).then( data => {
@@ -13,7 +13,7 @@ function startupDataRequest() {
 		window.onresize = function(event) {
 			compressor_id_dashboard.resize();
 		};
-		
+
 	});
 }
 
