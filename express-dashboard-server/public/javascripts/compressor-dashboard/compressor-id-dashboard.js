@@ -4,6 +4,21 @@ import { RangeChart } from './charts/range-chart.js';
 
 export class CompressorIdDashboard{
   constructor(data){
+
+      var new_data = [];
+      for(var i = 0; i < data.start_time.length; i++)
+      {
+        new_data.push({
+          start_time: data.start_time[i],
+          flow: data.flow[i],
+          bearing_vibration: data.bearing_vibration[i],
+          ambient_temp: data.ambient_temp[i],
+          oil_temp: data.oil_temp[i],
+          humidity: data.humidity[i],
+          oil_pressure: data.oil_pressure[i]
+        });
+      }
+
       dc.config.defaultColors([
         "#3182bd","#6baed6","#9ecae1","#c6dbef","#e6550d",
         "#fd8d3c","#fdae6b","#fdd0a2","#31a354","#74c476",
@@ -11,15 +26,15 @@ export class CompressorIdDashboard{
         "#dadaeb","#636363","#969696","#bdbdbd","#d9d9d9"
       ]);
 
-      this.cross_filter = crossfilter(data);
+      this.cross_filter = crossfilter(new_data);
       this.dimension = this.cross_filter.dimension(function(d) {
         var minute = new Date(d.start_time);
         minute.setHours(minute.getHours(), minute.getMinutes(), 0, 0);
         return minute;
       });
 
-      var start = new Date(data[0].start_time);
-      var end = new Date(data[data.length - 1].start_time);
+      var start = new Date(new_data[0].start_time);
+      var end = new Date(new_data[new_data.length - 1].start_time);
 
       this.avg_amb_temp_display = new AvgDisplay(this.cross_filter, '#avg-amb-temp', 'ambient_temp', 'Ambient Temperature', '°C', 1);
       this.avg_flow_display = new AvgDisplay(this.cross_filter, '#avg-flow', 'flow', 'Flow', 'm<sup>3</sup>/s', 1.0/60000.0);

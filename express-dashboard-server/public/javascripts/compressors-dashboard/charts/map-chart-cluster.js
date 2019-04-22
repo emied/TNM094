@@ -16,6 +16,9 @@ export class MapChartCluster
 			.height(this.height)
 			.center([63,18])
 			.zoom(4.6)
+			.popup(function(kv) {
+				return kv.key;
+			})
 			.cluster(true);
 
 		this.chart.render()
