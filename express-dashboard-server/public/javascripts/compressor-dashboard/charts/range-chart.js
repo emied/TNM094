@@ -1,4 +1,5 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
+
 export class RangeChart{
   constructor(cross_filter, container_id, start, end, dimension, attr){
     this.container_id = container_id;
@@ -30,7 +31,7 @@ export class RangeChart{
         .transitionDuration(0);
 
       this.chart.render();
-      //this.chart.transitionDuration(0);
+      this.chart.transitionDuration(750);
     }
 
     redraw(){

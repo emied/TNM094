@@ -14,9 +14,6 @@ export class MinutesChart
 		});
 		this.group = this.dimension.group().reduceCount();
 
-		//this.start = new Date(this.dimension.bottom(1)[0].start_time);
-		//this.end = new Date(this.dimension.top(1)[0].start_time);
-
 		this.chart
 			.width($(this.container_id).width())
 			.height(height)
@@ -50,14 +47,7 @@ export class MinutesChart
 
 	redraw()
 	{
-		//this.start = new Date(this.dimension.bottom(1)[0].start_time);
-		//this.end = new Date(this.dimension.top(1)[0].start_time);
-
-		//this.start = new_start < this.start ? new_start : this.start;
-		//this.end = new_end > this.end ? new_end : this.end;
-
 		this.chart
-			//.x(d3.scaleTime().domain([this.start, this.end]))
 			.colors(d3.scaleTime().domain([this.date_range.start, this.date_range.end]).interpolate(d3.interpolateHcl).range(["#2ac8bc", "#0882aa"]));
 
 		this.chart.redraw();
