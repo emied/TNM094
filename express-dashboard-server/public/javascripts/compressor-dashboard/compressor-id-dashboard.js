@@ -8,6 +8,7 @@ import { MinuteLineChart } from './charts/minute-line-chart.js';
 import { RangeChart } from './charts/range-chart.js';
 import { CompressorIdDisplay } from './displays/compressor-id-display.js';
 
+import { AvgDisplay } from './displays/avg-display.js';
 
 export class CompressorIdDashboard{
   constructor(data){
@@ -28,13 +29,13 @@ export class CompressorIdDashboard{
       var start = new Date(data[0].start_time);
       var end = new Date(data[data.length - 1].start_time);
 
-      this.avg_amb_temp_display = new AvgAmbTempDisplay(this.cross_filter, '#avg-amb-temp', 'id-avg-display', " ");
-      this.avg_flow_display = new AvgFlowDisplay(this.cross_filter, '#avg-flow', 'id-avg-display', " ");
-      this.avg_vibration_display = new AvgVibrationDisplay(this.cross_filter, '#avg-vibration','id-avg-display', " ");
-      this.avg_oil_temp_display = new AvgOilTempDisplay(this.cross_filter, '#avg-oil-temp', 'id-avg-display', " ");
-      this.avg_humidity_display = new AvgHumidityDisplay(this.cross_filter, '#avg-humidity', 'id-avg-display', " ");
-      this.avg_oil_pressure_display = new AvgOilPressureDisplay(this.cross_filter, '#avg-oil-pressure', 'id-avg-display', " ");
-      this.compressor_id_display = new CompressorIdDisplay(this.cross_filter, '#compressor-id', 325, 'Norrköping')
+      this.avg_amb_temp_display = new AvgDisplay(this.cross_filter, '#avg-amb-temp', 'ambient_temp', 'Ambient Temperature', '°C', 1);
+      this.avg_flow_display = new AvgDisplay(this.cross_filter, '#avg-flow', 'flow', 'Flow', 'm<sup>3</sup>/s', 1.0/60000.0);
+      this.avg_vibration_display = new AvgDisplay(this.cross_filter, '#avg-vibration', 'bearing_vibration', 'Bearing Vibration', 'mm/s<sup>2</sup>', 1);
+      this.avg_oil_temp_display = new AvgDisplay(this.cross_filter, '#avg-oil-temp', 'oil_temp', 'Oil Temperature', '°C', 1);
+      this.avg_humidity_display = new AvgDisplay(this.cross_filter, '#avg-humidity', 'humidity', 'Humidity', '%', 1);
+      this.avg_oil_pressure_display = new AvgDisplay(this.cross_filter, '#avg-oil-pressure', 'oil_pressure', 'Oil Pressure', 'bar', 1);
+      this.compressor_id_display = new CompressorIdDisplay(this.cross_filter, '#compressor-id', 325, 'Norrköping', 1)
 
       this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
       this.range_chart_oil_temp = new RangeChart(this.cross_filter, '#range-chart-oil-temp', start, end, this.dimension, 'oil_temp');
@@ -42,7 +43,6 @@ export class CompressorIdDashboard{
       this.range_chart_bearing_vibration = new RangeChart(this.cross_filter, '#range-chart-bearing-vibration', start, end, this.dimension, 'bearing_vibration');
       this.range_chart_humidty = new RangeChart(this.cross_filter, '#range-chart-humidity', start, end, this.dimension, 'humidity');
       this.range_chart_ambient_temp = new RangeChart(this.cross_filter, '#range-chart-ambient-temp', start, end, this.dimension, 'ambient_temp');
-
 
       //this.flow_chart = new MinuteLineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension);
       this.oil_temp_chart = new MinuteLineChart(this.cross_filter, '#line-chart-temp', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart_oil_temp.chart, this.dimension);
