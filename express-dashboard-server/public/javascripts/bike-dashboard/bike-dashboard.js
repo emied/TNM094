@@ -1,7 +1,5 @@
 import { BikeIdChart } from './charts/bike-id-chart.js';
 import { GenderChart } from './charts/gender-chart.js';
-import { DateChart } from './charts/date-chart.js';
-import { SecondsChart } from './charts/seconds-chart.js';
 import { MinutesChart } from './charts/minutes-chart.js';
 import { MapChart } from './charts/map-chart.js';
 
@@ -14,20 +12,12 @@ export class BikeDashboard
 {
 	constructor(data, map_data, station_data)
 	{
-		// To remove the d3.schemeCategory20c warning.
-		// This scheme is identical.
 		dc.config.defaultColors([
 			"#008c82","#4dd6cb","#52afa0","#71edd9","#21ffdb",
 			"#2ac8bc","#2ee8d8","#90f4ec","#4dd6cb","#73c6c0",
 			"#74bc6e","#74dd6a","#57d64a","#82e079","#39a361",
 			"#2cb1dd","#4bb9dd","#47d1ff","#319bbf","#60bfe0"
 		]);
-
-	//		"#3182bd","#6baed6","#9ecae1","#c6dbef","#e6550d",
-	//		"#fd8d3c","#fdae6b","#fdd0a2","#31a354","#74c476",
-//			"#a1d99b","#c7e9c0","#756bb1","#9e9ac8","#bcbddc",
-	//		"#dadaeb","#636363","#969696","#bdbdbd","#d9d9d9"
-//		]);
 
 		this.data = this.processData(data, station_data);
 		this.cross_filter = crossfilter(this.data);

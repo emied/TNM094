@@ -3,9 +3,6 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-
-
-
 	+sidenav
 	+topnav('warning')
 
@@ -15,9 +12,6 @@ block content
 	
 	.container-fluid.px-4.mt-4
 		table#warnings.table.table-striped.table-bordered(width='100%')
-			 
-
-
 
 script(src='javascripts/draw-charts-compressor.js')
 script(src='javascripts/startup-data-request-warning.js')
