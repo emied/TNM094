@@ -13,7 +13,7 @@ function afterLoad() {
 
 function startupDataRequest() {
 	d3.json('./api/get_compressors').then( data => {
-		d3.json('/api/get_file?name=sweden-counties.geojson').then( map_data => {
+		d3.json('/api/get_file?name=kommuner-kustlinjer.geo.json').then( map_data => {
 			compressors_dashboard = new CompressorsDashboard(data, map_data);
 			afterLoad();
 		});

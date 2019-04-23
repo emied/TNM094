@@ -16,9 +16,9 @@ function startupDataRequest() {
 		window.onresize = function(event) {
 			compressor_id_dashboard.resize();
 		};
-	}, error => {
-		console.error(error)
+	}).catch(error => {
 		// Make default request or something
+		$(document.body).html('<h1>Invalid compressor ID</h1><p>' + error + '</p>');
 	})
 }
 
