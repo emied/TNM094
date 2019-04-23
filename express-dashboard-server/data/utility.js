@@ -8,5 +8,5 @@ exports.formatDate = (date) => {
 	minute = zeroPad(date.getMinutes()),
 	second = zeroPad(date.getSeconds());
 
-  return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }

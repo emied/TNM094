@@ -54,7 +54,7 @@ datasets['compressor'].map( (d, i) => {
 // Subtract lakes
 var s_coord = sweden_geojson.features[0].geometry.coordinates;
 sweden_lakes_geojson.features.forEach( lake => {
- 	s_coord[s_coord.length-1].push(lake.geometry.coordinates[0])
+	s_coord[s_coord.length-1].push(lake.geometry.coordinates[0])
 })
 
 fs.writeFileSync('data/source/sweden_lakes_removed.geojson', JSON.stringify(sweden_geojson), 'utf8');

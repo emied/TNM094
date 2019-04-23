@@ -43,18 +43,18 @@ export class MapChart
 
 		this.chart.legendables = function() {
 			var items, seen = [];
-    	items = this.data().filter(x => { return seen[x.value] ? false : (seen[x.value] = true) });
-    	items = items.sort((a,b) => { return b.value - a.value });
+			items = this.data().filter(x => { return seen[x.value] ? false : (seen[x.value] = true) });
+			items = items.sort((a,b) => { return b.value - a.value });
 
 			var chart = this;
-      return items.map( d => {
-      	return {
+			return items.map( d => {
+				return {
 					chart: chart,
 					name: d.value,
 					color: chart.getColor(d.value)
 				};
 			})
-    };
+		};
 
 		/****************************************************************
 		Awkward method of adding the custom event driven render functions

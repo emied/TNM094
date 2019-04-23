@@ -1,6 +1,6 @@
 module.exports = {
 	COMPRESSORS: {
-		NUM: 7000,
+		NUM: 100,
 		INDEX_DEVIATION: (60*60*24)/150, // 1 day
 		START_TIME_DEVIATION: 150*1000, // 2.5 min (time between data point per compressor)
 		FLOW_DEVIATION: 1000.0,
@@ -11,5 +11,3 @@ module.exports = {
 		HUMIDITY_DEVIATION: 2
 	}
 }
-
-

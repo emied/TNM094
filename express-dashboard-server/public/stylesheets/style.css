@@ -1,40 +1,40 @@
 body {
 	padding: 0px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #eeeeee;
+	background-color: #eeeeee;
 }
 
 .noUi-handle-lower .noUi-tooltip
 {
-  bottom: -130%;
-  background: #d1d1d1;
+	bottom: -130%;
+	background: #d1d1d1;
 }
 
 .noUi-handle-upper .noUi-tooltip
 {
-  bottom: 120%;
-  background: #d1d1d1;
+	bottom: 120%;
+	background: #d1d1d1;
 }
 
 .noUi-connect
 {
-  /*background: #3fb8af;*/
-  background: #818181;
+	/*background: #3fb8af;*/
+	background: #818181;
 }
 
 .noUi-target
 {
-  background: #d1d1d1;
+	background: #d1d1d1;
 }
 
 button {
-  background: #8ad2d3;
-  font: 700 11px/30px Arial;
-  text-transform: uppercase;
-  padding: 0 15px;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin: 15px 5px 0 0;
+	background: #8ad2d3;
+	font: 700 11px/30px Arial;
+	text-transform: uppercase;
+	padding: 0 15px;
+	border-radius: 4px;
+	color: #fff;
+	cursor: pointer;
+	margin: 15px 5px 0 0;
 }
 

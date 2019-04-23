@@ -141,5 +141,5 @@ io.on("connection", socket => {
 
 	interval = setInterval(() => emitData(io.sockets), 1000);
 
-  socket.on("disconnect", () => { console.log("Client disconnected")});
+	socket.on("disconnect", () => { console.log("Client disconnected")});
 });

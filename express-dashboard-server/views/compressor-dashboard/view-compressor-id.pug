@@ -3,26 +3,26 @@ extends ../layout
 include ../bike-dashboard/mixins
 
 block content
-  
-  +sidenav
-  +topnav('1')
-  .container-fluid.px-4
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0.justify-content-center    
-        div(class="compressor-id-box")
-          .row
-            .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center
-              div(id="compressor-id")
-          .row.justify-content-center
-            p(style="font-size: 18px") Averages:
-          .border-bottom
-          .row.p-2.m-0
-            each name in ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration']
-              .col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center.align-items-center.p-2
-                div(id='avg-' + name).d-flex.justify-content-center  
-    .row
-      .container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
-        +range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
-        
-  script(src='javascripts/startup-data-request-compressor-id.js', type='module')
-  script(src='javascripts/sidenav.js')
+	
+	+sidenav
+	+topnav('1')
+	.container-fluid.px-4
+		.row
+			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2.m-0.justify-content-center    
+				div(class="compressor-id-box")
+					.row
+						.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center
+							div(id="compressor-id")
+					.row.justify-content-center
+						p(style="font-size: 18px") Averages:
+					.border-bottom
+					.row.p-2.m-0
+						each name in ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration']
+							.col-xs-12.col-sm-6.col-md-2.col-lg-2.d-flex.justify-content-center.align-items-center.p-2
+								div(id='avg-' + name).d-flex.justify-content-center  
+		.row
+			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
+				+range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
+				
+	script(src='javascripts/startup-data-request-compressor-id.js', type='module')
+	script(src='javascripts/sidenav.js')

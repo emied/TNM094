@@ -1,40 +1,40 @@
 g.station_dots {
-  transition: opacity 0.5s;
-  opacity: 1.0;
-  pointer-events: none;
+	transition: opacity 0.5s;
+	opacity: 1.0;
+	pointer-events: none;
 }
 
 g.station_dots circle {
-  /*transition: stroke-width 1s, fill 1s;*/
+	/*transition: stroke-width 1s, fill 1s;*/
 
 }
 
 #map-hover-info a.first {
-  float: left; 
-  width: 180px;
+	float: left; 
+	width: 180px;
 }
 
 #map-hover-info a {
-  font-family: monospace;
+	font-family: monospace;
 }
 
 g.bike_id_path {
-  transition: opacity 0.5s;
-  opacity: 0.0;
-  pointer-events: none;
+	transition: opacity 0.5s;
+	opacity: 0.0;
+	pointer-events: none;
 }
 
 g.layer0 g.zip_code path {
-  transition: stroke-width .75s, stroke .75s;
+	transition: stroke-width .75s, stroke .75s;
 }
 
 /* Remove Y-axis from chart */
 #date-bar-chart g.axis.y {
-  display: none;
+	display: none;
 }
 
 #coordinate-scatter g.axis {
-  display: none;
+	display: none;
 }
 
 .dc-data-count .filter-count {
@@ -73,8 +73,8 @@ g.layer0 g.zip_code path {
 }
 
 #line-chart-temp {
-  background-color: white;
+	background-color: white;
 }
 #range-chart-oil-temp {
-  background-color: white;
+	background-color: white;
 }

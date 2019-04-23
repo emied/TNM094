@@ -1,28 +1,28 @@
 #sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 90px;
-  background: #262626;
-  opacity: 0.9;
-  white-space: nowrap;
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 90px;
+	background: #262626;
+	opacity: 0.9;
+	white-space: nowrap;
 }
 
 #sidenav.active {
-    width: 250px;
+		width: 250px;
 }
 
 #sidenav a{
-  color: white;
-  font-family: 'Nunito Sans', sans-serif;
-  font-size: 25px;
-  opacity: 0.8;
+	color: white;
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 25px;
+	opacity: 0.8;
 }
 #sidenav a:hover{
-  opacity: 1;
+	opacity: 1;
 }
