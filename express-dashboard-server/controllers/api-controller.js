@@ -176,6 +176,7 @@ exports.get_compressors = function(req, res) {
 			id: c.id,
 			lat: c.lat,
 			lon: c.lon,
+			location: c.location
 		});
 	});
 
@@ -203,12 +204,11 @@ exports.get_compressor = function(req, res) {
 		id: c.id,
 		lat: c.lat,
 		lon: c.lon,
+		location: c.location,
 		data: []
 	}
 	
 	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i += decimate) {
-
-		var data_entry = {};
 		
 		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
 
@@ -218,6 +218,8 @@ exports.get_compressor = function(req, res) {
 			{
 				break;
 			}
+
+			var data_entry = {};
 
 			data_entry.start_time = formatDate(start_time);
 
@@ -233,7 +235,6 @@ exports.get_compressor = function(req, res) {
 			result.data.push(data_entry);
 		}
 	}
-
 	res.json(result)
 }
 

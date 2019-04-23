@@ -32,12 +32,14 @@ debug('Loading datasets')
 var datasets = {};
 var compressors = [];
 var sweden_geojson;
+var sweden_towns;
 var sweden_lakes_geojson;
 
 try {
 	datasets['bike'] = d3.csvParse(fs.readFileSync('data/source/fordgobike_complete_all.csv', 'utf8'));
 	datasets['compressor'] = d3.csvParse(fs.readFileSync('data/source/compressor.csv', 'utf8'));
 	sweden_geojson = JSON.parse(fs.readFileSync('data/source/sweden.json', 'utf8'));
+	sweden_towns = JSON.parse(fs.readFileSync('data/source/kommuner-kustlinjer.geo.json', 'utf8'));
 	sweden_lakes_geojson = JSON.parse(fs.readFileSync('data/source/sweden_lakes.geojson', 'utf8'));
 } catch (err) {
 	console.log("Error parsing CSV data. This probably means that you haven't downloaded the new data from the README.");
@@ -81,6 +83,20 @@ for(var i = 0; i < C.NUM; i++)
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION)
 	})
 }
+
+// Find location of compressors
+compressors.map(compressor => {
+	compressor.location = 'Unknown';
+	var coord = [compressor.lat, compressor.lon];
+	for(let town of sweden_towns.features) {
+		if(d3.geoContains(town, coord))
+		{
+			// Possible to add other stuff like population if interesting.
+			compressor.location = town.properties.name;
+			break;
+		}
+	}
+})
 
 /*
 This could be called here:

@@ -32,7 +32,7 @@ export class CompressorIdDashboard
     this.avg_oil_pressure_display = new AvgDisplay(this.cross_filter, '#avg-oil-pressure', 'oil_pressure', 'Oil Pressure', 'bar', 1);
 
     // Using crossfiltered DC.js display for this doesn't make sense
-    $('#compressor-id').html("<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: Norrköping</h4>")
+    $('#compressor-id').html("<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: " + data.location + "</h4>")
 
     this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
     this.range_chart_oil_temp = new RangeChart(this.cross_filter, '#range-chart-oil-temp', start, end, this.dimension, 'oil_temp');

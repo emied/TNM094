@@ -1,9 +1,8 @@
-
 import { CompressorIdDashboard } from './compressor-dashboard/compressor-id-dashboard.js';
 
 function startupDataRequest() {
-	var start = "2018-03-20";
-	var end = "2020-03-28";
+	var start = "2018-04-03";
+	var end = "2019-04-21";
 	var decimate = 1;
 
 	// Get id from url
@@ -17,8 +16,10 @@ function startupDataRequest() {
 		window.onresize = function(event) {
 			compressor_id_dashboard.resize();
 		};
-
-	});
+	}, error => {
+		console.error(error)
+		// Make default request or something
+	})
 }
 
 $(document).ready(() => {
