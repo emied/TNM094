@@ -64,9 +64,9 @@ exports.validate = function(method) {
 				return [
 					check('id')
 						.exists()
-						.withMessage('id parameter is required.')
+						.withMessage('ID parameter is required.')
 						.isInt({ min: 0 })
-						.withMessage("compressor id's are integers equal to or larger than 0")
+						.withMessage("Compressor ID's are integers equal to or larger than 0")
 						.custom( id => {
 							/***************************************************
 							Id's are just the array index. In the general case 
@@ -74,7 +74,7 @@ exports.validate = function(method) {
 							***************************************************/
 							return id < require('../data/constants.js').COMPRESSORS.NUM && id >= 0;
 						})
-						.withMessage("Requested compressor id doesen't exist on server."),
+						.withMessage("Requested compressor ID doesen't exist on server."),
 
 					check('start')
 						.exists()
