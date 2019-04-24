@@ -6,6 +6,9 @@ export class LineChart {
 		this.chart = dc.lineChart(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
+		this.start = start;
+		this.end = end;
+
 		var y_range = [
 			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 0.99,
 			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 1.01
@@ -62,8 +65,10 @@ export class LineChart {
 			this.chart.transitionDuration(750);
 		}
 
-		redraw(){
-			this.chart.redraw();
+		redraw(end){
+			this.end = end;
+			this.chart.x(d3.scaleTime().domain([this.start, this.end]));
 
+			this.chart.redraw();
 		}
 }

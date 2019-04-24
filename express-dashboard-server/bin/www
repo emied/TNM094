@@ -134,6 +134,8 @@ global.compressor_current_time = new Date(compressor_start_time);
 const emitCompressorData = async (socket, id) => {
 	var c = compressors[id];
 
+	const formatDate = require('../data/utility.js').formatDate;
+
 	var start = global.compressor_current_time;
 	global.compressor_current_time = new Date(compressor_start_time.valueOf() + timescale*(new Date() - server_start_time));
 
@@ -162,7 +164,7 @@ const emitCompressorData = async (socket, id) => {
 			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
 			data_entry.humidity = v.humidity + c.humidity_offset;
 
-			new_data.data.push(data_entry);
+			new_data.push(data_entry);
 		}
 	}
 

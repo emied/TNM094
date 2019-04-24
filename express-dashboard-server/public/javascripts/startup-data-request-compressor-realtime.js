@@ -1,7 +1,7 @@
 import { CompressorDashboard } from './compressor-dashboard/compressor-dashboard.js';
 
 function startupDataRequest() {
-	var interval = 1000*60*60*24*5;
+	var interval = 1000*60*60*24*10;
 
 	// Get id from url
 	var id = new URLSearchParams(window.location.search).get('id');
@@ -10,6 +10,8 @@ function startupDataRequest() {
 		id = 0;
 		window.history.replaceState(null, null, window.location.pathname + window.location.search + "&id=" + id);
 	}
+
+	var compressor_dashboard;
 
 	fetch('api/compressor_latest_range?id=' + id + '&interval=' + interval)
 		.then( response => {
@@ -20,11 +22,18 @@ function startupDataRequest() {
 				throw JSON.stringify(data.errors);
 			}
 
-			var compressor_dashboard = new CompressorDashboard(data);
+			compressor_dashboard = new CompressorDashboard(data);
 
 			window.onresize = function(event) {
 				compressor_dashboard.resize();
 			};
+
+			const socket = io();
+			socket.emit('dataset', { name: 'compressor', id: id } );
+			socket.on("compressor_data", data => {
+				compressor_dashboard.addData(data);
+			});
+
 		})
 		.catch( error => {
 			$(document.body).html('<h1>Invalid Request</h1>');
@@ -39,6 +48,10 @@ function startupDataRequest() {
 				});
 			})
 		})
+
+	
+
+	
 }
 
 $(document).ready(() => {

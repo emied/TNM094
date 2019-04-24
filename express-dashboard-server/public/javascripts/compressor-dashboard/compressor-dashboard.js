@@ -51,9 +51,26 @@ export class CompressorDashboard
 
 	resize()
 	{
-		this.oil_temp_chart.resize();
-		//this.flow_chart.resize();
-		//this.range_chart_flow.resize();
-		this.range_chart_oil_temp.resize();
+		//this.oil_temp_chart.resize();
+		this.flow_chart.resize();
+		this.range_chart_flow.resize();
+		//this.range_chart_oil_temp.resize();
+	}
+
+	redraw(end)
+	{
+		this.flow_chart.redraw(end);
+		this.range_chart_flow.redraw(end);
+	}
+
+	addData(data)
+	{
+		if(data.length)
+		{
+			this.cross_filter.add(data);
+			var end = new Date(data[data.length - 1].start_time);
+
+			this.redraw(end);
+		}
 	}
 }
