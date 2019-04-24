@@ -1,15 +1,17 @@
-import { CompressorIdDashboard } from './compressor-dashboard/compressor-id-dashboard.js';
+import { CompressorDashboard } from './compressor-dashboard/compressor-dashboard.js';
 
 function startupDataRequest() {
-	var start = "2018-04-03";
-	var end = "2019-04-21";
-	var decimate = 1;
+	var interval = 1000*60*60*24*5;
 
 	// Get id from url
 	var id = new URLSearchParams(window.location.search).get('id');
-	id = id ? id : 0;
 
-	fetch('api/get_compressor?id=' + id + '&start=' + start + '&end=' + end + '&decimate=' + decimate)
+	if(!id){
+		id = 0;
+		window.history.replaceState(null, null, window.location.pathname + window.location.search + "&id=" + id);
+	}
+
+	fetch('api/compressor_latest_range?id=' + id + '&interval=' + interval)
 		.then( response => {
 			return response.json();
 		})
@@ -18,15 +20,16 @@ function startupDataRequest() {
 				throw JSON.stringify(data.errors);
 			}
 
-			var compressor_id_dashboard = new CompressorIdDashboard(data);
+			var compressor_dashboard = new CompressorDashboard(data);
 
 			window.onresize = function(event) {
-				compressor_id_dashboard.resize();
+				compressor_dashboard.resize();
 			};
 		})
 		.catch( error => {
 			$(document.body).html('<h1>Invalid Request</h1>');
 			
+			console.error(error);
 			var errors = JSON.parse(error);
 			
 			errors.forEach( (e,i) => {

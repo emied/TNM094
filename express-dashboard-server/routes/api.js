@@ -56,6 +56,12 @@ Returns decimated historic compressor data for specific compressor ID.
 router.get('/get_compressor', api_controller.validate('get_compressor'), api_controller.get_compressor);
 
 /************************************************************************************************
+Defines what should happen when http://localhost:3000/api/compressor_latest_range is requested with method GET.
+Returns latest compressor data for given a given ID and interval back in time.
+************************************************************************************************/
+router.get('/compressor_latest_range', api_controller.compressor_latest_range);
+
+/************************************************************************************************
 Defines what should happen when http://localhost:3000/api/test is requested with method GET.
 Displays test page for API.
 ************************************************************************************************/

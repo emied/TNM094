@@ -15,7 +15,7 @@ export class MapChartCluster
 		);
 
 		function compressorView(e) {
-			window.location.href = "dashboard?data=compressor&view=compressor-id&id=" + e.target.compressor_id;
+			window.location.href = "dashboard?data=compressor&view=compressor&id=" + e.target.compressor_id;
 		}
 
 		this.chart = dc_leaflet.markerChart(this.container_id)

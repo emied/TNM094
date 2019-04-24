@@ -98,32 +98,6 @@ compressors.map(compressor => {
 	}
 })
 
-/*
-This could be called here:
-require('../data/reduction-code/addStationZipCodes').addStationZipCodes();
-
-But better to only do this once when files change
-*/
-
-/*************************************
-New datasets will be added like
-datasets['solar'] = ...
-
-it can then be accesed like:
-datasets.solar or datasets['solar']
-
-Getting the names of all datasets
-can be done with:
-Object.keys(datasets)
-
-which would return array:
-['bike', 'solar']
-
-This along with getting the names
-of all values/signals in the datasets
-will be needed for API requests.
-*************************************/
-
 debug('Loaded datasets: ' + Object.keys(datasets));
 
 exports.datasets = datasets;

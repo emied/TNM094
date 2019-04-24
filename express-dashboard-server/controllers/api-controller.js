@@ -238,6 +238,54 @@ exports.get_compressor = function(req, res) {
 	res.json(result)
 }
 
+exports.compressor_latest_range = function(req, res) {
+
+	var { id, interval } = req.query;
+
+	const formatDate = require('../data/utility.js').formatDate;
+
+	var c = compressors[id];
+
+	var result = { 
+		id: c.id,
+		lat: c.lat,
+		lon: c.lon,
+		location: c.location,
+		data: []
+	}
+
+	var start = new Date(global.compressor_current_time.valueOf() - interval);
+
+	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++)
+	{
+		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
+
+		if(start_time > start)
+		{
+			if(start_time > global.compressor_current_time)
+			{
+				break;
+			}
+
+			var data_entry = {};
+
+			data_entry.start_time = formatDate(start_time);
+
+			var v = datasets['compressor'][i];
+
+			data_entry.flow = +v.flow + c.flow_offset;
+			data_entry.bearing_vibration = +v.bearing_vibration + c.bearing_vibration_offset;
+			data_entry.oil_pressure = +v.oil_pressure + c.oil_pressure_offset;
+			data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
+			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
+			data_entry.humidity = v.humidity + c.humidity_offset;
+
+			result.data.push(data_entry);
+		}
+	}
+	res.json(result);
+}
+
 /***************************************
 Returns range of historic data up until
 the current internal time. I.e. it can
@@ -249,10 +297,10 @@ exports.data_latest_range = function(req, res) {
 	var { dataset, interval } = req.query;
 
 	var data = datasets[dataset];
-	var start = new Date(global.data_current_time.valueOf() - interval);
+	var start = new Date(global.bike_current_time.valueOf() - interval);
 
 	var result = [];
-	for (var i = global.current_index; i >= 0; i--)
+	for (var i = global.bike_current_index; i >= 0; i--)
 	{
 		var date = new Date(data[i].start_time);
 		if(date >= start)
@@ -273,5 +321,4 @@ Really unsafe, implement validation.
 ***************************************/
 exports.get_file = function(req, res) {
 	res.download('data/source/' + req.query.name);
-	
 }

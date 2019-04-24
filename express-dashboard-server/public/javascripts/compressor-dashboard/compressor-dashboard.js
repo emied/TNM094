@@ -2,7 +2,7 @@ import { AvgDisplay } from './displays/avg-display.js';
 import { LineChart } from './charts/line-chart.js';
 import { RangeChart } from './charts/range-chart.js';
 
-export class CompressorIdDashboard
+export class CompressorDashboard
 {
 
 	constructor(data) 
@@ -24,12 +24,12 @@ export class CompressorIdDashboard
 		var start = new Date(data.data[0].start_time);
 		var end = new Date(data.data[data.data.length - 1].start_time);
 
-		this.avg_amb_temp_display = new AvgDisplay(this.cross_filter, '#avg-amb-temp', 'ambient_temp', 'Ambient Temperature', '°C', 1);
+		this.avg_amb_temp_display = new AvgDisplay(this.cross_filter, '#avg-amb-temp', 'ambient_temp', 'Ambient Temperature', '°C');
 		this.avg_flow_display = new AvgDisplay(this.cross_filter, '#avg-flow', 'flow', 'Flow', 'm<sup>3</sup>/s', 1.0/60000.0);
-		this.avg_vibration_display = new AvgDisplay(this.cross_filter, '#avg-vibration', 'bearing_vibration', 'Bearing Vibration', 'mm/s<sup>2</sup>', 1);
-		this.avg_oil_temp_display = new AvgDisplay(this.cross_filter, '#avg-oil-temp', 'oil_temp', 'Oil Temperature', '°C', 1);
-		this.avg_humidity_display = new AvgDisplay(this.cross_filter, '#avg-humidity', 'humidity', 'Humidity', '%', 1);
-		this.avg_oil_pressure_display = new AvgDisplay(this.cross_filter, '#avg-oil-pressure', 'oil_pressure', 'Oil Pressure', 'bar', 1);
+		this.avg_vibration_display = new AvgDisplay(this.cross_filter, '#avg-vibration', 'bearing_vibration', 'Bearing Vibration', 'mm/s<sup>2</sup>');
+		this.avg_oil_temp_display = new AvgDisplay(this.cross_filter, '#avg-oil-temp', 'oil_temp', 'Oil Temperature', '°C');
+		this.avg_humidity_display = new AvgDisplay(this.cross_filter, '#avg-humidity', 'humidity', 'Humidity', '%');
+		this.avg_oil_pressure_display = new AvgDisplay(this.cross_filter, '#avg-oil-pressure', 'oil_pressure', 'Oil Pressure', 'bar');
 
 		// Using crossfiltered DC.js display for this doesn't make sense
 		$('#compressor-id').html("<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: " + data.location + "</h4>")
@@ -41,8 +41,8 @@ export class CompressorIdDashboard
 		this.range_chart_humidty = new RangeChart(this.cross_filter, '#range-chart-humidity', start, end, this.dimension, 'humidity');
 		this.range_chart_ambient_temp = new RangeChart(this.cross_filter, '#range-chart-ambient-temp', start, end, this.dimension, 'ambient_temp');
 
-		//this.flow_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension);
-		this.oil_temp_chart = new LineChart(this.cross_filter, '#line-chart-temp', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart_oil_temp.chart, this.dimension);
+		this.flow_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
+		//this.oil_temp_chart = new LineChart(this.cross_filter, '#line-chart-temp', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart_oil_temp.chart, this.dimension);
 		//this.oil_pressure_chart = new LineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Pressure (Bar)', 'oil_pressure', this.range_chart_oil_pressure.chart, this.dimension);
 		//this.bearing_vibration_chart = new LineChart(this.cross_filter, '#line-chart-bearing-vibration', 330, start, end, 'Bearing Vibration ()', 'bearing_vibration', this.range_chart_bearing_vibration.chart, this.dimension);
 		//this.humidity_chart = new LineChart(this.cross_filter, '#line-chart-humidity', 330, start, end, 'humidity ()', 'humidity', this.range_chart_humidty.chart, this.dimension);

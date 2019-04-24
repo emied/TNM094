@@ -22,7 +22,8 @@ block content
 								div(id='avg-' + name).d-flex.justify-content-center  
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
-				+range-chart-card('line-chart-temp', 'Oil Temp', 'range-chart-oil-temp')
-				
-	script(src='javascripts/startup-data-request-compressor-id.js', type='module')
+				+range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')
+	
+	//- script(src='javascripts/startup-data-request-compressor.js', type='module')
+	script(src='javascripts/startup-data-request-compressor-realtime.js', type='module')
 	script(src='javascripts/sidenav.js')

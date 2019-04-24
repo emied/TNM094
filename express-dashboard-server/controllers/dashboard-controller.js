@@ -30,9 +30,9 @@ exports.dashboard = function(req, res) {
 	{
 		res.render('compressor-dashboard/view-warning-compressor')
 	}
-	else if(data = "compressor" && view == "compressor-id")
+	else if(data = "compressor" && view == "compressor")
 	{
-		res.render('compressor-dashboard/view-compressor-id')
+		res.render('compressor-dashboard/view-compressor')
 	}
 
 	else

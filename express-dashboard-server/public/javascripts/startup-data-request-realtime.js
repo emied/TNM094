@@ -2,7 +2,10 @@ import { BikeDashboard } from './bike-dashboard/bike-dashboard.js';
 
 function afterLoad() {
 	const socket = io();
-	socket.on("data", data => {
+
+	socket.emit('dataset', { name: 'bike' } );
+
+	socket.on("bike_data", data => {
 		bike_dashboard.addData(data);
 	});
 

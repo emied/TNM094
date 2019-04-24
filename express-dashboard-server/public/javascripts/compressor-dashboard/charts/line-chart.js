@@ -1,14 +1,14 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class LineChart {
-	constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension){
+	constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension, modifier=1){
 		this.container_id = container_id;
 		this.chart = dc.lineChart(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
 		var y_range = [
-			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 0.99,
-			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum / d.value.count : 0 })) * 1.01
+			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 0.99,
+			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 1.01
 		];
 
 		this.chart
@@ -27,7 +27,7 @@ export class LineChart {
 			.zoomOutRestrict(true)
 			.renderVerticalGridLines(true)
 			.renderHorizontalGridLines(true)
-			.valueAccessor(d => {return d.value.count ? d.value.sum / d.value.count : 0 })
+			.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 			.colors( ['#333333', '#333333', '#2d5986', '#2d5986', '#2d5986'])
 			.colorDomain([0,3])
 			.colorAccessor( function(d,i){

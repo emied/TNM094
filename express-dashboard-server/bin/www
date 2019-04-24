@@ -93,32 +93,29 @@ function onListening() {
  * Real-time data with socket.io
  */
 
-//global.current_index = 1190043;
-//const data_start_time = new Date('2018-09-19 08:56:03');
-//global.current_index = 1189592;
-//const data_start_time = new Date('2018-09-19 08:30:00');
-global.current_index = 1154185;
-const data_start_time = new Date('2018-09-13 07:40:03');
+global.bike_current_index = 1154185;
+const bike_start_time = new Date('2018-09-13 07:40:03');
 
 const server_start_time = new Date();
 const timescale = 60.0;
-global.data_current_time = new Date(data_start_time);
+global.bike_current_time = new Date(bike_start_time);
 
 const io = require('socket.io')(server);
 const datasets = require('../data/datasets').datasets;
+const compressors = require('../data/datasets').compressors;
 
-const emitData = async socket => {
+const emitBikeData = async socket => {
 	var data = datasets['bike'];
 
-	global.data_current_time = new Date(data_start_time.valueOf() + timescale*(new Date() - server_start_time));
+	global.bike_current_time = new Date(bike_start_time.valueOf() + timescale*(new Date() - server_start_time));
 
 	var new_data = [];
-	for( ; global.current_index < data.length; global.current_index++)
+	for( ; global.bike_current_index < data.length; global.bike_current_index++)
 	{
-		var date = new Date(data[global.current_index].start_time);
+		var date = new Date(data[global.bike_current_index].start_time);
 
-		if(date <= global.data_current_time) {
-			new_data.push(data[global.current_index]);
+		if(date <= global.bike_current_time) {
+			new_data.push(data[global.bike_current_index]);
 		}
 		else {
 			break;
@@ -127,19 +124,80 @@ const emitData = async socket => {
 
 	if(new_data.length)
 	{
-		socket.emit("data", new_data);
+		socket.emit("bike_data", new_data);
 	}
 };
 
-let interval;
+const compressor_start_time = new Date('2019-04-15 08:00:00');
+global.compressor_current_time = new Date(compressor_start_time);
+
+const emitCompressorData = async (socket, id) => {
+	var c = compressors[id];
+
+	var start = global.compressor_current_time;
+	global.compressor_current_time = new Date(compressor_start_time.valueOf() + timescale*(new Date() - server_start_time));
+
+	var new_data = [];
+	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++) {
+		
+		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
+
+		if(start_time > start)
+		{
+			if(start_time > global.compressor_current_time)
+			{
+				break;
+			}
+
+			var data_entry = {};
+
+			data_entry.start_time = formatDate(start_time);
+
+			var v = datasets['compressor'][i];
+
+			data_entry.flow = +v.flow + c.flow_offset;
+			data_entry.bearing_vibration = +v.bearing_vibration + c.bearing_vibration_offset;
+			data_entry.oil_pressure = +v.oil_pressure + c.oil_pressure_offset;
+			data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
+			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
+			data_entry.humidity = v.humidity + c.humidity_offset;
+
+			new_data.data.push(data_entry);
+		}
+	}
+
+	if(new_data.length)
+	{
+		socket.emit("compressor_data", new_data);
+	}
+};
+
+let bike_interval;
+let compressor_interval;
 io.on("connection", socket => {
 	console.log("New client connected");
 
-	if(interval) {
-		clearInterval(interval);
-	}
+	socket.on('dataset', dataset => {
+		switch(dataset.name)
+		{
+			case 'bike':
+				if(bike_interval) {
+					clearInterval(bike_interval);
+				}
+				bike_interval = setInterval(() => emitBikeData(io.sockets), 1000);
+				break;
 
-	interval = setInterval(() => emitData(io.sockets), 1000);
+			case 'compressor':
+				if(compressor_interval) {
+					clearInterval(compressor_interval);
+				}
+				compressor_interval = setInterval(() => emitCompressorData(io.sockets, dataset.id), 1000);
+				break;
+
+			default:
+				break;
+		}
+	});
 
 	socket.on("disconnect", () => { console.log("Client disconnected")});
 });
