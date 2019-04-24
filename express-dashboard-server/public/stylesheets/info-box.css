@@ -36,6 +36,13 @@ h4.compressor-location {
 	color: black;
 }
 
+h4.compressor-time {
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+	text-align: center;
+	color: black;
+}
+
 
 h4.id-avg-display {
 	font-family: 'Nunito Sans', sans-serif;

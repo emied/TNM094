@@ -48,10 +48,6 @@ function startupDataRequest() {
 				});
 			})
 		})
-
-	
-
-	
 }
 
 $(document).ready(() => {

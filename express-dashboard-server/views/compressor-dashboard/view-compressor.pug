@@ -24,6 +24,7 @@ block content
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
 				+range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')
 	
-	//- script(src='javascripts/startup-data-request-compressor.js', type='module')
+	//- Swap to disable real-time
+	//-script(src='javascripts/startup-data-request-compressor.js', type='module')
 	script(src='javascripts/startup-data-request-compressor-realtime.js', type='module')
 	script(src='javascripts/sidenav.js')

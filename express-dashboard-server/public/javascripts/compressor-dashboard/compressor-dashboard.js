@@ -32,7 +32,9 @@ export class CompressorDashboard
 		this.avg_oil_pressure_display = new AvgDisplay(this.cross_filter, '#avg-oil-pressure', 'oil_pressure', 'Oil Pressure', 'bar');
 
 		// Using crossfiltered DC.js display for this doesn't make sense
-		$('#compressor-id').html("<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: " + data.location + "</h4>")
+		// threw in 'last seen' to give some indication of real-time, change
+		this.compressor_text = "<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: " + data.location + "</h4>";
+		$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + data.data[data.data.length - 1].start_time + "</h4>" );
 
 		this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
 		this.range_chart_oil_temp = new RangeChart(this.cross_filter, '#range-chart-oil-temp', start, end, this.dimension, 'oil_temp');
@@ -69,6 +71,8 @@ export class CompressorDashboard
 		{
 			this.cross_filter.add(data);
 			var end = new Date(data[data.length - 1].start_time);
+
+			$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + data[data.length - 1].start_time + "</h4>" );
 
 			this.redraw(end);
 		}
