@@ -9,6 +9,8 @@ export class LineChart {
 		this.start = start;
 		this.end = end;
 
+		this.range_chart = range_chart;
+
 		var y_range = [
 			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 0.99,
 			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 1.01
@@ -56,7 +58,7 @@ export class LineChart {
 			.render();
 		}
 
-		resize(){
+		resize() {
 			this.chart
 				.width($(this.container_id).width())
 				.transitionDuration(0);
@@ -65,9 +67,19 @@ export class LineChart {
 			this.chart.transitionDuration(750);
 		}
 
-		redraw(end){
+		redraw(end) {
 			this.end = end;
-			this.chart.x(d3.scaleTime().domain([this.start, this.end]));
+
+			// Makes zooming a little wonky for some reason but doesn't reset the range at each redraw now at least.
+			var range = this.range_chart.filters();
+			if(range.length)
+			{
+				this.chart.x(d3.scaleTime().domain([range[0][0], range[0][1]]));
+			}
+			else
+			{
+				this.chart.x(d3.scaleTime().domain([this.start, this.end]));
+			}
 
 			this.chart.redraw();
 		}
