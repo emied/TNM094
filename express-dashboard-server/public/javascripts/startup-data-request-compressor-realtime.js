@@ -11,8 +11,6 @@ function startupDataRequest() {
 		window.history.replaceState(null, null, window.location.pathname + window.location.search + "&id=" + id);
 	}
 
-	var compressor_dashboard;
-
 	fetch('api/compressor_latest_range?id=' + id + '&interval=' + interval)
 		.then( response => {
 			return response.json();
