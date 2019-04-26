@@ -1,11 +1,12 @@
 import { AvgDisplay } from './displays/avg-display.js';
 import { LineChart } from './charts/line-chart.js';
 import { RangeChart } from './charts/range-chart.js';
+import { TableChart } from './charts/data-table-chart.js';
 
 export class CompressorDashboard
 {
 
-	constructor(data) 
+	constructor(data)
 	{
 		dc.config.defaultColors([
 			"#3182bd","#6baed6","#9ecae1","#c6dbef","#e6550d",
@@ -49,6 +50,9 @@ export class CompressorDashboard
 		//this.bearing_vibration_chart = new LineChart(this.cross_filter, '#line-chart-bearing-vibration', 330, start, end, 'Bearing Vibration ()', 'bearing_vibration', this.range_chart_bearing_vibration.chart, this.dimension);
 		//this.humidity_chart = new LineChart(this.cross_filter, '#line-chart-humidity', 330, start, end, 'humidity ()', 'humidity', this.range_chart_humidty.chart, this.dimension);
 		//this.ambient_temp_chart = new LineChart(this.cross_filter, '#line-chart-ambient-temp', 330, start, end, 'Ambient Temp ()', 'ambient_temp', this.range_chart_ambient_temp.chart, this.dimension);
+
+		// define table charts
+		this.table_chart_flow = new TableChart(this.cross_filter, '#compressor-table', 'flow', this.dimension, 1.0/60000.0);
 	}
 
 	resize()
