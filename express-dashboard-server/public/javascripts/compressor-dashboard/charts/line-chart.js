@@ -8,12 +8,16 @@ export class LineChart {
 
 		this.start = start;
 		this.end = end;
-
 		this.range_chart = range_chart;
 
 		var y_range = [
 			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 0.99,
 			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 1.01
+		];
+
+		var y_range_mod = [
+			y_range[0] >= 0 ? y_range[0] * 0.99 : y_range[0] * 1.01,
+			y_range[1] >= 0 ? y_range[1] * 1.01 : y_range[0] * 0.99,
 		];
 
 		this.chart
@@ -23,7 +27,7 @@ export class LineChart {
 			.rangeChart(range_chart)
 			.dimension(dimension)
 			.x(d3.scaleTime().domain([start, end]))
-			.y(d3.scaleLinear().domain(y_range))
+			.y(d3.scaleLinear().domain(y_range_mod))
 			.yAxisLabel(chart_label)
 			.xUnits(d3.timeDay)
 			.brushOn(false)
@@ -82,5 +86,28 @@ export class LineChart {
 			}
 
 			this.chart.redraw();
+		}
+
+		setAttribute(attr, chart_label, modifier)
+		{
+			this.group = this.chart.dimension().group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
+
+
+			var y_range = [
+				Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 0.99,
+				Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })) * 1.01
+			];
+
+			var y_range_mod = [
+				y_range[0] >= 0 ? y_range[0] * 0.99 : y_range[0] * 1.01,
+				y_range[1] >= 0 ? y_range[1] * 1.01 : y_range[0] * 0.99,
+			];
+
+			this.chart
+				.group(this.group)
+				.yAxisLabel(chart_label)
+				.y(d3.scaleLinear().domain(y_range_mod))
+				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
+				.redraw();
 		}
 }

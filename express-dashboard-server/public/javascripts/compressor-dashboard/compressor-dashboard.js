@@ -44,29 +44,26 @@ export class CompressorDashboard
 		this.range_chart_humidty = new RangeChart(this.cross_filter, '#range-chart-humidity', start, end, this.dimension, 'humidity');
 		this.range_chart_ambient_temp = new RangeChart(this.cross_filter, '#range-chart-ambient-temp', start, end, this.dimension, 'ambient_temp');
 
-		this.flow_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
-		//this.oil_temp_chart = new LineChart(this.cross_filter, '#line-chart-temp', 330, start, end, 'Oil Temp (°C)', 'oil_temp', this.range_chart_oil_temp.chart, this.dimension);
-		//this.oil_pressure_chart = new LineChart(this.cross_filter, '#line-chart-pressure', 330, start, end, 'Oil Pressure (Bar)', 'oil_pressure', this.range_chart_oil_pressure.chart, this.dimension);
-		//this.bearing_vibration_chart = new LineChart(this.cross_filter, '#line-chart-bearing-vibration', 330, start, end, 'Bearing Vibration ()', 'bearing_vibration', this.range_chart_bearing_vibration.chart, this.dimension);
-		//this.humidity_chart = new LineChart(this.cross_filter, '#line-chart-humidity', 330, start, end, 'humidity ()', 'humidity', this.range_chart_humidty.chart, this.dimension);
-		//this.ambient_temp_chart = new LineChart(this.cross_filter, '#line-chart-ambient-temp', 330, start, end, 'Ambient Temp ()', 'ambient_temp', this.range_chart_ambient_temp.chart, this.dimension);
+		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
+		this.compressor_table = new TableChart(this.cross_filter, '#compressor-table', 'flow',  this.dimension, 1.0/60000.0);
+		$('#click-flow').toggleClass('active');
+		$('#line-chart-title').html('Flow');
 
-		// define table charts
-		this.table_chart_flow = new TableChart(this.cross_filter, '#compressor-table', 'flow', this.dimension, 1.0/60000.0);
+		this.setClickListeners();
 	}
 
 	resize()
 	{
-		//this.oil_temp_chart.resize();
-		this.flow_chart.resize();
+		this.line_chart.resize();
 		this.range_chart_flow.resize();
-		//this.range_chart_oil_temp.resize();
+		this.compressor_table.resize();
 	}
 
 	redraw(end)
 	{
-		this.flow_chart.redraw(end);
+		this.line_chart.redraw(end);
 		this.range_chart_flow.redraw(end);
+		this.compressor_table.redraw(end);
 	}
 
 	addData(data)
@@ -79,6 +76,24 @@ export class CompressorDashboard
 			$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + data[data.length - 1].start_time + "</h4>" );
 
 			this.redraw(end);
+		}
+	}
+
+	setClickListeners()
+	{
+		var attrs = ['flow', 'oil_temp', 'humidity', 'oil_pressure', 'ambient_temp', 'bearing_vibration'];
+		var names = ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration'];
+		var labels = ['Flow (enhet)','Oil Temp (°C)','humidity ()','Oil Pressure (Bar)','Ambient Temp ()','Bearing Vibration ()'];
+		var modifiers = [1.0/60000.0, 1, 1, 1, 1, 1];
+
+		for(var i = 0; i < names.length; i++)
+		{
+			$('#click-' + names[i]).click({ attr: attrs[i], label: labels[i], modifier: modifiers[i], name: names[i] }, (event) => {
+  			this.line_chart.setAttribute(event.data.attr, event.data.label, event.data.modifier);
+  			d3.selectAll('.avg-box').classed('active', false);
+  			$('#click-' + event.data.name).toggleClass('active');
+  			$('#line-chart-title').html(event.data.label);
+			});
 		}
 	}
 }
