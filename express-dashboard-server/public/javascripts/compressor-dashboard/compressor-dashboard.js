@@ -46,6 +46,7 @@ export class CompressorDashboard
 		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
 
 		$('#click-flow').toggleClass('active');
+		$('#line-chart-title').html('Flow');
 
 		this.setClickListeners();
 	}
@@ -88,6 +89,7 @@ export class CompressorDashboard
   			this.line_chart.setAttribute(event.data.attr, event.data.label, event.data.modifier);
   			d3.selectAll('.avg-box').classed('active', false);
   			$('#click-' + event.data.name).toggleClass('active');
+  			$('#line-chart-title').html(event.data.label);
 			});
 		}
 	}
