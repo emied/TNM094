@@ -37,4 +37,11 @@ button {
 	cursor: pointer;
 	margin: 15px 5px 0 0;
 }
+#search-table tbody tr:hover {
+	background-color: lightgray;
 
+}
+#search-table tbody tr {
+	cursor: pointer;
+
+}

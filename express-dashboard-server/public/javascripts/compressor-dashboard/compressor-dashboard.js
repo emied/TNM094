@@ -45,7 +45,7 @@ export class CompressorDashboard
 		this.range_chart_ambient_temp = new RangeChart(this.cross_filter, '#range-chart-ambient-temp', start, end, this.dimension, 'ambient_temp');
 
 		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'Flow (enhet)', 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
-		this.compressor_table = new TableChart(this.cross_filter, '#compressor-table', 'flow',  this.dimension, 1.0/60000.0);
+		//this.compressor_table = new TableChart(this.cross_filter, '#compressor-table', 'flow',  this.dimension, 1.0/60000.0);
 		$('#click-flow').toggleClass('active');
 		$('#line-chart-title').html('Flow');
 
@@ -56,14 +56,14 @@ export class CompressorDashboard
 	{
 		this.line_chart.resize();
 		this.range_chart_flow.resize();
-		this.compressor_table.resize();
+		//this.compressor_table.resize();
 	}
 
 	redraw(end)
 	{
 		this.line_chart.redraw(end);
 		this.range_chart_flow.redraw(end);
-		this.compressor_table.redraw(end);
+		//this.compressor_table.redraw(end);
 	}
 
 	addData(data)
