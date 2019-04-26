@@ -57,3 +57,7 @@ h5.id-avg-display {
 	color: black;
 	text-align: center;
 }
+
+#avg-boxes:hover {
+	background-color: lightgrey;
+}
