@@ -58,6 +58,14 @@ h5.id-avg-display {
 	text-align: center;
 }
 
-#avg-boxes:hover {
-	background-color: lightgrey;
+.avg-box {
+	cursor: pointer;
+}
+
+.avg-box:hover {
+	background-color: #E8E8E8;
+}
+
+.avg-box.active {
+	background-color: lightgray;
 }

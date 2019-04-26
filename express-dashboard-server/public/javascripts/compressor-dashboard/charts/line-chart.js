@@ -96,6 +96,7 @@ export class LineChart {
 				.group(this.group)
 				.yAxisLabel(chart_label)
 				.y(d3.scaleLinear().domain(y_range))
+				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 				.redraw();
 		}
 }
