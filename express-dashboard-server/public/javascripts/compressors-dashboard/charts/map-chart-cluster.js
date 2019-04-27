@@ -14,7 +14,7 @@ export class MapChartCluster
 			() => { return { id: -1 } }
 		);
 
-		function compressorView(e) {
+		this.compressorView = e => {
 			window.location.href = "dashboard?data=compressor&view=compressor&id=" + e.target.compressor_id;
 		}
 
@@ -29,12 +29,11 @@ export class MapChartCluster
 			.zoom(4.6)
 			.renderPopup(false)
 			.marker((d,map) => {
-				var marker = new L.Marker(this.chart.toLocArray(this.chart.locationAccessor()(d))).on('click', compressorView);
+				var marker = new L.Marker(this.chart.toLocArray(this.chart.locationAccessor()(d))).on('click', this.compressorView);
 				marker.compressor_id = d.value.id;
 				return marker;
 			})
 			.cluster(true);
-
 
 		this.chart.render()
 	}
@@ -54,11 +53,17 @@ export class MapChartCluster
 			.mapOptions({ zoomSnap: 0.1 }) 
 			.dimension(this.dimension)
 			.group(this.group)
-			.valueAccessor(d => d.value)
+			.valueAccessor(d => d.value.id)
 			.width($(this.container_id).width())
 			.height(this.height)
 			.center([63,18])
 			.zoom(4.6)
+			.renderPopup(false)
+			.marker((d,map) => {
+				var marker = new L.Marker(this.chart.toLocArray(this.chart.locationAccessor()(d))).on('click', this.compressorView);
+				marker.compressor_id = d.value.id;
+				return marker;
+			})
 			.cluster(true);
 
 		this.chart.render()

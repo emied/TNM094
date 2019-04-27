@@ -11,9 +11,7 @@ export class SearchTable
     });
 
     $("#search-table tbody").on("click", "tr", function(d) {
-      //console.log(dataTable.row(this).data().id);
       window.location.href = "dashboard?data=compressor&view=compressor&id=" + dataTable.row(this).data().id;
-
     });
 	}
 }
