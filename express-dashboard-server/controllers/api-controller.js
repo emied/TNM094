@@ -176,6 +176,7 @@ exports.get_compressors = function(req, res) {
 			id: c.id,
 			lat: c.lat,
 			lon: c.lon,
+			status: c.status,
 			location: c.location
 		});
 	});
@@ -232,6 +233,18 @@ exports.get_compressor = function(req, res) {
 			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
 			data_entry.humidity = v.humidity + c.humidity_offset;
 
+			var v_add = c.vibration_add.get(data_entry.start_time);
+			var p_add = c.pressure_add.get(data_entry.start_time);
+			data_entry.bearing_vibration += v_add ? v_add : 0;
+			data_entry.oil_pressure += p_add ? p_add : 0;
+
+			if(c.status == 2 && c.break_time && new Date(c.break_time) < new Date(data_entry.start_time))
+			{
+				data_entry.flow = 0;
+				data_entry.bearing_vibration = 0;
+				data_entry.oil_pressure = 0;
+			}
+
 			result.data.push(data_entry);
 		}
 	}
@@ -280,9 +293,22 @@ exports.compressor_latest_range = function(req, res) {
 			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
 			data_entry.humidity = v.humidity + c.humidity_offset;
 
+			var v_add = c.vibration_add.get(data_entry.start_time);
+			var p_add = c.pressure_add.get(data_entry.start_time);
+			data_entry.bearing_vibration += v_add ? v_add : 0;
+			data_entry.oil_pressure += p_add ? p_add : 0;
+
+			if(c.status == 2 && c.break_time && new Date(c.break_time) < new Date(data_entry.start_time))
+			{
+				data_entry.flow = 0;
+				data_entry.bearing_vibration = 0;
+				data_entry.oil_pressure = 0;
+			}
+
 			result.data.push(data_entry);
 		}
 	}
+
 	res.json(result);
 }
 

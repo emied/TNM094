@@ -93,6 +93,8 @@ const test = async c => {
 
 		if(start_time > start)
 		{
+			var v = datasets['compressor'][i];
+
 			if(vibration_spike)
 			{
 				c.vibration_add.set(formatDate(start_time), C.VIBRATION_SPIKE_AMP);
@@ -101,8 +103,6 @@ const test = async c => {
 			{
 				c.pressure_add.set(formatDate(start_time), C.PRESSURE_SPIKE_AMP);
 			}
-
-			var v = datasets['compressor'][i];
 
 			var vibration = +v.bearing_vibration + c.bearing_vibration_offset;
 			var v_add = c.vibration_add.get(formatDate(start_time));
@@ -118,6 +118,7 @@ const test = async c => {
 			}
 			if(vibration >= C.VIBRATION_BREAK_LIMIT || pressure >= C.PRESSURE_BREAK_LIMIT)
 			{
+				c.break_time = formatDate(start_time);
 				c.status = 2;
 			}
 
@@ -134,6 +135,7 @@ for(var i = 0; i < C.NUM; i++)
 		lat: coord[0],
 		lon: coord[1],
 		status: 0,
+		break_time: undefined,
 		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
 		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),

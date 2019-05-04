@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-global.timescale = 100*60.0;
+global.timescale = 60.0;
 
 global.bike_current_index = 1154185;
 
@@ -170,14 +170,14 @@ const emitCompressorData = async (socket, id) => {
 			data_entry.oil_pressure = +v.oil_pressure + c.oil_pressure_offset;
 			data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
 			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
-			data_entry.humidity = v.humidity + c.humidity_offset;
+			data_entry.humidity = +v.humidity + c.humidity_offset;
 
 			var v_add = c.vibration_add.get(data_entry.start_time);
 			var p_add = c.pressure_add.get(data_entry.start_time);
 			data_entry.bearing_vibration += v_add ? v_add : 0;
 			data_entry.oil_pressure += p_add ? p_add : 0;
 
-			if(c.status == 2)
+			if(c.status == 2 && c.break_time != data_entry.start_time)
 			{
 				data_entry.flow = 0;
 				data_entry.bearing_vibration = 0;
