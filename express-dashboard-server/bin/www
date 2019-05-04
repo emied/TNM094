@@ -4,6 +4,20 @@
  * Module dependencies.
  */
 
+global.timescale = 100*60.0;
+
+global.bike_current_index = 1154185;
+
+global.server_start_time = new Date();
+
+const bike_start_time = new Date('2018-09-13 07:40:03');
+
+global.bike_current_time = new Date(bike_start_time);
+
+global.compressor_start_time = new Date('2019-04-15 08:00:00');
+
+global.compressor_current_time = new Date(global.compressor_start_time);
+
 var app = require('../app');
 var debug = require('debug')('dashboard:www');
 var http = require('http');
@@ -93,21 +107,17 @@ function onListening() {
  * Real-time data with socket.io
  */
 
-global.bike_current_index = 1154185;
-const bike_start_time = new Date('2018-09-13 07:40:03');
-
-const server_start_time = new Date();
-const timescale = 60.0;
-global.bike_current_time = new Date(bike_start_time);
+var compressor_last_sent = new Date(global.compressor_start_time);
 
 const io = require('socket.io')(server);
 const datasets = require('../data/datasets').datasets;
 const compressors = require('../data/datasets').compressors;
+const C = require('../data/constants.js').COMPRESSORS;
 
 const emitBikeData = async socket => {
 	var data = datasets['bike'];
 
-	global.bike_current_time = new Date(bike_start_time.valueOf() + timescale*(new Date() - server_start_time));
+	global.bike_current_time = new Date(bike_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
 
 	var new_data = [];
 	for( ; global.bike_current_index < data.length; global.bike_current_index++)
@@ -128,16 +138,14 @@ const emitBikeData = async socket => {
 	}
 };
 
-const compressor_start_time = new Date('2019-04-15 08:00:00');
-global.compressor_current_time = new Date(compressor_start_time);
-
 const emitCompressorData = async (socket, id) => {
 	var c = compressors[id];
 
 	const formatDate = require('../data/utility.js').formatDate;
 
-	var start = global.compressor_current_time;
-	global.compressor_current_time = new Date(compressor_start_time.valueOf() + timescale*(new Date() - server_start_time));
+	var start = new Date(compressor_last_sent);
+	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
+	compressor_last_sent = new Date(global.compressor_current_time);
 
 	var new_data = [];
 	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++) {
@@ -163,6 +171,18 @@ const emitCompressorData = async (socket, id) => {
 			data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
 			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
 			data_entry.humidity = v.humidity + c.humidity_offset;
+
+			var v_add = c.vibration_add.get(data_entry.start_time);
+			var p_add = c.pressure_add.get(data_entry.start_time);
+			data_entry.bearing_vibration += v_add ? v_add : 0;
+			data_entry.oil_pressure += p_add ? p_add : 0;
+
+			if(c.status == 2)
+			{
+				data_entry.flow = 0;
+				data_entry.bearing_vibration = 0;
+				data_entry.oil_pressure = 0;
+			}
 
 			new_data.push(data_entry);
 		}

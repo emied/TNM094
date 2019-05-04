@@ -66,6 +66,66 @@ var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.feat
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
+const test = async c => {
+	var start = global.compressor_current_time;
+	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
+
+	var vibration_spike = Math.random() <= C.VIBRATION_SPIKE_PROBABILITY;
+	var vibration_rise = Math.random() <= C.VIBRATION_RISE_PROBABILITY;
+	var pressure_spike = Math.random() <= C.PRESSURE_SPIKE_PROBABILITY;
+	var pressure_rise = Math.random() <= C.PRESSURE_RISE_PROBABILITY;
+
+	if(!(vibration_spike || vibration_rise || pressure_spike || pressure_rise))
+	{
+		return;
+	}
+
+	if(c.status == 2)
+	{
+		return;
+	}
+
+	const formatDate = require('../data/utility.js').formatDate;
+
+	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++) {
+		
+		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
+
+		if(start_time > start)
+		{
+			if(vibration_spike)
+			{
+				c.vibration_add.set(formatDate(start_time), C.VIBRATION_SPIKE_AMP);
+			}
+			if(pressure_spike)
+			{
+				c.pressure_add.set(formatDate(start_time), C.PRESSURE_SPIKE_AMP);
+			}
+
+			var v = datasets['compressor'][i];
+
+			var vibration = +v.bearing_vibration + c.bearing_vibration_offset;
+			var v_add = c.vibration_add.get(formatDate(start_time));
+			vibration += v_add ? v_add : 0;
+
+			var pressure = +v.oil_pressure + c.oil_pressure_offset;
+			var p_add = c.pressure_add.get(formatDate(start_time));
+			pressure += p_add ? p_add : 0;
+
+			if(vibration >= C.VIBRATION_WARN_LIMIT || pressure >= C.PRESSURE_WARN_LIMIT)
+			{
+				c.status = 1;
+			}
+			if(vibration >= C.VIBRATION_BREAK_LIMIT || pressure >= C.PRESSURE_BREAK_LIMIT)
+			{
+				c.status = 2;
+			}
+
+			break;
+		}
+	}
+}
+
 for(var i = 0; i < C.NUM; i++)
 {
 	var coord = coordinates[i].geometry.coordinates;
@@ -73,6 +133,7 @@ for(var i = 0; i < C.NUM; i++)
 		id: i,
 		lat: coord[0],
 		lon: coord[1],
+		status: 0,
 		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
 		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),
@@ -80,7 +141,10 @@ for(var i = 0; i < C.NUM; i++)
 		oil_pressure_offset: random_in_deviation(C.OIL_PRESSURE_DEVIATION),
 		oil_temp_offset: random_in_deviation(C.OIL_TEMP_DEVIATION),
 		ambient_temp_offset: random_in_deviation(C.AMBIENT_TEMP_DEVIATION),
-		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION)
+		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION),
+
+		vibration_add: new Map(),
+		pressure_add: new Map()
 	})
 }
 
@@ -96,6 +160,10 @@ compressors.map(compressor => {
 			break;
 		}
 	}
+})
+
+compressors.forEach(compressor => {
+	setInterval(() => test(compressor), 150000/global.timescale);
 })
 
 debug('Loaded datasets: ' + Object.keys(datasets));

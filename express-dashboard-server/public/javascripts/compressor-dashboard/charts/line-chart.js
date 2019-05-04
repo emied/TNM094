@@ -9,11 +9,14 @@ export class LineChart {
 		this.start = start;
 		this.end = end;
 		this.range_chart = range_chart;
+		this.allow_redraw = performance.now();
 
 		var y_range = [
 			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })),
 			Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 }))
 		];
+
+		this.modifier = modifier;
 
 		var dist = Math.abs(y_range[1] - y_range[0]);
 		y_range[0] -= dist*0.1;
@@ -84,6 +87,19 @@ export class LineChart {
 				this.chart.x(d3.scaleTime().domain([this.start, this.end]));
 			}
 
+			var modifier = this.modifier;
+
+			var y_range = [
+				Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })),
+				Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 }))
+			];
+
+			var dist = Math.abs(y_range[1] - y_range[0]);
+			y_range[0] -= dist*0.1;
+			y_range[1] += dist*0.1;
+
+			this.chart.y(d3.scaleLinear().domain(y_range));
+
 			this.chart.redraw();
 		}
 
@@ -95,6 +111,8 @@ export class LineChart {
 				Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })),
 				Math.max.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 }))
 			];
+
+			this.modifier = modifier;
 
 			var dist = Math.abs(y_range[1] - y_range[0]);
 			y_range[0] -= dist*0.1;
