@@ -64,6 +64,13 @@ export class CompressorDashboard
 		this.line_chart.redraw(end);
 		this.range_chart_flow.redraw(end);
 		//this.compressor_table.redraw(end);
+
+		this.avg_amb_temp_display.redraw();
+		this.avg_flow_display.redraw();
+		this.avg_vibration_display.redraw();
+		this.avg_oil_temp_display.redraw();
+		this.avg_humidity_display.redraw();
+		this.avg_oil_pressure_display.redraw();
 	}
 
 	addData(data)

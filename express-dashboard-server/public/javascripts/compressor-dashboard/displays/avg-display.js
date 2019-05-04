@@ -16,4 +16,9 @@ export class AvgDisplay {
 
 		this.display.render();
 	}
+
+	redraw()
+	{
+		this.display.redraw();
+	}
 }
