@@ -1,4 +1,6 @@
 import { MapChartCluster } from './charts/map-chart-cluster.js';
+import { StatusChart } from './charts/status-chart.js';
+import { StatusDisplay } from './displays/status-display.js';
 import { SearchTable } from './charts/search-table.js';
 //import { MapChartChoropleth } from './charts/map-chart-choropleth.js';
 
@@ -17,13 +19,36 @@ export class CompressorsDashboard
 		this.cross_filter = crossfilter(this.data);
 
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
+		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
+		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
+		this.status_chart = new StatusChart(this.cross_filter, '#status-chart', 75);
 		this.search_table = new SearchTable(this.data);
-		
+
 		//this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
 	}
 
 	resize()
 	{
 		this.map_chart_cluster.resize();
+	}
+
+	redraw()
+	{
+		this.map_chart_cluster.redraw();
+		this.broken_display.redraw();
+		this.working_display.redraw();
+	}
+
+	addData(data)
+	{
+		for(var i = 0; i < data.length; i++)
+		{
+			this.data[i].status = data[i].status;
+		}
+
+		this.cross_filter.remove();
+		this.cross_filter.add(this.data);
+
+		this.redraw();
 	}
 }

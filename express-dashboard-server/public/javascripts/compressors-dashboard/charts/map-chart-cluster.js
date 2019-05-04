@@ -52,6 +52,7 @@ export class MapChartCluster
 				marker.compressor_id = d.value.id;
 				return marker;
 			})
+			.rebuildMarkers(true)
 			.cluster(true);
 
 		this.chart.render()
@@ -102,8 +103,18 @@ export class MapChartCluster
 				marker.compressor_id = d.value.id;
 				return marker;
 			})
+			.rebuildMarkers(true)
 			.cluster(true);
 
 		this.chart.render()
+	}
+
+	redraw()
+	{
+		this.chart.redraw();
+		//console.log(this.chart.markerGroup()._layers)
+		//this.chart.redraw();
+		//this.chart.redraw();
+		//this.resize();
 	}
 }

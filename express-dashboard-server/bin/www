@@ -138,6 +138,21 @@ const emitBikeData = async socket => {
 	}
 };
 
+const emitCompressorsData = async socket => {
+	var new_data = [];
+	compressors.forEach( c => {
+		new_data.push({
+			id: c.id,
+			status: c.status
+		});
+	})
+
+	if(new_data.length)
+	{
+		socket.emit("compressors_data", new_data);
+	}
+}
+
 const emitCompressorData = async (socket, id) => {
 	var c = compressors[id];
 
@@ -196,6 +211,7 @@ const emitCompressorData = async (socket, id) => {
 
 let bike_interval;
 let compressor_interval;
+let compressors_interval;
 io.on("connection", socket => {
 	console.log("New client connected");
 
@@ -209,12 +225,19 @@ io.on("connection", socket => {
 				bike_interval = setInterval(() => emitBikeData(io.sockets), 1000);
 				break;
 
+			case 'compressors':
+				if(compressors_interval) {
+					clearInterval(compressors_interval);
+				}
+				compressors_interval = setInterval(() => emitCompressorsData(io.sockets), 2500);
+				break;
+
 			case 'compressor':
 				if(compressor_interval) {
 					clearInterval(compressor_interval);
 				}
 				//TODO: Will only send data for the ID corresponding to the first connected client request.
-				compressor_interval = setInterval(() => emitCompressorData(io.sockets, dataset.id), 1000);
+				compressor_interval = setInterval(() => emitCompressorData(io.sockets, dataset.id), 2500);
 				break;
 
 			default:

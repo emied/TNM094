@@ -1,10 +1,12 @@
 import { CompressorsDashboard } from './compressors-dashboard/compressors-dashboard.js';
 
 function afterLoad() {
-	// const socket = io();
-	// socket.on("data", data => {
-	// 	bike_dashboard.addData(data);
-	// });
+
+	const socket = io();
+	socket.emit('dataset', { name: 'compressors' } );
+	socket.on("compressors_data", data => {
+		compressors_dashboard.addData(data);
+	});
 
 	window.onresize = function(event) {
 		compressors_dashboard.resize();

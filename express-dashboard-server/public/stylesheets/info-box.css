@@ -29,6 +29,7 @@ h4.compressor-id {
 	text-align: center;
 	color: black;
 }
+
 h4.compressor-location {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
@@ -43,7 +44,6 @@ h4.compressor-time {
 	color: black;
 }
 
-
 h4.id-avg-display {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 15px;
@@ -52,6 +52,20 @@ h4.id-avg-display {
 }
 
 h5.id-avg-display {
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 20px;
+	color: black;
+	text-align: center;
+}
+
+h4.status-display {
+	font-family: 'Nunito Sans', sans-serif;
+	font-size: 15px;
+	color: black;
+	text-align: center;
+}
+
+h5.status-display {
 	font-family: 'Nunito Sans', sans-serif;
 	font-size: 20px;
 	color: black;
