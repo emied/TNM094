@@ -237,7 +237,7 @@ io.on("connection", socket => {
 					clearInterval(compressor_interval);
 				}
 				//TODO: Will only send data for the ID corresponding to the first connected client request.
-				compressor_interval = setInterval(() => emitCompressorData(io.sockets, dataset.id), 2500);
+				compressor_interval = setInterval(() => emitCompressorData(io.sockets, dataset.id), 150000/global.timescale);
 				break;
 
 			default:

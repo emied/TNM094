@@ -13,8 +13,10 @@ block content
 				+chart-card('map-chart-cluster', 'Geographical Distribution')
 			.container-fluid.col-xs-6.col-sm-6.col-md-6.col-lg-6.p-2.m-0
 				.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-0.m-0(style="height: 105px")
-					#working-display
-					#broken-display
+					.row.p-0.m-0
+						each name in ['working', 'warning', 'broken']
+							div(id='click-' + name).col-xs-12.col-sm-6.col-md-4.col-lg-4.d-flex.justify-content-center.align-items-center.p-2.status-box
+								div(id=name + '-display').d-flex.justify-content-center
 				table#search-table.table.table-striped.table-bordered(width='100%')
 
 

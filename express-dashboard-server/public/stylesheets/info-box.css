@@ -83,3 +83,16 @@ h5.status-display {
 .avg-box.active {
 	background-color: lightgray;
 }
+
+.status-box {
+	border-bottom: 1px solid #DDD;
+	cursor: pointer;
+}
+
+.status-box:hover {
+	background-color: #E3E3E3;
+}
+
+.status-box.active {
+	background-color: lightgray;
+}

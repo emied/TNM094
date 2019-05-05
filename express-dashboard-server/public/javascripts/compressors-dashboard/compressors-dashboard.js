@@ -15,14 +15,15 @@ export class CompressorsDashboard
 			"#2cb1dd","#4bb9dd","#47d1ff","#319bbf","#60bfe0"
 		]);
 
-		this.data = data;
-		this.cross_filter = crossfilter(this.data);
+		this.data = JSON.parse(JSON.stringify(data));
+		this.cross_filter = crossfilter(data);
 
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
 		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
+		this.warning_display = new StatusDisplay(this.cross_filter, '#warning-display', 1, "Warning");
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
 		//this.status_chart = new StatusChart(this.cross_filter, '#status-chart', 75);
-		this.search_table = new SearchTable(this.data);
+		this.search_table = new SearchTable(data);
 
 		//this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
 	}
@@ -36,20 +37,29 @@ export class CompressorsDashboard
 	{
 		this.broken_display.redraw();
 		this.working_display.redraw();
+		this.warning_display.redraw();
 		this.map_chart_cluster.redraw();
 	}
 
 	addData(data)
 	{
+		var update = false;
 		var new_data = JSON.parse(JSON.stringify(this.data));
 		for(var i = 0; i < data.length; i++)
 		{
-			new_data[i].status = data[i].status;
+			if(new_data[i].status != data[i].status)
+			{
+				new_data[i].status = data[i].status;
+				update = true;
+			}
 		}
 
-		this.cross_filter.remove();
-		this.cross_filter.add(new_data);
-
-		this.redraw();
+		if(update)
+		{
+			this.data = JSON.parse(JSON.stringify(new_data));
+			this.cross_filter.remove();
+			this.cross_filter.add(new_data);
+			this.redraw();
+		}
 	}
 }

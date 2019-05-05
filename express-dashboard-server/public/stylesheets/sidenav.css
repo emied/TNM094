@@ -2,7 +2,7 @@
 	height: 100%;
 	width: 0;
 	position: fixed;
-	z-index: 2;
+	z-index: 2147483647;
 	top: 0;
 	left: 0;
 	overflow-x: hidden;

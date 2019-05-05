@@ -66,7 +66,7 @@ var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.feat
 const random_in_range = (min, max) => { return Math.random() * (min - max) + max }
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
-const test = async c => {
+const updateCompressor = async c => {
 	var start = global.compressor_current_time;
 	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
 
@@ -164,8 +164,13 @@ compressors.map(compressor => {
 	}
 })
 
-compressors.forEach(compressor => {
-	setInterval(() => test(compressor), 150000/global.timescale);
+compressors.forEach((compressor,i) => {
+	setTimeout(() => {
+		updateCompressor(compressor); 
+		setInterval(() => {
+			updateCompressor(compressor); 
+		}, 150000/global.timescale) 
+	}, (150000/global.timescale)*(i/C.NUM));
 })
 
 debug('Loaded datasets: ' + Object.keys(datasets));

@@ -53,11 +53,9 @@ export class MapChartCluster
 				return marker;
 			})
 			.rebuildMarkers(true)
-			.cluster(false);
+			.cluster(true);
 
 		this.chart.render();
-
-		this.last_redraw = performance.now();
 	}
 
 	resize()
@@ -109,17 +107,14 @@ export class MapChartCluster
 				return marker;
 			})
 			.rebuildMarkers(true)
-			.cluster(false);
+			.cluster(true);
 
 		this.chart.render()
 	}
 
 	redraw()
 	{
-		if(performance.now() - this.last_redraw >= 10000 )
-		{
-			this.resize();
-			this.last_redraw = performance.now();
-		}
+		// This is the only thing that will redraw the map
+		this.resize();
 	}
 }
