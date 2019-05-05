@@ -1,0 +1,8 @@
+
+#compressors-table tbody tr:hover {
+	background-color: lightgray;
+}
+
+#compressors-table tbody tr {
+	cursor: pointer;
+}

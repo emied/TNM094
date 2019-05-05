@@ -1,6 +1,6 @@
 import { MapChartCluster } from './charts/map-chart-cluster.js';
 import { StatusDisplay } from './displays/status-display.js';
-import { SearchTable } from './charts/search-table.js';
+import { CompressorsTable } from './charts/compressors-table.js';
 
 export class CompressorsDashboard
 {
@@ -24,7 +24,7 @@ export class CompressorsDashboard
 		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
 		this.warning_display = new StatusDisplay(this.cross_filter, '#warning-display', 1, "Warning");
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
-		this.search_table = new SearchTable(data);
+		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table');
 
 		this.setClickListeners()
 	}
@@ -40,6 +40,7 @@ export class CompressorsDashboard
 		this.working_display.redraw();
 		this.warning_display.redraw();
 		this.map_chart_cluster.redraw();
+		this.compressors_table.redraw();
 	}
 
 	addData(data)

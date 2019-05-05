@@ -60,9 +60,10 @@ h5.id-avg-display {
 
 h4.status-display {
 	font-family: 'Nunito Sans', sans-serif;
-	font-size: 15px;
+	font-size: 12px;
 	color: black;
 	text-align: center;
+	margin: 0px 0px 5px;
 }
 
 h5.status-display {
@@ -70,6 +71,7 @@ h5.status-display {
 	font-size: 20px;
 	color: black;
 	text-align: center;
+	margin: 0px 0px 16px;
 }
 
 .avg-box {
@@ -85,7 +87,7 @@ h5.status-display {
 }
 
 .status-box {
-	border-bottom: 1px solid #DDD;
+	border: 1px solid #DFDFDF;
 	cursor: pointer;
 }
 
