@@ -18,14 +18,17 @@ export class CompressorsDashboard
 		this.data = JSON.parse(JSON.stringify(data));
 		this.cross_filter = crossfilter(data);
 
+		this.status_dimension = this.cross_filter.dimension( d => {
+			return +d.status;
+		})
+
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
 		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
 		this.warning_display = new StatusDisplay(this.cross_filter, '#warning-display', 1, "Warning");
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
-		//this.status_chart = new StatusChart(this.cross_filter, '#status-chart', 75);
 		this.search_table = new SearchTable(data);
-
-		//this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
+		
+		this.setClickListeners()
 	}
 
 	resize()
@@ -60,6 +63,29 @@ export class CompressorsDashboard
 			this.cross_filter.remove();
 			this.cross_filter.add(new_data);
 			this.redraw();
+		}
+	}
+
+	setClickListeners()
+	{
+		var names = ['working', 'warning', 'broken'];
+
+		for(var i = 0; i < names.length; i++)
+		{
+			$('#click-' + names[i]).click({ name: names[i], status: i }, (event) => {
+				if($('#click-' + event.data.name).hasClass('active'))
+				{
+					this.status_dimension.filter(null);
+					d3.selectAll('.status-box').classed('active', false);
+				}
+				else
+				{
+					this.status_dimension.filter(event.data.status);
+					d3.selectAll('.status-box').classed('active', false);
+					$('#click-' + event.data.name).toggleClass('active');
+				}
+				this.redraw();
+			});
 		}
 	}
 }

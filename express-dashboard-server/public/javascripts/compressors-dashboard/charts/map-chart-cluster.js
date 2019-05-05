@@ -6,12 +6,10 @@ export class MapChartCluster
 		this.height = height;
 		this.dimension = cross_filter.dimension(function(d) { return d.lon + ',' + d.lat; });
 
-		// Using dc.js / crossfilter in this instance doesn't make much sense. 
-		// Better to just use leaflet directly, but we might need dc.leaflet for choropleth etc. later.
 		this.group = this.dimension.group().reduce(
-			(p,v) => { p.id = v.id; p.status = v.status; return p; },
-			(p,v) => { p.id = v.id; p.status = v.status; return p; },
-			() => { return { id: -1, status: 0 } }
+			(p,v) => { p.id = v.id; p.status = v.status; p.count = 1; return p; },
+			(p,v) => { p.id = v.id; p.status = v.status; p.count = 0; return p; },
+			() => { return { id: -1, status: 0, count: 0 } }
 		);
 
 		this.compressorView = e => {
@@ -22,7 +20,7 @@ export class MapChartCluster
 			.mapOptions({ zoomSnap: 0.1 }) 
 			.dimension(this.dimension)
 			.group(this.group)
-			.valueAccessor(d => d.value.id)
+			.valueAccessor(d => d.value.count)
 			.width($(this.container_id).width())
 			.height(this.height)
 			.center([63,18])
@@ -62,7 +60,6 @@ export class MapChartCluster
 	{
 		// Normal resize doesn't work for leaflet map.
 		// This seems to work but it's slow, there's probably a better way.
-
 		var center = this.chart.map().getCenter();
 		var zoom = this.chart.map().getZoom();
 
@@ -76,7 +73,7 @@ export class MapChartCluster
 			.mapOptions({ zoomSnap: 0.1 }) 
 			.dimension(this.dimension)
 			.group(this.group)
-			.valueAccessor(d => d.value.id)
+			.valueAccessor(d => d.value.count)
 			.width($(this.container_id).width())
 			.height(this.height)
 			.center([center.lat,center.lng])
@@ -114,7 +111,6 @@ export class MapChartCluster
 
 	redraw()
 	{
-		// This is the only thing that will redraw the map
-		this.resize();
+		this.chart.redraw();
 	}
 }
