@@ -1,8 +1,6 @@
 import { MapChartCluster } from './charts/map-chart-cluster.js';
-import { StatusChart } from './charts/status-chart.js';
 import { StatusDisplay } from './displays/status-display.js';
 import { SearchTable } from './charts/search-table.js';
-//import { MapChartChoropleth } from './charts/map-chart-choropleth.js';
 
 export class CompressorsDashboard
 {
@@ -27,7 +25,7 @@ export class CompressorsDashboard
 		this.warning_display = new StatusDisplay(this.cross_filter, '#warning-display', 1, "Warning");
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
 		this.search_table = new SearchTable(data);
-		
+
 		this.setClickListeners()
 	}
 
