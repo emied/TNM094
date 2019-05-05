@@ -21,7 +21,7 @@ export class CompressorsDashboard
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
 		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
-		this.status_chart = new StatusChart(this.cross_filter, '#status-chart', 75);
+		//this.status_chart = new StatusChart(this.cross_filter, '#status-chart', 75);
 		this.search_table = new SearchTable(this.data);
 
 		//this.map_chart_choropleth = new MapChartChoropleth(this.cross_filter, '#map-chart-choropleth', 600, map_data);
@@ -34,20 +34,21 @@ export class CompressorsDashboard
 
 	redraw()
 	{
-		this.map_chart_cluster.redraw();
 		this.broken_display.redraw();
 		this.working_display.redraw();
+		this.map_chart_cluster.redraw();
 	}
 
 	addData(data)
 	{
+		var new_data = JSON.parse(JSON.stringify(this.data));
 		for(var i = 0; i < data.length; i++)
 		{
-			this.data[i].status = data[i].status;
+			new_data[i].status = data[i].status;
 		}
 
 		this.cross_filter.remove();
-		this.cross_filter.add(this.data);
+		this.cross_filter.add(new_data);
 
 		this.redraw();
 	}

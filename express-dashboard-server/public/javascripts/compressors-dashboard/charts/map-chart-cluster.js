@@ -53,15 +53,20 @@ export class MapChartCluster
 				return marker;
 			})
 			.rebuildMarkers(true)
-			.cluster(true);
+			.cluster(false);
 
-		this.chart.render()
+		this.chart.render();
+
+		this.last_redraw = performance.now();
 	}
 
 	resize()
 	{
 		// Normal resize doesn't work for leaflet map.
 		// This seems to work but it's slow, there's probably a better way.
+
+		var center = this.chart.map().getCenter();
+		var zoom = this.chart.map().getZoom();
 
 		this.chart.map().off();
 		this.chart.map().remove();
@@ -76,8 +81,8 @@ export class MapChartCluster
 			.valueAccessor(d => d.value.id)
 			.width($(this.container_id).width())
 			.height(this.height)
-			.center([63,18])
-			.zoom(4.6)
+			.center([center.lat,center.lng])
+			.zoom(zoom)
 			.renderPopup(false)
 			.marker((d,map) => {
 				var icon_url;
@@ -104,17 +109,17 @@ export class MapChartCluster
 				return marker;
 			})
 			.rebuildMarkers(true)
-			.cluster(true);
+			.cluster(false);
 
 		this.chart.render()
 	}
 
 	redraw()
 	{
-		this.chart.redraw();
-		//console.log(this.chart.markerGroup()._layers)
-		//this.chart.redraw();
-		//this.chart.redraw();
-		//this.resize();
+		if(performance.now() - this.last_redraw >= 10000 )
+		{
+			this.resize();
+			this.last_redraw = performance.now();
+		}
 	}
 }
