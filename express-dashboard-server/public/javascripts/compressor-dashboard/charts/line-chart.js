@@ -1,7 +1,7 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class LineChart {
-	constructor(cross_filter, container_id, height, start, end, chart_label, attr, range_chart, dimension, modifier=1){
+	constructor(cross_filter, container_id, height, start, end, attr, range_chart, dimension, modifier=1){
 		this.container_id = container_id;
 		this.chart = dc.lineChart(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
@@ -30,8 +30,8 @@ export class LineChart {
 			.dimension(dimension)
 			.x(d3.scaleTime().domain([start, end]))
 			.y(d3.scaleLinear().domain(y_range))
-			.yAxisLabel(chart_label)
 			.xUnits(d3.timeDay)
+			.yAxisLabel(" ", 18)
 			.brushOn(false)
 			.mouseZoomable(true)
 			.zoomScale([1, 100])
@@ -103,7 +103,7 @@ export class LineChart {
 			this.chart.redraw();
 		}
 
-		setAttribute(attr, chart_label, modifier)
+		setAttribute(attr, modifier)
 		{
 			this.group = this.chart.dimension().group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
@@ -120,7 +120,6 @@ export class LineChart {
 
 			this.chart
 				.group(this.group)
-				.yAxisLabel(chart_label)
 				.y(d3.scaleLinear().domain(y_range))
 				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 				.redraw();
