@@ -26,6 +26,8 @@ export class CompressorsDashboard
 		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
 		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table');
 
+		this.status_filter = null;
+
 		this.setClickListeners()
 	}
 
@@ -58,9 +60,11 @@ export class CompressorsDashboard
 
 		if(update)
 		{
+			this.status_dimension.filter(null);
 			this.data = JSON.parse(JSON.stringify(new_data));
 			this.cross_filter.remove();
 			this.cross_filter.add(new_data);
+			this.status_dimension.filter(this.status_filter);
 			this.redraw();
 		}
 	}
@@ -75,11 +79,13 @@ export class CompressorsDashboard
 				if($('#click-' + event.data.name).hasClass('active'))
 				{
 					this.status_dimension.filter(null);
+					this.status_filter = null;
 					d3.selectAll('.status-box').classed('active', false);
 				}
 				else
 				{
 					this.status_dimension.filter(event.data.status);
+					this.status_filter = event.data.status;
 					d3.selectAll('.status-box').classed('active', false);
 					$('#click-' + event.data.name).toggleClass('active');
 				}
