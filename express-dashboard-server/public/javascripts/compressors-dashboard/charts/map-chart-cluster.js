@@ -28,23 +28,27 @@ export class MapChartCluster
 			.renderPopup(false)
 			.marker((d,map) => {
 				var icon_url;
+				var icon_path = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-';
 				switch(d.value.status)
 				{
 					case 0:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+						icon_url = icon_path + 'blue.png';
 						break;
 					case 1:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png';
+						icon_url = icon_path + 'yellow.png';
 						break;
 					case 2: 
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+						icon_url = icon_path + 'red.png';
 						break;
 					default:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+						icon_url = icon_path + 'blue.png';
 				}
 				var icon = new L.Icon({
 					iconUrl: icon_url,
-					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png'
+					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+					iconSize: [25, 41],
+					shadowSize: [41, 41],
+					iconAnchor: [12, 41]
 				})
 				var marker = new L.Marker(this.chart.toLocArray(this.chart.locationAccessor()(d)), {icon: icon}).on('click', this.compressorView);
 				marker.compressor_id = d.value.id;
@@ -81,23 +85,27 @@ export class MapChartCluster
 			.renderPopup(false)
 			.marker((d,map) => {
 				var icon_url;
+				var icon_path = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-';
 				switch(d.value.status)
 				{
 					case 0:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+						icon_url = icon_path + 'blue.png';
 						break;
 					case 1:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png';
+						icon_url = icon_path + 'yellow.png';
 						break;
 					case 2: 
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+						icon_url = icon_path + 'red.png';
 						break;
 					default:
-						icon_url = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+						icon_url = icon_path + 'blue.png';
 				}
 				var icon = new L.Icon({
 					iconUrl: icon_url,
-					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png'
+					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+					iconSize: [25, 41],
+					shadowSize: [41, 41],
+					iconAnchor: [12, 41]
 				})
 				var marker = new L.Marker(this.chart.toLocArray(this.chart.locationAccessor()(d)), {icon: icon}).on('click', this.compressorView);
 				marker.compressor_id = d.value.id;
