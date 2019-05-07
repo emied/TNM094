@@ -62,6 +62,12 @@ Returns latest compressor data for given a given ID and interval back in time.
 router.get('/compressor_latest_range', api_controller.compressor_latest_range);
 
 /************************************************************************************************
+Defines what should happen when http://localhost:3000/api/get_compressor_limits is requested with method GET.
+Returns warning and breaking limits for compressor values.
+************************************************************************************************/
+router.get('/get_compressor_limits', api_controller.get_compressor_limits)
+
+/************************************************************************************************
 Defines what should happen when http://localhost:3000/api/test is requested with method GET.
 Displays test page for API.
 ************************************************************************************************/

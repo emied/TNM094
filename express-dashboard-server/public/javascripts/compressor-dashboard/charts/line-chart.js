@@ -1,7 +1,7 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class LineChart {
-	constructor(cross_filter, container_id, height, start, end, attr, range_chart, dimension, modifier=1){
+	constructor(cross_filter, container_id, height, start, end, attr, range_chart, dimension, modifier=1, limit=undefined) {
 		this.container_id = container_id;
 		this.chart = dc.lineChart(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
@@ -10,6 +10,8 @@ export class LineChart {
 		this.end = end;
 		this.range_chart = range_chart;
 		this.allow_redraw = performance.now();
+
+		this.limit = limit;
 
 		var y_range = [
 			Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })),
@@ -39,28 +41,23 @@ export class LineChart {
 			.renderVerticalGridLines(true)
 			.renderHorizontalGridLines(true)
 			.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
-			.colors( ['#333333', '#333333', '#2d5986', '#2d5986', '#2d5986'])
-			.colorDomain([0,3])
-			.colorAccessor( function(d,i){
-				if(attr == 'flow'){
-					return 0;
-				}
-				else if(attr == 'oil_pressure'){
-					return 0;
-				}
-				else if(attr == 'humidity'){
-					return 0;
-				}
-				else if(attr == 'bearing_vibration'){
-					return 0;
-				}
-				else if(attr == 'ambient_temp'){
-					return 0;
-				}
-				else if(attr == 'oil_temp'){
-					return 0;
-				}
-			})
+			.colors( ['#333333', 'yellow', 'red'])
+			// .colorDomain([0,2])
+			// .colorAccessor( d => {
+			// 	var value = d.value.count ? d.value.sum / d.value.count : 0;
+			// 	if(this.limit)
+			// 	{
+			// 		if(value >= this.limit[1])
+			// 		{
+			// 			return 2;
+			// 		}
+			// 		if(value >= this.limit[0])
+			// 		{
+			// 			return 1;
+			// 		}
+			// 	}
+			// 	return 0;
+			// })
 			.render();
 		}
 
@@ -103,9 +100,11 @@ export class LineChart {
 			this.chart.redraw();
 		}
 
-		setAttribute(attr, modifier)
+		setAttribute(attr, modifier, limit=undefined)
 		{
 			this.group = this.chart.dimension().group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
+
+			this.limit = limit;
 
 			var y_range = [
 				Math.min.apply(Math, this.group.all().map(function(d) { return d.value.count ? d.value.sum*modifier / d.value.count : 0 })),

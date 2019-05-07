@@ -45,7 +45,6 @@ export class CompressorDashboard
 		this.range_chart_ambient_temp = new RangeChart(this.cross_filter, '#range-chart-ambient-temp', start, end, this.dimension, 'ambient_temp');
 
 		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
-		//this.compressor_table = new TableChart(this.cross_filter, '#compressor-table', 'flow',  this.dimension, 1.0/60000.0);
 		$('#click-flow').toggleClass('active');
 		$('#line-chart-title').html('Flow (m<sup>3</sup>/s)');
 
@@ -93,14 +92,19 @@ export class CompressorDashboard
 		var titles = ['Flow (m<sup>3</sup>/s)','Oil Temp (°C)','Humidity (%)','Oil Pressure (Bar)','Ambient Temp (°C)','Bearing Vibration (mm/s<sup>2</sup>)'];
 		var modifiers = [1.0/60000.0, 1, 1, 1, 1, 1];
 
-		for(var i = 0; i < names.length; i++)
-		{
-			$('#click-' + names[i]).click({ attr: attrs[i], title: titles[i], modifier: modifiers[i], name: names[i] }, (event) => {
-				this.line_chart.setAttribute(event.data.attr, event.data.modifier);
-				d3.selectAll('.avg-box').classed('active', false);
-				$('#click-' + event.data.name).toggleClass('active');
-				$('#line-chart-title').html(event.data.title);
-			});
-		}
+		d3.json('./api/get_compressor_limits').then( lim => {
+
+			var limits = [undefined, undefined, undefined, [lim.pressure_warn, lim.pressure_break], undefined, [lim.vibration_warn, lim.vibration_break]];
+
+			for(var i = 0; i < names.length; i++)
+			{
+				$('#click-' + names[i]).click({ attr: attrs[i], title: titles[i], modifier: modifiers[i], name: names[i], limit: limits[i] }, (event) => {
+					this.line_chart.setAttribute(event.data.attr, event.data.modifier, event.data.limit);
+					d3.selectAll('.avg-box').classed('active', false);
+					$('#click-' + event.data.name).toggleClass('active');
+					$('#line-chart-title').html(event.data.title);
+				});
+			}
+		});
 	}
 }

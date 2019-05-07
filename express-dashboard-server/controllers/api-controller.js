@@ -312,6 +312,20 @@ exports.compressor_latest_range = function(req, res) {
 	res.json(result);
 }
 
+exports.get_compressor_limits = function(req, res)
+{
+	var C = require('../data/constants.js').COMPRESSORS;
+	
+	var limits = {
+		vibration_warn: C.VIBRATION_WARN_LIMIT,
+		pressure_warn: C.PRESSURE_WARN_LIMIT,
+		vibration_break: C.VIBRATION_BREAK_LIMIT,
+		pressure_break: C.PRESSURE_BREAK_LIMIT
+	}
+
+	res.json(limits);
+}
+
 /***************************************
 Returns range of historic data up until
 the current internal time. I.e. it can
