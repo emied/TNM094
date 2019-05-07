@@ -18,7 +18,7 @@ export class CompressorDashboard
 		this.cross_filter = crossfilter(data.data);
 		this.dimension = this.cross_filter.dimension(function(d) {
 			var date = new Date(d.start_time);
-			date.setHours(date.getHours(), 0, 0, 0);
+			date.setHours(date.getHours(), Math.floor(date.getMinutes()/5.0)*5, 0, 0);
 			return date;
 		});
 

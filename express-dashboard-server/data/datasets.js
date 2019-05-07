@@ -70,17 +70,17 @@ const updateCompressor = async c => {
 	var start = global.compressor_current_time;
 	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
 
+	if(c.status == 2)
+	{
+		return;
+	}
+
 	var vibration_spike = Math.random() <= C.VIBRATION_SPIKE_PROBABILITY;
 	var vibration_rise = Math.random() <= C.VIBRATION_RISE_PROBABILITY;
 	var pressure_spike = Math.random() <= C.PRESSURE_SPIKE_PROBABILITY;
 	var pressure_rise = Math.random() <= C.PRESSURE_RISE_PROBABILITY;
 
-	if(!(vibration_spike || vibration_rise || pressure_spike || pressure_rise))
-	{
-		return;
-	}
-
-	if(c.status == 2)
+	if(!(vibration_spike || vibration_rise || pressure_spike || pressure_rise || c.vibration_rise || c.pressure_rise))
 	{
 		return;
 	}
@@ -102,6 +102,19 @@ const updateCompressor = async c => {
 			if(pressure_spike)
 			{
 				c.pressure_add.set(formatDate(start_time), C.PRESSURE_SPIKE_AMP);
+			}
+
+			if(vibration_rise || c.vibration_rise)
+			{
+				c.vibration_rise = true;
+				c.prev_vibration_rise += C.VIBRATION_RISE_SPEED;
+				c.vibration_add.set(formatDate(start_time), c.prev_vibration_rise);
+			}
+			if(pressure_rise || c.pressure_rise)
+			{
+				c.pressure_rise = true;
+				c.prev_pressure_rise += C.PRESSURE_RISE_SPEED;
+				c.pressure_add.set(formatDate(start_time), c.prev_pressure_rise);
 			}
 
 			var vibration = +v.bearing_vibration + c.bearing_vibration_offset;
@@ -144,6 +157,11 @@ for(var i = 0; i < C.NUM; i++)
 		oil_temp_offset: random_in_deviation(C.OIL_TEMP_DEVIATION),
 		ambient_temp_offset: random_in_deviation(C.AMBIENT_TEMP_DEVIATION),
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION),
+
+		vibration_rise: false,
+		pressure_rise: false,
+		prev_vibration_rise: 0,
+		prev_pressure_rise: 0,
 
 		vibration_add: new Map(),
 		pressure_add: new Map()

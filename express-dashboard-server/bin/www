@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-global.timescale = 1.0;
+global.timescale = 10.0;
 
 global.bike_current_index = 1154185;
 
