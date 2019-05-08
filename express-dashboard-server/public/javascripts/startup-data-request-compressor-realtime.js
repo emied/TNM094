@@ -1,7 +1,7 @@
 import { CompressorDashboard } from './compressor-dashboard/compressor-dashboard.js';
 
 function startupDataRequest() {
-	var interval = 1000*60*60*24*0.25;
+	var interval = 1000*60*60*2;
 
 	// Get id from url
 	var id = new URLSearchParams(window.location.search).get('id');

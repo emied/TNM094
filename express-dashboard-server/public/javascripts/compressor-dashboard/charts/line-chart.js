@@ -42,23 +42,28 @@ export class LineChart {
 			.renderHorizontalGridLines(true)
 			.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 			.colors( ['#333333', 'yellow', 'red'])
-			// .colorDomain([0,2])
-			// .colorAccessor( d => {
-			// 	var value = d.value.count ? d.value.sum / d.value.count : 0;
-			// 	if(this.limit)
-			// 	{
-			// 		if(value >= this.limit[1])
-			// 		{
-			// 			return 2;
-			// 		}
-			// 		if(value >= this.limit[0])
-			// 		{
-			// 			return 1;
-			// 		}
-			// 	}
-			// 	return 0;
-			// })
+			.colorDomain([0,2])
+			.colorAccessor( (d,i) => {
+				var v = d[i] ? d[i].data.value : d.data.value;
+				v = v.count ? v.sum / v.count : 0;
+
+				if(this.limit)
+				{
+					if(v >= this.limit[1])
+					{
+						return 2;
+					}
+					if(v >= this.limit[0])
+					{
+						return 1;
+					}
+				}
+				return 0;
+			})
+			.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
 			.render();
+
+			this.drawLimitDots();
 		}
 
 		resize() {
@@ -122,5 +127,38 @@ export class LineChart {
 				.y(d3.scaleLinear().domain(y_range))
 				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 				.redraw();
+		}
+
+		drawLimitDots()
+		{
+			this.chart.on("pretransition", _chart => {
+				_chart.svg().selectAll("circle.dot").each(function(d,i) {
+					d3.select(this)
+						.attr("stroke", "black")
+						.style("stroke-width", "0.1%")
+						.style("stroke", "black")
+				})
+
+				// if(this.limit)
+				// {
+				// 	var limit = this.limit;
+				// 	var svg = _chart.svg();
+				// 	svg.selectAll("circle.dot").each(function(d,i) {
+				// 		var v = d.data.value.count ? d.data.value.sum / d.data.value.count : 0;
+				// 		if(v < limit[0])
+				// 		{
+				// 			d3.select(this).attr("r", 0);
+				// 		}
+				// 		else
+				// 		{
+				// 			d3.select(this)
+				// 				.attr("r", 4)
+				// 				.attr("stroke", "black")
+				// 				.style("stroke-width", "0.1%")
+				// 				.style("fill-opacity", 1.0);
+				// 		}
+				// 	})
+				// }
+			});
 		}
 }
