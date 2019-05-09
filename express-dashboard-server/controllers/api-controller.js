@@ -185,6 +185,13 @@ exports.get_compressors = function(req, res) {
 };
 
 /*********************************************************************
+Returns number of compressors with working, warning and broken status.
+*********************************************************************/
+exports.get_compressors_statuses = function(req, res) {
+	res.json(global.statuses.arr)
+}
+
+/*********************************************************************
 Returns decimated historic compressor data for specific compressor ID.
 *********************************************************************/
 exports.get_compressor = function(req, res) {

@@ -50,6 +50,12 @@ Returns basic information about all compressors.
 router.get('/get_compressors', api_controller.get_compressors);
 
 /************************************************************************************************
+Defines what should happen when http://localhost:3000/api/get_compressors_statuses is requested with method GET.
+Returns number of compressors with working, warning and broken status.
+************************************************************************************************/
+router.get('/get_compressors_statuses', api_controller.get_compressors_statuses)
+
+/************************************************************************************************
 Defines what should happen when http://localhost:3000/api/get_compressor is requested with method GET.
 Returns decimated historic compressor data for specific compressor ID.
 ************************************************************************************************/
