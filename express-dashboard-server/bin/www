@@ -6,6 +6,21 @@
 
 global.timescale = 10.0;
 
+global.statuses = {
+	internal: [0, 0, 0],
+	listener: function(val) {},
+	set arr(val) {
+		val.forEach( (v,i) => { this.internal[i] += v })
+		this.listener(this.internal);
+	},
+	get arr() {
+		return this.internal;
+	},
+	registerListener: function(listener) {
+		this.listener = listener;
+	}
+};
+
 global.bike_current_index = 1154185;
 
 global.server_start_time = new Date();
@@ -246,4 +261,9 @@ io.on("connection", socket => {
 	});
 
 	socket.on("disconnect", () => { console.log("Client disconnected")});
+});
+
+// Always emit statuses on change to whoever listens
+global.statuses.registerListener(function(val) {
+	io.sockets.emit("statuses", val);
 });

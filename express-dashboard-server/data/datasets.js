@@ -125,14 +125,32 @@ const updateCompressor = async c => {
 			var p_add = c.pressure_add.get(formatDate(start_time));
 			pressure += p_add ? p_add : 0;
 
-			if(vibration >= C.VIBRATION_WARN_LIMIT || pressure >= C.PRESSURE_WARN_LIMIT)
-			{
-				c.status = 1;
-			}
 			if(vibration >= C.VIBRATION_BREAK_LIMIT || pressure >= C.PRESSURE_BREAK_LIMIT)
 			{
+
+				if(c.status == 0)
+				{
+					global.statuses.arr = [-1, 0, 1];
+				}
+				if(c.status == 1)
+				{
+					global.statuses.arr = [0, -1, 1];
+				}
+
 				c.break_time = formatDate(start_time);
 				c.status = 2;
+
+				break;
+			}
+
+			if(vibration >= C.VIBRATION_WARN_LIMIT || pressure >= C.PRESSURE_WARN_LIMIT)
+			{
+				if(c.status == 0)
+				{
+					global.statuses.arr = [-1, 1, 0];
+				}
+
+				c.status = 1;
 			}
 
 			break;
@@ -167,6 +185,8 @@ for(var i = 0; i < C.NUM; i++)
 		pressure_add: new Map()
 	})
 }
+
+global.statuses.arr = [C.NUM, 0, 0];
 
 // Find location of compressors
 compressors.map(compressor => {
