@@ -44,11 +44,13 @@
 
 /* Use these to change warning icon colors, otherwise bootstrap functionality breaks. */
 #warning-link .nav-link {
-	color: rgb(230, 0, 0);
+	/*color: rgb(230, 0, 0);*/
+	color: rgba(255,255,255,.5);
 }
 
 #warning-link .nav-link:hover {
-	color: rgb(255, 77, 77);
+	/*color: rgb(255, 77, 77);*/
+	color: #ffffff;
 }
 
 #warning-link.active .nav-link {
@@ -62,4 +64,21 @@
 	left: -6px;
 	font-size: 10px;
 	color:#ff3838;
+}
+
+#broken-count {
+	font-size: 9px;
+	/*color: rgb(255, 100, 100);*/
+	color: rgb(191.25, 75, 75);
+	font-weight: bold;
+	padding-top: 3.5px;
+	padding-bottom: 0px;
+	font-family: 'Nunito Sans', sans-serif;
+}
+
+#warning-count {
+	font-size: 9px;
+	color: rgb(191.25, 191.25, 75);
+	font-weight: bold;
+	font-family: 'Nunito Sans', sans-serif;
 }

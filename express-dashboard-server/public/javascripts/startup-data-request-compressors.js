@@ -8,10 +8,6 @@ function afterLoad() {
 		compressors_dashboard.addData(data);
 	});
 
-	socket.on("statuses", statuses => {
-		console.log(statuses);
-	});
-
 	window.onresize = function(event) {
 		compressors_dashboard.resize();
 	};

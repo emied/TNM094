@@ -42,13 +42,16 @@ mixin topnav(active_view)
 					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
 						a.nav-link(href='dashboard?data=bike&view=' + view) View #{view}
 				li#warning-link(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
-					a.nav-link.fas.fa-exclamation-triangle(href='dashboard?data=bike&view=warning')
-						#superscript-warnings
+					a#warning-triangle.nav-link.fas.fa-exclamation-triangle.pr-1(href='dashboard?data=bike&view=warning')
+					.container-fluid.m-0.p-0.h-100(style="width: 20px")
+						p#broken-count.m-0.px-0 
+						p#warning-count.m-0.p-0 
 			a.qmark.fas.fa-question.mx-2(href='dashboard?data=bike&view=help')
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend
 					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
 				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
+	script(src='javascripts/statuses.js')
 
 mixin sidenav
 	nav#sidenav
