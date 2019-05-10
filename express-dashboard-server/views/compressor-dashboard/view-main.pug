@@ -9,9 +9,12 @@ block content
 
 	.container-fluid.px-4
 		.row
-			.container-fluid.col-xs-6.col-sm-6.col-md-6.col-lg-6.p-2.m-0
-				+chart-card('map-chart-cluster', 'Geographical Distribution')
-			.container-fluid.col-xs-6.col-sm-6.col-md-6.col-lg-6.p-2.m-0
+
+			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-7.p-2.m-0
+				//-+chart-card('map-chart-cluster', 'Geographical Distribution')
+				.chart-card.card-shadow.container-fluid.col-12.m-0.p-0.h-100
+					#map-chart-cluster.col-12.p-0
+			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-5.p-2.m-0
 				.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-0.m-0(style="height: 75px")
 					.row.p-0.m-0
 						each name in ['working', 'warning', 'broken']

@@ -158,7 +158,8 @@ const emitCompressorsData = async socket => {
 	compressors.forEach( c => {
 		new_data.push({
 			id: c.id,
-			status: c.status
+			status: c.status,
+			status_time: c.status_time
 		});
 	})
 

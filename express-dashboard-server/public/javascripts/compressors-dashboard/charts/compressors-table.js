@@ -15,6 +15,7 @@ export class CompressorsTable
 				return d.id;
 			})
 			.size(10)
+			.options({"order": [[ 3, "desc" ]]})
 			.columns([
 				{
 					label: 'ID',
@@ -43,6 +44,12 @@ export class CompressorsTable
 							default:
 								return 'Working';
 						}
+					}
+				},
+				{
+					label: 'Status Time',
+					format: d => {
+						return d.status_time;
 					}
 				}
 			]);

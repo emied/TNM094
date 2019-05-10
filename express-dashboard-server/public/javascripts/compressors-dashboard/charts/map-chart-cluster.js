@@ -4,6 +4,7 @@ export class MapChartCluster
 	{
 		this.container_id = container_id;
 		this.height = height;
+
 		this.dimension = cross_filter.dimension(function(d) { return d.lon + ',' + d.lat; });
 
 		this.group = this.dimension.group().reduce(

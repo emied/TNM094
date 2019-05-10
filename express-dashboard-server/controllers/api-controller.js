@@ -177,6 +177,7 @@ exports.get_compressors = function(req, res) {
 			lat: c.lat,
 			lon: c.lon,
 			status: c.status,
+			status_time: c.status_time,
 			location: c.location
 		});
 	});

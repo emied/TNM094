@@ -138,6 +138,7 @@ const updateCompressor = async c => {
 				}
 
 				c.break_time = formatDate(start_time);
+				c.status_time = formatDate(start_time);
 				c.status = 2;
 
 				break;
@@ -148,6 +149,7 @@ const updateCompressor = async c => {
 				if(c.status == 0)
 				{
 					global.statuses.arr = [-1, 1, 0];
+					c.status_time = formatDate(start_time);
 				}
 
 				c.status = 1;
@@ -167,6 +169,7 @@ for(var i = 0; i < C.NUM; i++)
 		lon: coord[1],
 		status: 0,
 		break_time: undefined,
+		status_time: '-',
 		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
 		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),

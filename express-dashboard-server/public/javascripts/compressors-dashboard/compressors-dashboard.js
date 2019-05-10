@@ -20,7 +20,7 @@ export class CompressorsDashboard
 			return +d.status;
 		})
 
-		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
+		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 658);
 		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table');
 
 		this.setupDisplays();
@@ -50,6 +50,7 @@ export class CompressorsDashboard
 			if(new_data[i].status != data[i].status)
 			{
 				new_data[i].status = data[i].status;
+				new_data[i].status_time = data[i].status_time;
 				update = true;
 			}
 		}
@@ -71,12 +72,12 @@ export class CompressorsDashboard
 			this.working_display = new StatusDisplay('#working-display', 0, "Working", statuses);
 			this.warning_display = new StatusDisplay('#warning-display', 1, "Warning", statuses);
 			this.broken_display = new StatusDisplay('#broken-display', 2, "Broken", statuses);
-		});
 
-		socket.on("statuses", statuses => {
-			this.working_display.redraw(statuses);
-			this.warning_display.redraw(statuses);
-			this.broken_display.redraw(statuses);
+			socket.on("statuses", statuses => {
+				this.working_display.redraw(statuses);
+				this.warning_display.redraw(statuses);
+				this.broken_display.redraw(statuses);
+			});
 		});
 	}
 
