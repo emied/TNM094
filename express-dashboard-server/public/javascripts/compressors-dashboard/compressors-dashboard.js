@@ -25,7 +25,7 @@ export class CompressorsDashboard
 
 		this.setupDisplays();
 
-		this.status_filter = null;
+		this.status_filter = [];
 
 		this.setClickListeners()
 	}
@@ -61,9 +61,16 @@ export class CompressorsDashboard
 			this.data = JSON.parse(JSON.stringify(new_data));
 			this.cross_filter.remove();
 			this.cross_filter.add(new_data);
-			this.status_dimension.filter(this.status_filter);
+			this.applyStatusFilter();
 			this.redraw();
 		}
+	}
+
+	applyStatusFilter()
+	{
+		var filter = this.status_filter.length ? d => this.status_filter.includes(d) : null;
+		this.status_dimension.filter(filter);
+		this.redraw();
 	}
 
 	setupDisplays()
@@ -88,20 +95,28 @@ export class CompressorsDashboard
 		for(var i = 0; i < names.length; i++)
 		{
 			$('#click-' + names[i]).click({ name: names[i], status: i }, (event) => {
-				if($('#click-' + event.data.name).hasClass('active'))
+
+				$('#click-' + event.data.name).toggleClass('active');
+
+				if(this.status_filter.includes(event.data.status))
 				{
-					this.status_dimension.filter(null);
-					this.status_filter = null;
-					d3.selectAll('.status-box').classed('active', false);
+					this.status_filter = this.status_filter.filter( d => { return d != event.data.status });
 				}
 				else
 				{
-					this.status_dimension.filter(event.data.status);
-					this.status_filter = event.data.status;
-					d3.selectAll('.status-box').classed('active', false);
-					$('#click-' + event.data.name).toggleClass('active');
+					this.status_filter.push(event.data.status);
 				}
-				this.redraw();
+
+				var reset = true;
+				d3.selectAll(".status-box").select( function() { reset &= d3.select(this).classed('active'); });
+
+				if(reset)
+				{
+					d3.selectAll(".status-box").classed('active', false);
+					this.status_filter = [];
+				}
+
+				this.applyStatusFilter();
 			});
 		}
 	}
