@@ -15,7 +15,21 @@ export class CompressorsTable
 				return d.id;
 			})
 			.size(10)
-			.options({"order": [[ 3, "desc" ]]})
+			this.table.options(
+				{
+					order: [[ 3, "desc" ]],
+					createdRow: function(row, data, index) {
+						if(data.status == 1)
+						{
+							$(row).addClass("warning");
+						}
+						if(data.status == 2)
+						{
+							$(row).addClass("broken");
+						}
+					}
+				}
+			)
 			.columns([
 				{
 					label: 'ID',
