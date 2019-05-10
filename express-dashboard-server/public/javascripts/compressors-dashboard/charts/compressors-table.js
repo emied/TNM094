@@ -1,6 +1,6 @@
 export class CompressorsTable
 {
-	constructor(cross_filter, container_id)
+	constructor(cross_filter, container_id, mode)
 	{
 		this.container_id = container_id;
 		this.table = dc_datatables.datatable(this.container_id);
@@ -8,6 +8,12 @@ export class CompressorsTable
 		this.dimension = cross_filter.dimension( d => {
 			return d.id;
 		});
+
+		var order = [[ 0, "asc" ]];
+		if(mode == 'troubleshoot')
+		{
+			order = [[ 3, "desc" ]];
+		}
 
 		this.table
 			.dimension(this.dimension)
@@ -17,7 +23,7 @@ export class CompressorsTable
 			.size(10)
 			this.table.options(
 				{
-					order: [[ 3, "desc" ]],
+					order: order,
 					createdRow: function(row, data, index) {
 						if(data.status == 1)
 						{

@@ -4,7 +4,7 @@ import { CompressorsTable } from './charts/compressors-table.js';
 
 export class CompressorsDashboard
 {
-	constructor(data, map_data)
+	constructor(data, map_data, mode)
 	{
 		dc.config.defaultColors([
 			"#008c82","#4dd6cb","#52afa0","#71edd9","#21ffdb",
@@ -21,11 +21,17 @@ export class CompressorsDashboard
 		})
 
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 658);
-		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table');
+		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table', mode);
 
 		this.setupDisplays();
 
 		this.status_filter = [];
+
+		if(mode == 'troubleshoot')
+		{
+			this.status_filter = [1, 2];
+			this.applyStatusFilter();
+		}
 
 		this.setClickListeners()
 	}
@@ -118,6 +124,12 @@ export class CompressorsDashboard
 
 				this.applyStatusFilter();
 			});
+
+			// Activate boxes on setup if filter is defined (i.e. in troubleshoot mode)
+			if(this.status_filter.includes(i))
+			{
+				d3.select('#click-' + names[i]).classed('active', true);
+			}
 		}
 	}
 }

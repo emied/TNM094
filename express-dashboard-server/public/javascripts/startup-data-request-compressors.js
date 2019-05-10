@@ -2,7 +2,6 @@ import { CompressorsDashboard } from './compressors-dashboard/compressors-dashbo
 
 function afterLoad() {
 
-	//const socket = io();
 	socket.emit('dataset', { name: 'compressors' } );
 	socket.on("compressors_data", data => {
 		compressors_dashboard.addData(data);
@@ -14,9 +13,11 @@ function afterLoad() {
 }
 
 function startupDataRequest() {
+	var mode = new URLSearchParams(window.location.search).get('mode');
+
 	d3.json('./api/get_compressors').then( data => {
 		d3.json('/api/get_file?name=kommuner-kustlinjer.geo.json').then( map_data => {
-			compressors_dashboard = new CompressorsDashboard(data, map_data);
+			compressors_dashboard = new CompressorsDashboard(data, map_data, mode);
 			afterLoad();
 		});
 	});
