@@ -1,23 +1,15 @@
 export class StatusDisplay 
 {
-	constructor(cross_filter, container_id, status, title) 
+	constructor(container_id, status, title, statuses)
 	{
 		this.container_id = container_id;
-		this.display = dc.numberDisplay(this.container_id);
-		this.cross_filter = cross_filter;
-		this.group = this.cross_filter.groupAll().reduceSum(d => { return d.status == status });
-
-		this.display
-			.formatNumber(d3.format("d"))
-			.valueAccessor(d=>{ return d })
-			.html({some: "<h4 class=status-display><br>" + title + "</h4><h5 class=status-display>%number</h5>"})
-			.group(this.group);
-
-		this.display.render();
+		this.status = status;
+		this.title = title;
+		$(this.container_id).html("<span><h4 class=status-display><br>" + this.title + "</h4><h5 class=status-display>" + statuses[this.status] + "</h5></span>");
 	}
 
-	redraw()
+	redraw(statuses)
 	{
-		this.display.redraw();
+		$(this.container_id + " span h5.status-display").html(statuses[this.status]);
 	}
 }

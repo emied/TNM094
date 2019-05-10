@@ -21,10 +21,9 @@ export class CompressorsDashboard
 		})
 
 		this.map_chart_cluster = new MapChartCluster(this.cross_filter, '#map-chart-cluster', 600);
-		this.working_display = new StatusDisplay(this.cross_filter, '#working-display', 0, "Working");
-		this.warning_display = new StatusDisplay(this.cross_filter, '#warning-display', 1, "Warning");
-		this.broken_display = new StatusDisplay(this.cross_filter, '#broken-display', 2, "Broken");
 		this.compressors_table = new CompressorsTable(this.cross_filter, '#compressors-table');
+
+		this.setupDisplays();
 
 		this.status_filter = null;
 
@@ -38,9 +37,6 @@ export class CompressorsDashboard
 
 	redraw()
 	{
-		this.broken_display.redraw();
-		this.working_display.redraw();
-		this.warning_display.redraw();
 		this.map_chart_cluster.redraw();
 		this.compressors_table.redraw();
 	}
@@ -67,6 +63,21 @@ export class CompressorsDashboard
 			this.status_dimension.filter(this.status_filter);
 			this.redraw();
 		}
+	}
+
+	setupDisplays()
+	{
+		d3.json('./api/get_compressors_statuses').then( statuses => {
+			this.working_display = new StatusDisplay('#working-display', 0, "Working", statuses);
+			this.warning_display = new StatusDisplay('#warning-display', 1, "Warning", statuses);
+			this.broken_display = new StatusDisplay('#broken-display', 2, "Broken", statuses);
+		});
+
+		socket.on("statuses", statuses => {
+			this.working_display.redraw(statuses);
+			this.warning_display.redraw(statuses);
+			this.broken_display.redraw(statuses);
+		});
 	}
 
 	setClickListeners()

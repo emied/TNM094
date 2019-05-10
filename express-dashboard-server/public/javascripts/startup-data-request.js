@@ -61,7 +61,6 @@ function startupDataRequest() {
 
 startupDataRequest();
 
-const socket = io();
 socket.on("data", data => {
 	if(bike_dashboard) {
 		bike_dashboard.addDataEntry(data);

@@ -37,7 +37,7 @@ $(document).ready(() => {
 		updateTriangle(statuses);
 	});
 
-	io().on("statuses", statuses => {
+	socket.on("statuses", statuses => {
 		updateTriangle(statuses);
 	});
 

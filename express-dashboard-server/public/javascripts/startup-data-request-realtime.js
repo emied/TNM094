@@ -1,7 +1,6 @@
 import { BikeDashboard } from './bike-dashboard/bike-dashboard.js';
 
 function afterLoad() {
-	const socket = io();
 
 	socket.emit('dataset', { name: 'bike' } );
 

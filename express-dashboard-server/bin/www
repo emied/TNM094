@@ -230,6 +230,11 @@ let compressors_interval;
 io.on("connection", socket => {
 	console.log("New client connected");
 
+	// Always emit statuses on change to whoever listens
+	global.statuses.registerListener(function(val) {
+		io.sockets.emit("statuses", val);
+	});
+
 	socket.on('dataset', dataset => {
 		switch(dataset.name)
 		{
@@ -261,9 +266,4 @@ io.on("connection", socket => {
 	});
 
 	socket.on("disconnect", () => { console.log("Client disconnected")});
-});
-
-// Always emit statuses on change to whoever listens
-global.statuses.registerListener(function(val) {
-	io.sockets.emit("statuses", val);
 });
