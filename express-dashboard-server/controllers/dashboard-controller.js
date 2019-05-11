@@ -18,9 +18,13 @@ exports.dashboard = function(req, res) {
 	{
 		res.render('bike-dashboard/view-3', { title: title });
 	}
-	else if (data = "bike" && view == "warning")
+	else if (data == "bike" && view == "warning")
 	{
 		res.render('bike-dashboard/view-warning', { title: title });
+	}
+	else if (data == 'bike' && view == 'help')
+	{
+		res.render('bike-dashboard/view-help', { title: 'Help' });
 	}
 	else if(data = "compressor" && view == "main")
 	{
