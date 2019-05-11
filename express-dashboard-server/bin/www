@@ -178,7 +178,11 @@ const emitCompressorData = async (socket, id) => {
 	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
 	compressor_last_sent = new Date(global.compressor_current_time);
 
-	var new_data = [];
+	var new_data = { 
+		status: c.status,
+		data: []
+	};
+
 	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++) {
 		
 		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
@@ -215,11 +219,11 @@ const emitCompressorData = async (socket, id) => {
 				data_entry.oil_pressure = 0;
 			}
 
-			new_data.push(data_entry);
+			new_data.data.push(data_entry);
 		}
 	}
 
-	if(new_data.length)
+	if(new_data.data.length)
 	{
 		socket.emit("compressor_data", new_data);
 	}

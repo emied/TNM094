@@ -34,8 +34,15 @@ export class CompressorDashboard
 			this.displays.push(new AvgDisplay(this.cross_filter, '#avg-' + this.names.get(attr), attr, this.titles.get(attr), this.units.get(attr), this.modifiers.get(attr)));
 		})
 
-		this.compressor_text = "<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4><br/><h4 class='compressor-location'>Location: " + data.location + "</h4>";
-		$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + data.data[data.data.length - 1].start_time + "</h4>" );
+		this.status_text = ['Working', 'Warning', 'Broken'];
+		this.compressor_text = "<h4 class='compressor-id'><br>Compressor: " + data.id + "</h4>";
+		this.compressor_text += "<br/><h4 class='compressor-location'>Location: " + data.location + "</h4>";
+
+		$('#compressor-id').html(
+			this.compressor_text +
+			"<h4 class='compressor-time'>Last seen: " + this.current_data.start_time + "</h4>" +
+			"<h4 class='compressor-time'>Status: " + this.status_text[data.status] + "</h4>"
+		);
 
 		this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
 
@@ -76,13 +83,17 @@ export class CompressorDashboard
 
 	addData(data)
 	{
-		if(data.length)
+		if(data.data.length)
 		{
-			this.cross_filter.add(data);
+			this.cross_filter.add(data.data);
 
-			this.current_data = data[data.length - 1];
+			this.current_data = data.data[data.data.length - 1];
 
-			$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + this.current_data.start_time + "</h4>" );
+			$('#compressor-id').html(
+				this.compressor_text +
+				"<h4 class='compressor-time'>Last seen: " + this.current_data.start_time + "</h4>" +
+				"<h4 class='compressor-time'>Status: " + this.status_text[data.status] + "</h4>"
+			);
 
 			this.redraw();
 		}
