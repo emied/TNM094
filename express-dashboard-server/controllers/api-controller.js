@@ -214,6 +214,8 @@ exports.get_compressor = function(req, res) {
 		lat: c.lat,
 		lon: c.lon,
 		location: c.location,
+		attr: c.attr,
+		status: c.status,
 		data: []
 	}
 	
@@ -272,6 +274,8 @@ exports.compressor_latest_range = function(req, res) {
 		lat: c.lat,
 		lon: c.lon,
 		location: c.location,
+		attr: c.attr,
+		status: c.status,
 		data: []
 	}
 

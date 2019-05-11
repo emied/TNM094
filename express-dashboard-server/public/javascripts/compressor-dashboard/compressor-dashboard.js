@@ -22,8 +22,6 @@ export class CompressorDashboard
 			return date;
 		});
 
-		this.mode = 'normal';
-
 		var start = new Date(data.data[0].start_time);
 		var end = new Date(data.data[data.data.length - 1].start_time);
 
@@ -41,11 +39,17 @@ export class CompressorDashboard
 
 		this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
 
-		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, 'flow', this.range_chart_flow.chart, this.dimension, 1.0/60000.0);
-		$('#click-flow').toggleClass('active');
-		$('#line-chart-title').html('Flow (m<sup>3</sup>/s)');
+		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, data.attr, this.range_chart_flow.chart, this.dimension, this.modifiers.get(data.attr), this.limits.get(data.attr));
+		$('#click-' + this.names.get(data.attr)).toggleClass('active');
+		$('#line-chart-title').html(this.titles.get(data.attr) + ' (' + this.units.get(data.attr) + ')');
 
 		this.setClickListeners();
+
+		if(data.status != 0)
+		{
+			this.mode = 'realtime';
+			this.redraw();
+		}
 	}
 
 	resize()
@@ -54,10 +58,10 @@ export class CompressorDashboard
 		this.range_chart_flow.resize();
 	}
 
-	redraw(end)
+	redraw()
 	{
-		this.line_chart.redraw(end);
-		this.range_chart_flow.redraw(end);
+		this.line_chart.redraw(new Date(this.current_data.start_time));
+		this.range_chart_flow.redraw(new Date(this.current_data.start_time));
 		if(this.mode == 'realtime')
 		{
 			$('#displays-title').html('Real-Time Values:');
@@ -75,13 +79,12 @@ export class CompressorDashboard
 		if(data.length)
 		{
 			this.cross_filter.add(data);
-			var end = new Date(data[data.length - 1].start_time);
 
 			this.current_data = data[data.length - 1];
 
-			$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + data[data.length - 1].start_time + "</h4>" );
+			$('#compressor-id').html(this.compressor_text + "<h4 class='compressor-time'>Last seen: " + this.current_data.start_time + "</h4>" );
 
-			this.redraw(end);
+			this.redraw();
 		}
 	}
 

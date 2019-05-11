@@ -141,6 +141,8 @@ const updateCompressor = async c => {
 				c.status_time = formatDate(start_time);
 				c.status = 2;
 
+				c.attr = vibration >= C.VIBRATION_BREAK_LIMIT ? 'bearing_vibration' : 'oil_pressure';
+
 				break;
 			}
 
@@ -150,6 +152,7 @@ const updateCompressor = async c => {
 				{
 					global.statuses.arr = [-1, 1, 0];
 					c.status_time = formatDate(start_time);
+					c.attr = vibration >= C.VIBRATION_WARN_LIMIT ? 'bearing_vibration' : 'oil_pressure';
 				}
 
 				c.status = 1;
@@ -170,6 +173,7 @@ for(var i = 0; i < C.NUM; i++)
 		status: 0,
 		break_time: undefined,
 		status_time: '-',
+		attr: 'flow', // Attribute to display by default
 		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
 		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),
