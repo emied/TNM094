@@ -14,7 +14,7 @@ block content
 						.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.d-flex.justify-content-center
 							div(id="compressor-id")
 					.row.justify-content-center
-						p(style="font-size: 18px") Averages:
+						p#displays-title(style="font-size: 18px") Averages:
 					.border-bottom
 					.row.p-2.m-0
 						each name in ['flow', 'oil-temp', 'humidity', 'oil-pressure', 'amb-temp', 'vibration']
@@ -23,6 +23,7 @@ block content
 		.row
 			.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
 				+range-chart-card('line-chart-flow', 'Flow', 'range-chart-flow')
+					a#switch-compressor-mode.dropdown-item Switch Mode
 		.row
 			//-.container-fluid.col-xs-12.col-sm-12.col-md-12.col-lg-12.p-2
 			//-	#compressor-table

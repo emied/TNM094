@@ -22,6 +22,8 @@ export class CompressorDashboard
 			return date;
 		});
 
+		this.mode = 'normal';
+
 		var start = new Date(data.data[0].start_time);
 		var end = new Date(data.data[data.data.length - 1].start_time);
 
@@ -56,7 +58,16 @@ export class CompressorDashboard
 	{
 		this.line_chart.redraw(end);
 		this.range_chart_flow.redraw(end);
-		this.displays.forEach( display => display.redraw() );
+		if(this.mode == 'realtime')
+		{
+			$('#displays-title').html('Real-Time Values:');
+			this.displays.forEach( display => display.redraw(+this.current_data[display.attr]) );
+		}
+		else
+		{
+			$('#displays-title').html('Averages:');
+			this.displays.forEach( display => display.redraw() );
+		}
 	}
 
 	addData(data)
@@ -113,5 +124,10 @@ export class CompressorDashboard
 				this.setAttribute(event.data.attr);
 			});
 		});
+
+		$('#switch-compressor-mode').click( event => {
+			this.mode = this.mode == 'normal' ? 'realtime' : 'normal';
+			this.redraw(new Date(this.current_data.start_time));
+		})
 	}
 }

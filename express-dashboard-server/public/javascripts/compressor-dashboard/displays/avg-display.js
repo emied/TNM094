@@ -15,10 +15,24 @@ export class AvgDisplay {
 			.group(this.group);
 
 		this.display.render();
+
+		this.attr = attr;
+		this.title = title;
+		this.unit = unit;
+		this.modifier = modifier;
 	}
 
-	redraw()
+	redraw(value)
 	{
+		if(!isNaN(value))
+		{
+			var v = this.display.formatNumber()(value*this.modifier);
+			this.display.valueAccessor(d => { return v; });
+		}
+		else
+		{
+			this.display.valueAccessor(d => { return d.count ? (d.sum*this.modifier / ((d.count))) : 0 });
+		}
 		this.display.redraw();
 	}
 }
