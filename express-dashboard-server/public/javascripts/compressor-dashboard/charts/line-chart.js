@@ -60,10 +60,10 @@ export class LineChart {
 				}
 				return 0;
 			})
-			.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
+			//.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
 			.render();
 
-			this.drawLimitDots();
+			//this.drawLimitDots();
 		}
 
 		resize() {
