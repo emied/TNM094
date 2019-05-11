@@ -20,7 +20,9 @@ function startupDataRequest() {
 				throw JSON.stringify(data.errors);
 			}
 
-			compressor_dashboard = new CompressorDashboard(data);
+			d3.json('./api/get_compressor_limits').then( limits => {
+				compressor_dashboard = new CompressorDashboard(data, limits);
+			});
 
 			window.onresize = function(event) {
 				compressor_dashboard.resize();
