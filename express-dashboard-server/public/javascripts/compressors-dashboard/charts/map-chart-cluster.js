@@ -24,8 +24,8 @@ export class MapChartCluster
 
 	createMap()
 	{
-		var color = d3.scaleLinear().domain([0, 100]).interpolate(d3.interpolateLab).range(['rgba(0,140,130,0.6)', 'rgba(116,188,110,0.6)']);
-		var color_i = d3.scaleLinear().domain([0, 100]).interpolate(d3.interpolateLab).range(['rgba(0,140,130,1.0)', 'rgba(116,188,110,1.0)']);
+		var color = d3.scaleLinear().domain([0, 100]).interpolate(d3.interpolateLab).range(['rgba(116,188,110,0.6)', 'rgba(0,191,177,0.6)']);
+		var color_i = d3.scaleLinear().domain([0, 100]).interpolate(d3.interpolateLab).range(['rgba(116,188,110,1.0)', 'rgba(0,191,177,1.0)']);
 
 		const color_f = num => {
 			return num > 150 ? color(150) : color(num);
