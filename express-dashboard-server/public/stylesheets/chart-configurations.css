@@ -78,3 +78,39 @@ g.layer0 g.zip_code path {
 #range-chart-oil-temp {
 	background-color: white;
 }
+
+.custom-cluster-icon {
+	width: 40px;
+	height: 40px;
+
+	line-height: 40px;
+	border-radius: 40px;
+
+	/*border: 1px solid black;*/
+
+	transition: 0.2s;
+
+	text-align: center;
+}
+
+.custom-cluster-inner-icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 30px;
+
+	position: absolute;
+	left: 50%;
+	top: 50%;
+
+	/*border: 1px solid black;*/
+	
+	margin-top: -15px;
+	margin-left: -15px;
+
+	line-height: 30px;
+	text-align: center;
+}
+
+.custom-cluster-icon:hover {
+	filter: brightness(115%);
+}
