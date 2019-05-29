@@ -67,6 +67,7 @@ const random_in_deviation = (deviation) => { return random_in_range(-deviation, 
 const updateCompressor = async c => {
 
 	c.current_index++;
+	c.current_date = new Date();
 
 	if(c.status == 2)
 	{
@@ -165,6 +166,7 @@ for(var i = 0; i < C.NUM; i++)
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION),
 
 		current_index: 0,
+		current_date: new Date(),
 
 		vibration_rise_index: undefined,
 		pressure_rise_index: undefined,

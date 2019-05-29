@@ -1,7 +1,7 @@
 import { CompressorDashboard } from './compressor-dashboard/compressor-dashboard.js';
 
 function startupDataRequest() {
-	var interval = 1000*60*60*24*15;
+	var interval = 1000*60*60*24*3;
 
 	// Get id from url
 	var id = new URLSearchParams(window.location.search).get('id');
@@ -28,10 +28,10 @@ function startupDataRequest() {
 				compressor_dashboard.resize();
 			};
 
-			socket.emit('dataset', { name: 'compressor', id: id } );
-			socket.on("compressor_data", data => {
-				compressor_dashboard.addData(data);
-			});
+			// socket.emit('dataset', { name: 'compressor', id: id } );
+			// socket.on("compressor_data", data => {
+			// 	compressor_dashboard.addData(data);
+			// });
 
 		})
 		.catch( error => {

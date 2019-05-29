@@ -15,15 +15,15 @@ export class CompressorDashboard
 			"#dadaeb","#636363","#969696","#bdbdbd","#d9d9d9"
 		]);
 
-		this.cross_filter = crossfilter(data.data);
-		this.dimension = this.cross_filter.dimension(function(d) {
-			var date = new Date(d.start_time);
-			date.setHours(date.getHours(), 0, 0, 0);
-			return date;
-		});
-
 		var start = new Date(data.data[0].start_time);
 		var end = new Date(data.data[data.data.length - 1].start_time);
+
+		this.cross_filter = crossfilter(data.data);
+		this.dimension = this.cross_filter.dimension(function(d) {
+			var step = ((end-start)/500); 
+			var date = new Date(d.start_time);
+			return new Date(start.valueOf() + Math.floor((date-start)/step)*step);
+		});
 
 		this.current_data = data.data[data.data.length - 1];
 
