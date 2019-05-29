@@ -319,7 +319,7 @@ exports.compressor_latest_range = function(req, res) {
 		}
 		if(c.pressure_spike_index && c.pressure_spike_index == (i - (global.compressor_start_index + c.index_offset)))
 		{
-			data_entry.pressure_vibration += C.PRESSURE_SPIKE_AMP;
+			data_entry.oil_pressure += C.PRESSURE_SPIKE_AMP;
 		}
 
 		// maybe change to > if spike doesen't show up

@@ -112,3 +112,7 @@ g.layer0 g.zip_code path {
 .custom-cluster-icon:hover {
 	filter: grayscale(100%);
 }
+
+#line-chart-flow svg g g.chart-body g.dc-tooltip-list g.dc-tooltip._0 circle.dot {
+	stroke: black;
+}
