@@ -57,8 +57,6 @@ sweden_lakes_geojson.features.forEach( lake => {
 	s_coord[s_coord.length-1].push(lake.geometry.coordinates[0])
 })
 
-fs.writeFileSync('data/source/sweden_lakes_removed.geojson', JSON.stringify(sweden_geojson), 'utf8');
-
 const C = require('./constants.js').COMPRESSORS;
 
 var coordinates = require('random-points-on-polygon')(C.NUM, sweden_geojson.features[0]);
@@ -67,8 +65,8 @@ const random_in_range = (min, max) => { return Math.random() * (min - max) + max
 const random_in_deviation = (deviation) => { return random_in_range(-deviation, deviation) }
 
 const updateCompressor = async c => {
-	var start = global.compressor_current_time;
-	global.compressor_current_time = new Date(global.compressor_start_time.valueOf() + global.timescale*(new Date() - global.server_start_time));
+
+	c.current_index++;
 
 	if(c.status == 2)
 	{
@@ -80,86 +78,70 @@ const updateCompressor = async c => {
 	var pressure_spike = Math.random() <= C.PRESSURE_SPIKE_PROBABILITY;
 	var pressure_rise = Math.random() <= C.PRESSURE_RISE_PROBABILITY;
 
-	if(!(vibration_spike || vibration_rise || pressure_spike || pressure_rise || c.vibration_rise || c.pressure_rise))
+	if(!(vibration_spike || vibration_rise || pressure_spike || pressure_rise || c.vibration_rise_index || c.pressure_rise_index))
 	{
 		return;
 	}
 
 	const formatDate = require('../data/utility.js').formatDate;
 
-	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i++) {
-		
-		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
+	var v = datasets['compressor'][global.compressor_start_index + c.index_offset + c.current_index];
 
-		if(start_time > start)
+	if(vibration_spike && !c.vibration_spike_index)
+	{
+		c.vibration_spike_index = c.current_index;
+	}
+	if(pressure_spike && !c.pressure_spike_index)
+	{
+		c.pressure_spike_index = c.current_index;
+	}
+	if(vibration_rise && !c.vibration_rise_index)
+	{
+		c.vibration_rise_index = c.current_index;
+	}
+	if(pressure_rise && !c.pressure_rise_index)
+	{
+		c.pressure_rise_index = c.current_index;
+	}
+
+	var vibration = +v.bearing_vibration + c.bearing_vibration_offset;
+	vibration += c.vibration_rise_index ? (c.current_index-c.vibration_rise_index)*C.VIBRATION_RISE_SPEED : 0;
+	vibration += vibration_spike*C.VIBRATION_SPIKE_AMP;
+
+	var pressure = +v.oil_pressure + c.oil_pressure_offset;
+	pressure += c.pressure_rise_index ? (c.current_index-c.pressure_rise_index)*C.PRESSURE_RISE_SPEED : 0;
+	pressure += pressure_spike*C.PRESSURE_SPIKE_AMP;
+
+	if(vibration >= C.VIBRATION_BREAK_LIMIT || pressure >= C.PRESSURE_BREAK_LIMIT)
+	{
+		if(c.status == 0)
 		{
-			var v = datasets['compressor'][i];
-
-			if(vibration_spike)
-			{
-				c.vibration_add.set(formatDate(start_time), C.VIBRATION_SPIKE_AMP);
-			}
-			if(pressure_spike)
-			{
-				c.pressure_add.set(formatDate(start_time), C.PRESSURE_SPIKE_AMP);
-			}
-
-			if(vibration_rise || c.vibration_rise)
-			{
-				c.vibration_rise = true;
-				c.prev_vibration_rise += C.VIBRATION_RISE_SPEED;
-				c.vibration_add.set(formatDate(start_time), c.prev_vibration_rise);
-			}
-			if(pressure_rise || c.pressure_rise)
-			{
-				c.pressure_rise = true;
-				c.prev_pressure_rise += C.PRESSURE_RISE_SPEED;
-				c.pressure_add.set(formatDate(start_time), c.prev_pressure_rise);
-			}
-
-			var vibration = +v.bearing_vibration + c.bearing_vibration_offset;
-			var v_add = c.vibration_add.get(formatDate(start_time));
-			vibration += v_add ? v_add : 0;
-
-			var pressure = +v.oil_pressure + c.oil_pressure_offset;
-			var p_add = c.pressure_add.get(formatDate(start_time));
-			pressure += p_add ? p_add : 0;
-
-			if(vibration >= C.VIBRATION_BREAK_LIMIT || pressure >= C.PRESSURE_BREAK_LIMIT)
-			{
-
-				if(c.status == 0)
-				{
-					global.statuses.arr = [-1, 0, 1];
-				}
-				if(c.status == 1)
-				{
-					global.statuses.arr = [0, -1, 1];
-				}
-
-				c.break_time = formatDate(start_time);
-				c.status_time = formatDate(start_time);
-				c.status = 2;
-
-				c.attr = vibration >= C.VIBRATION_BREAK_LIMIT ? 'bearing_vibration' : 'oil_pressure';
-
-				break;
-			}
-
-			if(vibration >= C.VIBRATION_WARN_LIMIT || pressure >= C.PRESSURE_WARN_LIMIT)
-			{
-				if(c.status == 0)
-				{
-					global.statuses.arr = [-1, 1, 0];
-					c.status_time = formatDate(start_time);
-					c.attr = vibration >= C.VIBRATION_WARN_LIMIT ? 'bearing_vibration' : 'oil_pressure';
-				}
-
-				c.status = 1;
-			}
-
-			break;
+			global.statuses.arr = [-1, 0, 1];
 		}
+		if(c.status == 1)
+		{
+			global.statuses.arr = [0, -1, 1];
+		}
+
+		c.break_index = c.current_index;
+		c.status_time = formatDate(new Date());
+		c.status = 2;
+
+		c.attr = vibration >= C.VIBRATION_BREAK_LIMIT ? 'bearing_vibration' : 'oil_pressure';
+
+		return;
+	}
+
+	if(vibration >= C.VIBRATION_WARN_LIMIT || pressure >= C.PRESSURE_WARN_LIMIT)
+	{
+		if(c.status == 0)
+		{
+			global.statuses.arr = [-1, 1, 0];
+			c.status_time = formatDate(new Date());
+			c.attr = vibration >= C.VIBRATION_WARN_LIMIT ? 'bearing_vibration' : 'oil_pressure';
+		}
+
+		c.status = 1;
 	}
 }
 
@@ -171,10 +153,9 @@ for(var i = 0; i < C.NUM; i++)
 		lat: coord[0],
 		lon: coord[1],
 		status: 0,
-		break_time: undefined,
+		break_index: undefined,
 		status_time: '-',
 		attr: 'flow', // Attribute to display by default
-		start_time_offset: Math.round(random_in_range(0.0, C.START_TIME_DEVIATION)),
 		index_offset: Math.round(random_in_range(0.0, C.INDEX_DEVIATION)),
 		flow_offset: random_in_deviation(C.FLOW_DEVIATION),
 		bearing_vibration_offset: random_in_deviation(C.BEARING_VIBRATION_DEVIATION),
@@ -183,13 +164,12 @@ for(var i = 0; i < C.NUM; i++)
 		ambient_temp_offset: random_in_deviation(C.AMBIENT_TEMP_DEVIATION),
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION),
 
-		vibration_rise: false,
-		pressure_rise: false,
-		prev_vibration_rise: 0,
-		prev_pressure_rise: 0,
+		current_index: 0,
 
-		vibration_add: new Map(),
-		pressure_add: new Map()
+		vibration_rise_index: undefined,
+		pressure_rise_index: undefined,
+		vibration_spike_index: undefined,
+		pressure_spike_index: undefined
 	})
 }
 
