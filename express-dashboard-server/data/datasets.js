@@ -166,6 +166,7 @@ for(var i = 0; i < C.NUM; i++)
 		humidity_offset: random_in_deviation(C.HUMIDITY_DEVIATION),
 
 		current_index: 0,
+		last_sent_index: 0,
 		current_date: new Date(),
 
 		vibration_rise_index: undefined,

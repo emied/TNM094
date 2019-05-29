@@ -28,10 +28,10 @@ function startupDataRequest() {
 				compressor_dashboard.resize();
 			};
 
-			// socket.emit('dataset', { name: 'compressor', id: id } );
-			// socket.on("compressor_data", data => {
-			// 	compressor_dashboard.addData(data);
-			// });
+			socket.emit('dataset', { name: 'compressor', id: id } );
+			socket.on("compressor_data", data => {
+				compressor_dashboard.addData(data);
+			});
 
 		})
 		.catch( error => {

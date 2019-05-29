@@ -20,9 +20,13 @@ export class CompressorDashboard
 
 		this.cross_filter = crossfilter(data.data);
 		this.dimension = this.cross_filter.dimension(function(d) {
-			var step = ((end-start)/500); 
 			var date = new Date(d.start_time);
-			return new Date(start.valueOf() + Math.floor((date-start)/step)*step);
+			if(data.data.length <= 500)
+			{
+				return date;
+			}
+			var step = ((end-start)/500); 
+			return new Date(start.valueOf() + Math.round((date-start)/step)*step);
 		});
 
 		this.current_data = data.data[data.data.length - 1];

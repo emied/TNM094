@@ -280,7 +280,8 @@ exports.compressor_latest_range = function(req, res) {
 		data: []
 	}
 
-	var current_index = global.compressor_start_index + c.index_offset + c.current_index;
+	var base_index = global.compressor_start_index + c.index_offset;
+	var current_index = base_index + c.current_index;
 	var start_index = current_index - Math.round(interval/150000);
 	start_index = start_index >= (4300 + c.index_offset) ? start_index : (4300 + c.index_offset);
 
@@ -304,26 +305,25 @@ exports.compressor_latest_range = function(req, res) {
 		data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
 		data_entry.humidity = v.humidity + c.humidity_offset;
 
-		if(c.vibration_rise_index && i > (global.compressor_start_index + c.index_offset + c.vibration_rise_index))
+		if(c.vibration_rise_index && i > (base_index + c.vibration_rise_index))
 		{
-			data_entry.bearing_vibration += (i - (global.compressor_start_index + c.index_offset + c.vibration_rise_index))*C.VIBRATION_RISE_SPEED;
+			data_entry.bearing_vibration += (i - (base_index + c.vibration_rise_index))*C.VIBRATION_RISE_SPEED;
 		}
-		if(c.pressure_rise_index && i > (global.compressor_start_index + c.index_offset + c.pressure_rise_index))
+		if(c.pressure_rise_index && i > (base_index + c.pressure_rise_index))
 		{
-			data_entry.oil_pressure += (i - (global.compressor_start_index + c.index_offset + c.pressure_rise_index))*C.PRESSURE_RISE_SPEED;
+			data_entry.oil_pressure += (i - (base_index + c.pressure_rise_index))*C.PRESSURE_RISE_SPEED;
 		}
 
-		if(c.vibration_spike_index && c.vibration_spike_index == (i - (global.compressor_start_index + c.index_offset)))
+		if(c.vibration_spike_index && c.vibration_spike_index == (i - (base_index)))
 		{
 			data_entry.bearing_vibration += C.VIBRATION_SPIKE_AMP;
 		}
-		if(c.pressure_spike_index && c.pressure_spike_index == (i - (global.compressor_start_index + c.index_offset)))
+		if(c.pressure_spike_index && c.pressure_spike_index == (i - (base_index)))
 		{
 			data_entry.oil_pressure += C.PRESSURE_SPIKE_AMP;
 		}
 
-		// maybe change to > if spike doesen't show up
-		if(c.status == 2 && c.break_index && i > (global.compressor_start_index + c.index_offset + c.break_index))
+		if(c.status == 2 && c.break_index && i > (base_index + c.break_index))
 		{
 			data_entry.flow = 0;
 			data_entry.bearing_vibration = 0;
@@ -332,6 +332,9 @@ exports.compressor_latest_range = function(req, res) {
 
 		result.data.push(data_entry);
 	}
+
+	c.last_sent_index = current_index;
+	
 	res.json(result);
 }
 
