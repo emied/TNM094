@@ -59,12 +59,13 @@ export class LineChart {
 					}
 				}
 				return 0;
-			})
+			});
 			//.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
-			.render();
 
-			//this.drawLimitDots();
-		}
+		//this.drawLimitDots();
+		this.drawLimitLines();
+		this.chart.render();
+	}
 
 		resize() {
 			this.chart
@@ -127,6 +128,84 @@ export class LineChart {
 				.y(d3.scaleLinear().domain(y_range))
 				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
 				.redraw();
+		}
+
+		drawLimitLines()
+		{
+			var line_chart = this;
+
+			this.chart.on('pretransition', function(chart) {
+				var chart_body = chart.select('g.chart-body');
+				chart_body.selectAll('path.warn').remove();
+				chart_body.selectAll('path.warn-outline').remove();
+				chart_body.selectAll('path.break').remove();
+				chart_body.selectAll('path.break-outline').remove();
+
+				if(line_chart.limit)
+				{
+					var warn_data = [
+						{x: chart.x().range()[0], y: chart.y()(line_chart.limit[0])}, 
+						{x: chart.x().range()[1], y: chart.y()(line_chart.limit[0])}
+					];
+
+					var break_data = [
+						{x: chart.x().range()[0], y: chart.y()(line_chart.limit[1])}, 
+						{x: chart.x().range()[1], y: chart.y()(line_chart.limit[1])}
+					];
+
+					var warn_line = d3.line()
+						.x(function(d) { return d.x; })
+						.y(function(d) { return d.y; })
+						.curve(d3.curveLinear);
+
+					var warn_outline_path = chart_body.selectAll('path.warn-outline').data([warn_data]);
+					warn_outline_path = warn_outline_path
+						.enter()
+							.append('path')
+							.attr('class', 'warn-outline')
+							.attr('stroke-width', '0.3%')
+							.attr('stroke', 'black')
+						.merge(warn_outline_path);
+					warn_outline_path.attr('d', warn_line);
+
+					var warn_path = chart_body.selectAll('path.warn').data([warn_data]);
+					warn_path = warn_path
+						.enter()
+							.append('path')
+							.attr('class', 'warn')
+							.attr('stroke-width', '0.2%')
+							//.attr('stroke', 'rgb(191.25, 191.25, 75)')
+							.attr('stroke', 'yellow')
+						.merge(warn_path);
+					warn_path.attr('d', warn_line);
+
+					var break_line = d3.line()
+						.x(function(d) { return d.x; })
+						.y(function(d) { return d.y; })
+						.curve(d3.curveLinear);
+
+					var break_outline_path = chart_body.selectAll('path.break-outline').data([break_data]);
+					break_outline_path = break_outline_path
+						.enter()
+							.append('path')
+							.attr('class', 'break-outline')
+							.attr('stroke-width', '0.3%')
+							.attr('stroke', 'black')
+						.merge(break_outline_path);
+					break_outline_path.attr('d', break_line);
+
+					var break_path = chart_body.selectAll('path.break').data([break_data]);
+					break_path = break_path
+						.enter()
+							.append('path')
+							.attr('class', 'break')
+							.attr('stroke-width', '0.2%')
+							//.attr('stroke', 'rgb(191.25, 75, 75)')
+							.attr('stroke', 'red')
+						.merge(break_path);
+					break_path.attr('d', break_line);
+				}
+			});
 		}
 
 		drawLimitDots()
