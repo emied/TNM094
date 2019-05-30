@@ -15,18 +15,25 @@ export class CompressorDashboard
 			"#dadaeb","#636363","#969696","#bdbdbd","#d9d9d9"
 		]);
 
+		const num_data_points = 250;
+
+		if(data.status != 0)
+		{
+			data.data = data.data.splice(data.data.length-num_data_points, num_data_points);
+		}
+
 		var start = new Date(data.data[0].start_time);
 		var end = new Date(data.data[data.data.length - 1].start_time);
 
 		this.cross_filter = crossfilter(data.data);
 		this.dimension = this.cross_filter.dimension(function(d) {
 			var date = new Date(d.start_time);
-			if(data.data.length <= 500)
+			if(data.data.length <= num_data_points /* || +d.oil_pressure >= +limits.pressure_warn  || +d.bearing_vibration >= +limits.vibration_warn*/)
 			{
 				return date;
 			}
-			var step = ((end-start)/500); 
-			return new Date(start.valueOf() + Math.round((date-start)/step)*step);
+			var step = ((end-start)/num_data_points); 
+			return new Date(start.valueOf() + Math.round((date-start)/step)*step - step);
 		});
 
 		this.current_data = data.data[data.data.length - 1];

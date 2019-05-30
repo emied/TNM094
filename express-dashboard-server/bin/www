@@ -220,7 +220,7 @@ const emitCompressorData = async (socket, id) => {
 		{
 			data_entry.flow = 0;
 			data_entry.bearing_vibration = 0;
-			data_entry.oil_pressure = 0;
+			data_entry.oil_pressure = 1.01325;
 		}
 
 		new_data.data.push(data_entry);

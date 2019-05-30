@@ -327,14 +327,14 @@ exports.compressor_latest_range = function(req, res) {
 		{
 			data_entry.flow = 0;
 			data_entry.bearing_vibration = 0;
-			data_entry.oil_pressure = 0;
+			data_entry.oil_pressure = 1.01325;
 		}
 
 		result.data.push(data_entry);
 	}
 
 	c.last_sent_index = current_index;
-	
+
 	res.json(result);
 }
 
