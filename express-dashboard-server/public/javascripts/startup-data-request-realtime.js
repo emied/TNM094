@@ -37,6 +37,15 @@ function afterLoad() {
 		$('#map-hover-info').html('<a>&nbsp</a><br><a>&nbsp</a>');
 		clearInterval(interval);
 	});
+
+	$('#displays-title').click( event => {
+		this.mode = this.mode == 'normal' ? 'realtime' : 'normal';
+		this.redraw(new Date(this.current_data.start_time));
+	})
+
+	$('#List-click').click( event => {
+		localStorage.setItem('bike-data', JSON.stringify(bike_dashboard.cross_filter.allFiltered()));
+	})
 }
 
 function startupDataRequest() {

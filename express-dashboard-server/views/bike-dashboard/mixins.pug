@@ -40,7 +40,7 @@ mixin topnav-bike(active_view)
 			ul.navbar-nav.mr-auto
 				each view in ['Overview', 'List']
 					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
-						a.nav-link(href='dashboard?data=bike&view=' + view) #{view}
+						a(id=view + '-click').nav-link(href='dashboard?data=bike&view=' + view) #{view}
 			a.qmark.fas.fa-question.mx-2(href='dashboard?data=bike&view=help')
 			form.form-inline.d-flex.justify-content-center
 				.input-group-prepend
