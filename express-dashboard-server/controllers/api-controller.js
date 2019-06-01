@@ -205,6 +205,7 @@ exports.get_compressor = function(req, res) {
 
 	var { id, start, end, decimate } = req.query;
 
+	var C = require('../data/constants.js').COMPRESSORS;
 	const formatDate = require('../data/utility.js').formatDate;
 
 	var c = compressors[id];
@@ -218,47 +219,66 @@ exports.get_compressor = function(req, res) {
 		status: c.status,
 		data: []
 	}
-	
-	for(var i = 4300 + c.index_offset; i < (datasets['compressor'].length - c.index_offset); i += decimate) {
-		
-		var start_time = new Date(new Date(datasets['compressor'][i].start_time).valueOf() + c.start_time_offset)
 
-		if(start_time > start)
+	var base_index = global.compressor_start_index + c.index_offset;
+	var end_index = base_index + c.current_index - Math.round((c.current_date-end)/150000);
+	var start_index = base_index + c.current_index - Math.round((c.current_date-start)/150000);
+	start_index = start_index >= (4300 + c.index_offset) ? start_index : (4300 + c.index_offset);
+
+	for(var i = start_index; i < datasets['compressor'].length; i++)
+	{
+		if(i > end_index)
 		{
-			if(start_time > end)
-			{
-				break;
-			}
-
-			var data_entry = {};
-
-			data_entry.start_time = formatDate(start_time);
-
-			var v = datasets['compressor'][i];
-
-			data_entry.flow = +v.flow + c.flow_offset;
-			data_entry.bearing_vibration = +v.bearing_vibration + c.bearing_vibration_offset;
-			data_entry.oil_pressure = +v.oil_pressure + c.oil_pressure_offset;
-			data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
-			data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
-			data_entry.humidity = v.humidity + c.humidity_offset;
-
-			var v_add = c.vibration_add.get(data_entry.start_time);
-			var p_add = c.pressure_add.get(data_entry.start_time);
-			data_entry.bearing_vibration += v_add ? v_add : 0;
-			data_entry.oil_pressure += p_add ? p_add : 0;
-
-			if(c.status == 2 && c.break_time && new Date(c.break_time) < new Date(data_entry.start_time))
-			{
-				data_entry.flow = 0;
-				data_entry.bearing_vibration = 0;
-				data_entry.oil_pressure = 0;
-			}
-
-			result.data.push(data_entry);
+			break;
 		}
+
+		var data_entry = {};
+
+		var v = datasets['compressor'][i];
+
+		data_entry.start_time = formatDate(new Date(end.valueOf() - (end_index-i)*(150000/global.timescale)));
+
+		data_entry.flow = +v.flow + c.flow_offset;
+		data_entry.bearing_vibration = +v.bearing_vibration + c.bearing_vibration_offset;
+		data_entry.oil_pressure = +v.oil_pressure + c.oil_pressure_offset;
+		data_entry.oil_temp = +v.oil_temp + c.oil_temp_offset;
+		data_entry.ambient_temp = +v.ambient_temp + c.ambient_temp_offset;
+		data_entry.humidity = v.humidity + c.humidity_offset;
+
+		if(c.vibration_rise_index && i > (base_index + c.vibration_rise_index))
+		{
+			data_entry.bearing_vibration += (i - (base_index + c.vibration_rise_index))*C.VIBRATION_RISE_SPEED;
+		}
+		if(c.pressure_rise_index && i > (base_index + c.pressure_rise_index))
+		{
+			data_entry.oil_pressure += (i - (base_index + c.pressure_rise_index))*C.PRESSURE_RISE_SPEED;
+		}
+
+		if(c.vibration_spike_index && c.vibration_spike_index == (i - (base_index)))
+		{
+			data_entry.bearing_vibration += C.VIBRATION_SPIKE_AMP;
+		}
+		if(c.pressure_spike_index && c.pressure_spike_index == (i - (base_index)))
+		{
+			data_entry.oil_pressure += C.PRESSURE_SPIKE_AMP;
+		}
+
+		if(c.status == 2 && c.break_index && i > (base_index + c.break_index))
+		{
+			data_entry.flow = 0;
+			data_entry.bearing_vibration = 0;
+			data_entry.oil_pressure = 1.01325;
+		}
+
+		result.data.push(data_entry);
 	}
-	res.json(result)
+
+	if(c.last_sent_index < end_index)
+	{
+		c.last_sent_index = end_index;
+	}
+
+	res.json(result);
 }
 
 exports.compressor_latest_range = function(req, res) {
