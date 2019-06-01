@@ -28,7 +28,7 @@ mixin chart-card(chart_id, title, info)
 		if info
 			.px-3(id=info)
 
-mixin topnav(active_view)
+mixin topnav-bike(active_view)
 	nav#topnav.navbar.navbar-expand-lg.navbar-custom.p-1
 		a#toggle-sidenav.togglerbtn.m-0
 			span.toggle-icon.fas.fa-bars
@@ -38,11 +38,30 @@ mixin topnav(active_view)
 			span.toggle-icon.fas.fa-bars
 		#collapsed-topnav.collapse.navbar-collapse
 			ul.navbar-nav.mr-auto
-				each view in ['1', '2', '3']
+				each view in ['Overview', 'List']
 					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
-						a.nav-link(href='dashboard?data=bike&view=' + view) View #{view}
+						a.nav-link(href='dashboard?data=bike&view=' + view) #{view}
+			a.qmark.fas.fa-question.mx-2(href='dashboard?data=bike&view=help')
+			form.form-inline.d-flex.justify-content-center
+				.input-group-prepend
+					span#calendar-addon.input-group-text.fas.fa-calendar-alt(style="font-size: 1.5rem")
+				input.form-control.mr-2.w-auto(type='text', name='daterange', value='01/01/2018 - 12/31/2018', aria-describedby='calendar-addon')
+
+mixin topnav-compressor(active_view)
+	nav#topnav.navbar.navbar-expand-lg.navbar-custom.p-1
+		a#toggle-sidenav.togglerbtn.m-0
+			span.toggle-icon.fas.fa-bars
+		img(src='prevas_logga.svg', alt='Logo', style='height:20px')
+		a.navbar-brand.mx-lg-5.m-0(href='#') #{title}
+		button.navbar-toggler.m-0(type='button', data-toggle='collapse', data-target='#collapsed-topnav', aria-controls='collapsed-topnav')
+			span.toggle-icon.fas.fa-bars
+		#collapsed-topnav.collapse.navbar-collapse
+			ul.navbar-nav.mr-auto
+				//-each view in ['Main','Single']
+					li(class=active_view == view ? 'active' : '').nav-item.d-flex.justify-content-center
+						a.nav-link(href='dashboard?data=compressor&view=' + view) #{view}
 				li#warning-link(class=active_view == 'warning' ? 'active' : '').nav-item.d-flex.justify-content-center
-					a#warning-triangle.nav-link.fas.fa-exclamation-triangle.pr-1(href='dashboard?data=compressor&view=main&mode=troubleshoot')
+					a#warning-triangle.nav-link.fas.fa-exclamation-triangle.pr-1(href='dashboard?data=compressor&view=Main&mode=troubleshoot')
 					.container-fluid.m-0.p-0.h-100(style="width: 20px")
 						p#broken-count.m-0.px-0 0
 						p#warning-count.m-0.p-0 0
@@ -55,7 +74,5 @@ mixin topnav(active_view)
 
 mixin sidenav
 	nav#sidenav
-		a.nav-link(href='dashboard?data=compressor&view=main') Compressors Main
-		a.nav-link(href='dashboard?data=bike&view=1') Bike Data
-		a.nav-link(href='dashboard?data=compressor&view=warning-compressor') Warnings
-		a.nav-link(href='dashboard?data=compressor&view=compressor') Compressor id
+		a.nav-link(href='dashboard?data=compressor&view=Main') Compressor
+		a.nav-link(href='dashboard?data=bike&view=Overview') Bike

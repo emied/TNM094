@@ -14,7 +14,7 @@ var router = express.Router();
 var dashboard_controller = require('../controllers/dashboard-controller');
 
 router.get('/', function(req, res, next) {
-	res.redirect('dashboard?data=bike&view=1');
+	res.redirect('dashboard?data=bike&view=Overview');
 });
 
 router.get('/dashboard', dashboard_controller.dashboard);

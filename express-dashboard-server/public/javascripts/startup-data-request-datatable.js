@@ -3,8 +3,8 @@ var data_load_text = document.getElementById('data-load');
 function startupDataRequest() {
 	var dataset = 'bike'; // should be set depending on dashboard/options
 	var start = "2018-11-03";
-	var end = "2018-11-16";
-	var decimate = 1; // decimate value should be set depending on device
+	var end = "2018-11-04";
+	var decimate = 32; // decimate value should be set depending on device
 
 	data_load_text.innerHTML = "Status: Requesting " + (100.0 - 100.0 / decimate).toFixed(2);
 	data_load_text.innerHTML += "% reduced data between " + start + " and " + end + " from server...";

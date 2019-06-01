@@ -6,37 +6,25 @@ exports.dashboard = function(req, res) {
 
 	var title = data.charAt(0).toUpperCase() + data.slice(1) + " Dashboard";
 
-	if(data == "bike" && view == 1)
+	if(data == "bike" && view == 'Overview')
 	{
 		res.render('bike-dashboard/view-1', { title: title });
 	}
-	else if (data == "bike" && view == 2)
+	else if (data == "bike" && view == 'List')
 	{
 		res.render('bike-dashboard/view-2', { title: title });
-	}
-	else if (data == "bike" && view == 3)
-	{
-		res.render('bike-dashboard/view-3', { title: title });
-	}
-	else if (data == "bike" && view == "warning")
-	{
-		res.render('bike-dashboard/view-warning', { title: title });
 	}
 	else if (data == 'bike' && view == 'help')
 	{
 		res.render('bike-dashboard/view-help', { title: 'Help' });
 	}
-	else if(data = "compressor" && view == "main")
+	else if(data == "compressor" && view == "Main")
 	{
 		res.render('compressor-dashboard/view-main', { title: title });
 	}
-	else if(data = "compressor" && view == "warning-compressor")
+	else if(data == "compressor" && view == "compressor")
 	{
-		res.render('compressor-dashboard/view-warning-compressor')
-	}
-	else if(data = "compressor" && view == "compressor")
-	{
-		res.render('compressor-dashboard/view-compressor')
+		res.render('compressor-dashboard/view-compressor', { title: title })
 	}
 
 	else
