@@ -24,6 +24,8 @@ export class BikeDashboard
 
 		this.date_range = { start: new Date(this.data[this.data.length - 1].start_time), end: new Date(this.data[0].start_time) };
 
+		this.removeOldData();
+
 		this.bike_id_chart = new BikeIdChart(this.cross_filter, '#bike-id-chart', 240);
 		this.gender_chart = new GenderChart(this.cross_filter, '#pie-chart', 240);
 		this.date_chart = new MinutesChart(this.cross_filter, '#date-bar-chart', 140, this.date_range);
@@ -93,6 +95,8 @@ export class BikeDashboard
 
 		if(new_data.length)
 		{
+			this.cross_filter.add(new_data);
+			
 			var bike_chart_filters = this.bike_id_chart.chart.filters();
 			var gender_chart_filters = this.gender_chart.chart.filters();
 			var date_chart_filters = this.date_chart.chart.filters();
@@ -129,9 +133,26 @@ export class BikeDashboard
 				this.date_chart.chart.filterAll();
 			}
 
-			this.cross_filter.add(new_data);
-
 			this.redraw(new_data);
 		}
+	}
+
+	removeOldData()
+	{
+		var date_cutoff = new Date(this.date_range.end.valueOf() - 30*60*1000);
+
+		var new_start_date = new Date(this.date_range.end);
+
+		this.cross_filter.remove(d => {
+			var date = new Date(d.start_time);
+			if(date < date_cutoff){
+				return true;
+			}
+			else if(date < new_start_date){
+				new_start_date = date;
+			}
+			return false;
+		});
+		this.date_range.start = new_start_date;
 	}
 }
