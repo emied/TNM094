@@ -115,4 +115,14 @@ g.layer0 g.zip_code path {
 
 #line-chart-flow svg g g.chart-body g.dc-tooltip-list g.dc-tooltip._0 circle.dot {
 	stroke: black;
+	stroke-width: 0.05%;
+}
+
+#displays-title {
+	cursor: pointer;
+	transition: color 0.25s;
+}
+
+#displays-title:hover {
+	color: rgb(127,127,127);
 }

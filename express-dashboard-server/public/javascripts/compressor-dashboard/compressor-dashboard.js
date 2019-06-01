@@ -19,7 +19,7 @@ export class CompressorDashboard
 
 		if(data.status != 0)
 		{
-			data.data = data.data.splice(data.data.length-num_data_points, num_data_points);
+			data.data = data.data.splice(data.data.length-num_data_points/5, num_data_points/5);
 		}
 
 		var start = new Date(data.data[0].start_time);
@@ -28,7 +28,7 @@ export class CompressorDashboard
 		this.cross_filter = crossfilter(data.data);
 		this.dimension = this.cross_filter.dimension(function(d) {
 			var date = new Date(d.start_time);
-			if(data.data.length <= num_data_points /* || +d.oil_pressure >= +limits.pressure_warn  || +d.bearing_vibration >= +limits.vibration_warn*/)
+			if(data.data.length <= num_data_points)
 			{
 				return date;
 			}
@@ -57,7 +57,7 @@ export class CompressorDashboard
 
 		this.range_chart_flow = new RangeChart(this.cross_filter, '#range-chart-flow', start, end, this.dimension,'flow');
 
-		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, data.attr, this.range_chart_flow.chart, this.dimension, this.modifiers.get(data.attr), this.limits.get(data.attr));
+		this.line_chart = new LineChart(this.cross_filter, '#line-chart-flow', 330, start, end, data.attr, this.range_chart_flow.chart, this.dimension, this.modifiers.get(data.attr), this.limits.get(data.attr), data.status);
 		$('#click-' + this.names.get(data.attr)).toggleClass('active');
 		$('#line-chart-title').html(this.titles.get(data.attr) + ' (' + this.units.get(data.attr) + ')');
 
@@ -150,7 +150,7 @@ export class CompressorDashboard
 			});
 		});
 
-		$('#switch-compressor-mode').click( event => {
+		$('#displays-title').click( event => {
 			this.mode = this.mode == 'normal' ? 'realtime' : 'normal';
 			this.redraw(new Date(this.current_data.start_time));
 		})

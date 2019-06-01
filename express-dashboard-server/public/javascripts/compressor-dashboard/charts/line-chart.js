@@ -1,7 +1,7 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class LineChart {
-	constructor(cross_filter, container_id, height, start, end, attr, range_chart, dimension, modifier=1, limit=undefined) {
+	constructor(cross_filter, container_id, height, start, end, attr, range_chart, dimension, modifier=1, limit=undefined, status) {
 		this.container_id = container_id;
 		this.chart = dc.lineChart(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
@@ -30,12 +30,13 @@ export class LineChart {
 			.group(this.group)
 			.rangeChart(range_chart)
 			.dimension(dimension)
-			.x(d3.scaleTime().domain([start, end]))
+			.x(d3.scaleTime().domain([start, new Date(end.valueOf() + (end-start)*0.01)]))
 			.y(d3.scaleLinear().domain(y_range))
 			.xUnits(d3.timeDay)
 			.yAxisLabel(" ", 18)
 			.brushOn(false)
 			.mouseZoomable(true)
+			.title( d => { return 'Time: ' + d3.timeFormat("%Y-%m-%d %H:%M:%S")(d.key) + ', Value: ' + d3.format(".3f")(d.value.count ? d.value.sum*modifier / d.value.count : 0); })
 			.zoomScale([1, 100])
 			.zoomOutRestrict(true)
 			.renderVerticalGridLines(true)
@@ -60,10 +61,14 @@ export class LineChart {
 				}
 				return 0;
 			});
-			//.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
+		
+		if(status != 0)
+		{
+			this.chart.renderDataPoints({radius: 4, fillOpacity: 1, strokeOpacity: 1})
+			//this.drawLimitLines();
+		}
 
 		//this.drawLimitDots();
-		this.drawLimitLines();
 		this.chart.render();
 	}
 
@@ -87,7 +92,7 @@ export class LineChart {
 			}
 			else
 			{
-				this.chart.x(d3.scaleTime().domain([this.start, this.end]));
+				this.chart.x(d3.scaleTime().domain([this.start, new Date(this.end.valueOf() + (this.end-this.start)*0.01)]))
 			}
 
 			var modifier = this.modifier;
@@ -127,6 +132,7 @@ export class LineChart {
 				.group(this.group)
 				.y(d3.scaleLinear().domain(y_range))
 				.valueAccessor(d => {return d.value.count ? d.value.sum*modifier / d.value.count : 0 })
+				.title( d => { return 'Time: ' + d3.timeFormat("%Y-%m-%d %H:%M:%S")(d.key) + ', Value: ' + d3.format(".3f")(d.value.count ? d.value.sum*modifier / d.value.count : 0); })
 				.redraw();
 		}
 
@@ -163,7 +169,7 @@ export class LineChart {
 						.enter()
 							.append('path')
 							.attr('class', 'warn-outline')
-							.attr('stroke-width', '0.3%')
+							.attr('stroke-width', '0.2%')
 							.attr('stroke', 'black')
 						.merge(warn_outline_path);
 					warn_outline_path.attr('d', warn_line);
@@ -173,7 +179,7 @@ export class LineChart {
 						.enter()
 							.append('path')
 							.attr('class', 'warn')
-							.attr('stroke-width', '0.2%')
+							.attr('stroke-width', '0.1%')
 							//.attr('stroke', 'rgb(191.25, 191.25, 75)')
 							.attr('stroke', 'yellow')
 						.merge(warn_path);
@@ -189,7 +195,7 @@ export class LineChart {
 						.enter()
 							.append('path')
 							.attr('class', 'break-outline')
-							.attr('stroke-width', '0.3%')
+							.attr('stroke-width', '0.2%')
 							.attr('stroke', 'black')
 						.merge(break_outline_path);
 					break_outline_path.attr('d', break_line);
@@ -199,7 +205,7 @@ export class LineChart {
 						.enter()
 							.append('path')
 							.attr('class', 'break')
-							.attr('stroke-width', '0.2%')
+							.attr('stroke-width', '0.1%')
 							//.attr('stroke', 'rgb(191.25, 75, 75)')
 							.attr('stroke', 'red')
 						.merge(break_path);
