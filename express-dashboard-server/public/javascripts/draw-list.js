@@ -2,10 +2,7 @@
 
 function drawList(data) {
 
-	console.log(data.length);
-
 	for(i = 0; i < data.length; i++) {
-
 		if (data[i].gender == 1) {
 			data[i].gender = "Male";
 		}
@@ -15,7 +12,6 @@ function drawList(data) {
 		else {
 			data[i].gender = "Not available";
 		}
-
 	}
 
 	const dataTable = $('#example').DataTable({
@@ -31,6 +27,22 @@ function drawList(data) {
 		]
 
 	});
+}
 
+function updateList(data) {
 
+	for(i = 0; i < data.length; i++) {
+		if (data[i].gender == 1) {
+			data[i].gender = "Male";
+		}
+		else if (data[i].gender == 2) {
+			data[i].gender = "Female";
+		}
+		else {
+			data[i].gender = "Not available";
+		}
+	}
+
+	$('#example').dataTable().fnClearTable();
+	$('#example').dataTable().fnAddData(data);
 }

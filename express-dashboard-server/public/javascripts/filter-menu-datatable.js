@@ -18,7 +18,8 @@ $(function filter() {
 		var dataset = 'bike';
 		start = start.format('YYYY-MM-DD');
 		end = end.format('YYYY-MM-DD');
-		var decimate = Math.round(decimate_slider.noUiSlider.get());
+		//var decimate = Math.round(decimate_slider.noUiSlider.get());
+		var decimate = 64;
 
 		var t0 = performance.now();
 
@@ -58,7 +59,7 @@ $(function filter() {
 				return;
 			}
 
-			drawList(data);
+			updateList(data);
 		}
 	});
 });
