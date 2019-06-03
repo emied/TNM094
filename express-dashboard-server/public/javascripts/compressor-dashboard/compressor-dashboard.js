@@ -5,7 +5,6 @@ import { TableChart } from './charts/data-table-chart.js';
 
 export class CompressorDashboard
 {
-
 	constructor(data, limits)
 	{
 		dc.config.defaultColors([

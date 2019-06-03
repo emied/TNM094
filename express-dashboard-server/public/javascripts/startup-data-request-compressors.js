@@ -1,7 +1,6 @@
 import { CompressorsDashboard } from './compressors-dashboard/compressors-dashboard.js';
 
 function afterLoad() {
-
 	socket.emit('dataset', { name: 'compressors' } );
 	socket.on("compressors_data", data => {
 		compressors_dashboard.addData(data);

@@ -31,7 +31,6 @@ function updateTriangle(statuses)
 }
 
 $(document).ready(() => {
-
 	d3.json('./api/get_compressors_statuses').then( statuses => {
 		prev_statuses = statuses;
 		updateTriangle(statuses);

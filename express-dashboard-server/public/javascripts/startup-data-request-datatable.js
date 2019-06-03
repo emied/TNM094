@@ -1,13 +1,12 @@
 var data_load_text = document.getElementById('data-load');
 
 function startupDataRequest() {
-
 	// Use localStorage data if it exists instead of making arbitrary request for new data.
 	// localStorage data is created from the current filtered data in the bike dashboard when the 'List' button in the top menu is clicked.
-	var stored_data = JSON.parse(localStorage.getItem('bike-data'));
+	var stored_data = localStorage.getItem('bike-data');
 	if(stored_data)
 	{
-		drawList(stored_data);
+		drawList(JSON.parse(stored_data));
 		return;
 	}
 

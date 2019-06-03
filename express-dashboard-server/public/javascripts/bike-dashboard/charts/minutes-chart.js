@@ -7,10 +7,10 @@ export class MinutesChart
 		this.date_range = date_range;
 
 		this.dimension = cross_filter.dimension(function(d) {
-				var date = new Date(d.start_time);
-				date.setMilliseconds(0);
-				date.setSeconds(0);
-				return date;
+			var date = new Date(d.start_time);
+			date.setMilliseconds(0);
+			date.setSeconds(0);
+			return date;
 		});
 		this.group = this.dimension.group().reduceCount();
 

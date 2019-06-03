@@ -1,7 +1,6 @@
 import { reduceAddAvg, reduceRemoveAvg, reduceInitAvg } from '../../avg-reduce.js';
 
 export class AvgDisplay {
-
 	constructor(cross_filter, container_id, attr, title, unit, modifier=1) {
 		this.container_id = container_id;
 		this.display = dc.numberDisplay(this.container_id);

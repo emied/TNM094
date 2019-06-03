@@ -6,19 +6,17 @@ export class TableChart {
 		this.chart = dc.dataTable(this.container_id);
 		this.group = dimension.group().reduce(reduceAddAvg(attr), reduceRemoveAvg(attr), reduceInitAvg);
 
-
-
 		this.chart
-      .dimension(dimension)
+			.dimension(dimension)
 			.size(Infinity)
 			.group(function(d){
-      	var date = new Date(d.start_time);
-      	date.setHours(date.getHours(), 0, 0, 0);
-      	return date;
-      })
-      .columns(['start_time' , attr])
-      //.sortBy('start_time')
-      .order(d3.ascending)
+				var date = new Date(d.start_time);
+				date.setHours(date.getHours(), 0, 0, 0);
+				return date;
+			})
+			.columns(['start_time' , attr])
+			//.sortBy('start_time')
+			.order(d3.ascending)
 			.render();
 		}
 

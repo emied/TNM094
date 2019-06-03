@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-global.timescale = 10.0;
-
 global.statuses = {
 	internal: [0, 0, 0],
 	listener: function(val) {},
@@ -17,14 +15,11 @@ global.statuses = {
 	}
 };
 
+global.timescale = 10.0;
 global.bike_current_index = 1154185;
-
 global.server_start_time = new Date();
-
 const bike_start_time = new Date('2018-09-13 07:40:03');
-
 global.bike_current_time = new Date(bike_start_time);
-
 global.compressor_start_index = 4300 + 5000;
 
 /**

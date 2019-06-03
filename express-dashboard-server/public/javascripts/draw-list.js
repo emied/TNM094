@@ -1,7 +1,6 @@
 //var bike_id_table = dc.dataTable("#bike-id-table");
 
 function drawList(data) {
-
 	for(i = 0; i < data.length; i++) {
 		if (data[i].gender == 1) {
 			data[i].gender = "Male";
@@ -30,7 +29,6 @@ function drawList(data) {
 }
 
 function updateList(data) {
-
 	for(i = 0; i < data.length; i++) {
 		if (data[i].gender == 1) {
 			data[i].gender = "Male";
