@@ -45,7 +45,7 @@ export class LineChart {
 			.colors( ['#333333', 'yellow', 'red'])
 			.colorDomain([0,2])
 			.colorAccessor( (d,i) => {
-				var v = d[i] ? d[i].data.value : d.data.value;
+				var v = d[i] && d[i].data ? d[i].data.value : d.data ? d.data.value : 0;
 				v = v.count ? v.sum / v.count : 0;
 
 				if(this.limit)
