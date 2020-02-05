@@ -14,7 +14,7 @@ function updateTriangle(statuses)
 	}
 	else if(prev_statuses[1] != statuses[1])
 	{
-		new_color = $('#warning-count').css("color");
+			new_color = $('#warning-count').css("color");
 	}
 	
 	var t = d3.transition()
